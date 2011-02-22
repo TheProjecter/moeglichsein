@@ -1,0 +1,212 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+		.container {
+			margin-left:20px;
+			margin-top:20px;
+			border-collapse:collapse;	
+		}
+		
+		#tableid thead {
+			border-collapse:collapse;	
+			border: 1px solid black;
+			margin-left:5px;
+			margin-top:5px;
+			background: skyblue;
+		}
+		
+		
+		#tableid {
+			text-align:left;
+			width:95%; margin-left:2.5%; margin-right:2.5%;
+			letter-spacing:0.15em;
+		}
+				
+		#tableid td {
+			border-collapse:collapse;	
+			border: 1px solid black;
+			margin-left:5px;
+			padding: 10px;
+
+		}
+		#tableid td ul {
+			line-height:200%;
+		}
+		
+		.syntaxBorder {
+			margin-left:20px;
+			margin-top:20px;
+			margin-bottom:20px;
+			font-size: large;
+		}
+		
+		.syntaxBorder h1 {
+			margin-top:20px;
+			margin-bottom:5px;
+		}
+		
+		.biggerLineSpace {
+			line-height:150%;
+		}
+		
+
+	</ui:style>
+	<g:ScrollPanel ui:field="scrollPanel">
+	<g:VerticalPanel addStyleNames="{style.syntaxBorder}" ui:field="syntaxVPanel">
+		<g:HTMLPanel addStyleNames="{style.biggerLineSpace}" ui:field="purposeHtml"><div>This Textbox is your direct gate to the modallogic universe. 
+		Type in a regular sentence by using the pre-defined grammar below, it's LaTeX-like syntax. 
+		When you press the "Evaluate"-Button the Application does the following:
+		<ul><li>Firstly, it checks if the Syntax is correct and (if so) displays a parse tree.</li>
+		<li>Then it evaluates the expression based on the World you selected and the given Universe.</li>
+		<li>Moreover, it shows you details about the evaluation process.</li>
+		</ul></div> 
+		</g:HTMLPanel>
+		<g:HTMLPanel addStyleNames="{style.container}" ui:field="syntaxHtml">
+			<h1>Sentences with Binary Operators</h1>
+			<table id="tableid">
+			<thead>
+			<tr>
+				<td>Syntax</td>
+				<td>Description</td>
+			</tr>
+			</thead>
+			<tr>
+				<td>&lt;sentence&gt; \vee &lt;sentence&gt;</td>
+				<td>Disjunction (OR)</td>
+			</tr>
+			<tr>
+				<td>&lt;sentence&gt; \wedge &lt;sentence&gt;</td>
+				<td>Conjunction (AND)</td>
+			</tr>
+			<tr>
+				<td>&lt;sentence&gt; \oplus &lt;sentence&gt;</td>
+				<td>Exclusive-Or (XOR)</td>
+			</tr>
+			<tr>
+				<td>&lt;sentence&gt; \rightarrow &lt;sentence&gt;</td>
+				<td>Implication / Conditional</td>
+			</tr>
+			<tr>
+				<td>&lt;sentence&gt; \leftrightarrow &lt;sentence&gt;</td>
+				<td>Biconditional</td>
+			</tr>
+			</table>
+			
+			<h1>Sentences with Unary Operators</h1>
+			<table id="tableid">
+			<thead>
+			<tr>
+				<td>Syntax</td>
+				<td>Description</td>
+			</tr>
+			</thead>
+			<tr>
+				<td>\neg &lt;sentence&gt;</td>
+				<td>Negation (NOT)</td>
+			</tr>
+			<tr>
+				<td>\box &lt;sentence&gt;</td>
+				<td>Box-Operator (Necessity-Operator)</td>
+			</tr>
+			<tr>
+				<td>\diamond &lt;sentence&gt;</td>
+				<td>Diamond-Operator (Possibility-Operator)</td>
+			</tr>
+			</table>
+			
+			<h1>Sentences with Quantifications</h1>
+			<table id="tableid">
+			<thead>
+			<tr>
+				<td>Syntax</td>
+				<td>Description</td>
+			</tr>
+			</thead>
+			<tr>
+				<td>\exists &lt;var&gt; &lt;sentence&gt;</td>
+				<td>Existence Quantifier</td>
+			</tr>
+			<tr>
+				<td>\forall &lt;var&gt; &lt;sentence&gt;</td>
+				<td>Universal Quantifier</td>
+			</tr>
+			</table>
+			
+			<h1>Terms &lt;term&gt; </h1>
+			<table id="tableid">
+			<thead>
+			<tr>
+				<td>Syntax</td>
+				<td>Description</td>
+			</tr>
+			</thead>
+			<tr>
+				<td><ul>
+					<li>x, x_1, x_2, ... </li>
+				    <li>y, y_1, y_2, ...</li>
+				    <li>z, z_1, z_2, ...</li></ul></td>
+				<td>Variables &lt;var&gt; </td>
+			</tr>
+			<tr>
+				<td><ul><li>a, a_1, a_2, ...</li></ul></td>
+				<td>Constants &lt;const&gt; </td>
+			</tr>
+			<tr>
+				<td><ul>
+					<li>f^1( >&lt;term&gt; )</li>
+					<li>f^1_1( &lt;term&gt; )</li>
+					<li>f^1_2( &lt;term&gt; ) ...</li>
+				    <li>f^2( &lt;term&gt; , &lt;term&gt; )</li>
+				    <li>f^2_1( &lt;term&gt; , &lt;term&gt; ) ...</li>
+				    <li>f^3( &lt;term&gt; , &lt;term&gt; , &lt;term&gt; ), ...</li>
+				   </ul></td>
+				<td>Function &lt;func&gt; <i>- parsing only - evaluation not yet supported</i></td>
+			</tr>
+			</table>
+			
+			<h1>Predicates &lt;pred&gt; </h1>
+			<table id="tableid">
+			<thead>
+			<tr>
+				<td>Syntax</td>
+				<td>Description</td>
+			</tr>
+			</thead>
+			<tr>
+				<td width="45%">
+				<ul>
+					<li>PRED^1( &lt;term&gt; )</li>
+					<li>PRED^1_1( &lt;term&gt; )</li>
+					<li>RED^1( &lt;term&gt; )</li>
+					<li>BEAUTIFUL^1( &lt;term&gt; )</li>
+					<li>PRED^2( &lt;term&gt; , &lt;term&gt; )</li>
+					<li>SMALLERTHAN^2( &lt;term&gt;, &lt;term&gt; )</li>
+				</ul>
+				</td>
+				<td>PRED, RED, BEAUTIFUL, ... are names of predicates --- <i>only UPPERCASE letters allowed</i><br/><br/>
+				    <b>^n</b> expresses the arity n of a predicate, i.e. there are n parameters --- <i>Required</i><br/><br/>
+				    <b>_m</b> is an optional extension of the predicate name, i.e. an index m. --- <i>Optional</i></td>
+			</tr>
+			</table>		
+		</g:HTMLPanel>
+		
+		<g:HTMLPanel>
+		<h1>Evaluation Order:</h1>
+		<div>
+		<ol>
+		<li>Negation Expression</li>
+		<li>Quantifiers and Modal Operators</li>
+		<li>Binary Operators (Biconditional, Conditional,OR,AND,XOR)</li>
+		</ol>
+		</div><div align='center'>
+		<i>By using parentheses <b>(</b> and <b>)</b> for sub-expressions, one can modify the evaluation order in a particular expression.</i>
+		</div>
+		</g:HTMLPanel>
+	</g:VerticalPanel>
+	</g:ScrollPanel>
+
+</ui:UiBinder> 

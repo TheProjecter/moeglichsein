@@ -1,0 +1,65 @@
+package at.ac.univie.philo.mmr.shared.expressions;
+
+import java.io.Serializable;
+import java.util.Collection;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+/**
+ * Abstract class encapsulating the basic structure of an expression node. 
+ * 
+ * Note that the equals() and hashCode() functions are not defined and they
+ * shouldn't be. We consider two expression nodes as being equal iff they
+ * are the *same* object.
+ *  
+ */
+public abstract class Expression implements IsSerializable {
+
+	private Expression[] operands;
+	
+	/**
+	 * Dummy Constructor for GWT Serialization. Don't use it yourself!
+	 */
+	public Expression() {
+		this.operands = new Expression[0];
+	}
+	
+	protected Expression(Expression[] operands) {
+		if (operands == null) {
+			throw new IllegalArgumentException("The operands array is null");
+		}
+		
+		for (Expression operand: operands) {
+			if (operand == null)
+				throw new IllegalArgumentException("Null operand");
+		}
+		
+		this.operands = operands;
+	}
+	
+	public int getOperandCount() {
+		return operands.length;
+	}
+	
+	public Expression getOperand(int index) {
+		return operands[index];
+	}
+	public abstract Collection<VariableExpression> freeVariables();
+	public abstract Collection<VariableExpression> allVariables();
+	public abstract void accept(IExpressionVisitor visitor);
+//	public abstract ExpressionType getType();
+
+	/**
+	 * Replaces every occurrence of one term with another term. This is a helper-method for evaluating terms.
+	 * @param oldTerm
+	 * @param newTerm
+	 * @return the resultingPredicateExpression (instead of oldTerm there is newTerm)
+	 */
+	public abstract Expression replace(TermExpression oldTerm,
+			TermExpression newTerm);
+	
+	public Expression myClone() {
+		return this;
+	}
+	
+}

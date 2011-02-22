@@ -1,0 +1,63 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+
+  <ui:style>
+    .cellTable {
+      border-bottom: 1px solid #ff0000;
+      text-align: center;
+      margin-bottom: 4px;
+      margin-top:10px;
+      background-color: #c0c0c0;
+    }
+    
+    .heading {
+		margin-top: 10px;
+    	text-align: center;
+    	text-decoration: underline;
+    	font-size: large;
+    }
+    
+    .structuredTable {
+    	margin-top: 10px;
+      	margin-left: 20px;
+      	border: 6px;
+      	border-color: #ff0000;
+      	height: 500px;
+    }
+    
+    .interactiveElement {
+    	margin-left: 5px;
+    	font-style:italic;
+    	font-weight: bold;
+    	color: blue;
+    	float: left;
+    }
+    
+    .leftDistance {
+    	margin-left: 20px;
+    	margin-bottom: 20px;
+    }
+    
+    .mouseover {
+    	text-decoration: underline;
+    	color:#ff0000;
+    	cursor:pointer;
+    }
+  </ui:style>
+
+
+<g:VerticalPanel ui:field="browserVPanel" borderWidth="1">
+  <g:HTMLPanel ui:field="headingHtml">
+  <div class="{style.heading}">Extensions in World: <span ui:field='worldName'/></div>
+    </g:HTMLPanel>
+
+          	<c:CellBrowser height="10px" addStyleNames='{style.structuredTable}' defaultColumnWidth='300'
+	   ui:field="extensionBrowser"></c:CellBrowser>
+
+</g:VerticalPanel>
+
+
+
+</ui:UiBinder> 
