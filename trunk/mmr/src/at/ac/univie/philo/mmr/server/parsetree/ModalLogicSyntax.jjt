@@ -1,0 +1,118 @@
+/**
+ * JJTree template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
+ */options{  JDK_VERSION = "1.5";
+  STATIC=false;
+  VISITOR = true;
+  MULTI=true;
+  NODE_DEFAULT_VOID=true;}PARSER_BEGIN(crflang)package at.ac.univie.philosophie.crf.parsetree;
+
+public class crflang{//  public static void main(String args [])//  {//    System.out.println("Reading from standard input...");//    System.out.print("Enter an expression like \"1+(2+3)*var;\" :");//    new crflang(System.in);//    try//    {//      SimpleNode n = crflang.predLogic();//      n.dump("");//      System.out.println("Thank you.");//    }//    catch (Exception e)//    {//      System.out.println("Oops.");//      System.out.println(e.getMessage());//    }//    catch (Error e)//    {//      System.out.println("Oops.");//      System.out.println(e.getMessage());//    }//  }}PARSER_END(crflang)
+SimpleNode predLogic() #expression: {} { formular() (< EOF >|"\r") { return jjtThis; }}
+
+void formular() : {} { biconditional() }
+
+void truthvalue() #truthvalue: {}{   <TRUE > {jjtThis.setValue("TRUE");} | < FALSE >  {jjtThis.setValue("FALSE");}}
+
+void biconditional() : {}{
+  implication() ( < BICONDITIONAL > implication() #biconditional(2) )*}
+
+void negation() #negation(1) : {} { < NOT > sentence() }
+
+void conjunction() : {} { xor() (< AND > xor() #conjunction(2) )* }
+
+
+void disjunction() : {} { conjunction() ( < OR > conjunction() #disjunction(2) )* }
+
+void implication() : {} { disjunction() ( < IMPLICATION > disjunction() #implication(2) )* }
+
+void xor() : {} { sentence() ( < XOR > sentence() #xor(2) )* }
+
+void sentence() : {}
+{
+  truthvalue() | predicate() | negation() | "(" formular() ")" | quantification() | box() | diamond()
+}
+
+SimpleNode term() : {SimpleNode n = null;} { (n = variable() | n = constant() | n = function()) { return n; }}
+
+ASTvariable variable() #variable: {Token t; Token i;} { (t = "x" | t = "y" | t = "z") {jjtThis.setName(t.image); }  ("_" i = index() {jjtThis.setIndex(i.image); } )? { return jjtThis; }}
+
+Token index() : {Token t;} {t=<INT> { return t; }}
+
+void predicate() #predicate :
+{
+  	ASTpredicatename predicatename;
+  	SimpleNode aterm;
+}
+{
+  predicatename = predicatename() { jjtThis.setPredicate(predicatename); } "(" aterm = term() { jjtThis.addTerm(aterm); } ("," aterm = term() { jjtThis.addTerm(aterm); })* ")"}
+
+ASTpredicatename predicatename() #predicatename :{
+  Token arity;
+  Token index;
+  Token name;
+}
+{
+  name = < NAME > { jjtThis.setName(name.image); } "^" arity = index()  { jjtThis.setArity(arity.image); } ("_" index = index() { jjtThis.setIndex(index.image); })?
+ { return jjtThis; }
+}
+
+ASTconstant constant() #constant : {Token n; Token i;} { n = "a" { jjtThis.setName(n.image);} ("_" i = index() { jjtThis.setIndex(i.image);} )?  { return jjtThis; } }
+
+ASTfunction function() #function :
+{
+    ASTfunctionname functionname;
+  	SimpleNode aterm;
+  }
+{ functionname = functionname() { jjtThis.setFunction(functionname); } "(" aterm = term() { jjtThis.addTerm(aterm); } ("," aterm = term() { jjtThis.addTerm(aterm); } )* ")"  { return jjtThis; }}
+
+ASTfunctionname functionname() #functionname :
+{
+  Token arity;
+  Token index;
+  Token name;
+  }{
+  name = < FNAME > { jjtThis.setName(name.image); } "^" arity = index() { jjtThis.setArity(arity.image); } ("_" index = index() { jjtThis.setIndex(index.image); } )?  { return jjtThis; }
+}
+
+void quantification() : {} { allquantor() | existencequantor() }
+
+void allquantor() #allquantor(2): {} { <FORALL > variable() sentence()  }
+
+void existencequantor() #existencequantor(2) : {} { <EXISTS > variable() sentence()  }
+
+
+void box() #box(1) : {}
+{
+  < BOX > sentence() 
+}
+
+void diamond() #diamond(1) : {}
+{
+  < DIAMOND > sentence() 
+}
+
+SKIP : { " " | "\t" | "\n" }
+
+//SKIP ://{//  " "//| "\t"//| "\n"//| "\r"//| < "//" (~[ "\n", "\r" ])*//    (//      "\n"//    | "\r"//    | "\r\n"//    ) >//| < "/*" (~[ "*" ])* "*"//    (//      ~[ "/" ] (~[ "*" ])* "*"//    )*//    "/" >//}//TOKEN : /* LITERALS */{  < INT : (["0" - "9"])+ >}
+
+TOKEN :{ < NAME : (["A"-"Z"])+ > |
+ < FNAME : (["a"-"z"])+ >}
+
+TOKEN :
+{
+	< OR: "\\vee" >  |
+	< AND: "\\wedge" >     |
+	< NOT: "\\neg" > |
+	< XOR: "\\oplus" > |
+	< EXISTS: "\\exists" >  |
+	< FORALL: "\\forall" > |
+	< IMPLICATION: "\\rightarrow" > |
+	< BICONDITIONAL: "\\leftrightarrow"> |
+	< TRUE:  "\\top" > |
+	< FALSE:  "\\bot" > |
+	< BOX: "\\box" > |
+	< DIAMOND: "\\diamond" >
+}
+
+
+//////SimpleNode Start() ://{}//{//  Expression() ";"//  {//    return jjtThis;//  }//}////void Expression() ://{}//{//  AdditiveExpression()//}////void AdditiveExpression() ://{}//{//  MultiplicativeExpression()//  (//    (//      "+"//    | "-"//    )//    MultiplicativeExpression()//  )*//}////void MultiplicativeExpression() ://{}//{//  UnaryExpression()//  (//    (//      "*"//    | "/"//    | "%"//    )//    UnaryExpression()//  )*//}void Integer() :{}{  < INT >}
