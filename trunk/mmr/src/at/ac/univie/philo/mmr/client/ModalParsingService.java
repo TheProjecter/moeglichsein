@@ -13,4 +13,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface ModalParsingService extends RemoteService {
 	Expression parse(String expression) throws ExpressionParsingException;
 	Dummy dummy(Dummy d);
+//	List<Image> retrieveImages();
 }

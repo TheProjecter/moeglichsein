@@ -8,17 +8,13 @@ import java.util.Map.Entry;
 
 import at.ac.univie.philo.mmr.shared.expressions.Predicate;
 import at.ac.univie.philo.mmr.shared.semantic.Individual;
-import at.ac.univie.philo.mmr.shared.semantic.Universe;
 import at.ac.univie.philo.mmr.shared.semantic.World;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.CompositeCell;
-import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.HasCell;
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -27,21 +23,20 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
-import com.google.gwt.view.client.TreeViewModel.DefaultNodeInfo;
 
 public class PredicateExtensionsModel implements TreeViewModel {
 
 	private final SingleSelectionModel<Individual> selectionModel = new SingleSelectionModel<Individual>();
 	private final Cell<Individual>  compositeIndiCell;
 	private HashMap<Predicate, HashSet<ArrayList<Individual>>> extensionMap;
-	private Ressources res;
+	private Resources res;
 	
 	private ListDataProvider<Entry<Predicate, HashSet<ArrayList<Individual>>>> dataProviderExtensionMap;
 	private ListDataProvider<ArrayList<Individual>> dataProviderExtension;
 	private ListDataProvider<Individual> dataProviderIndis;
 	
 	public PredicateExtensionsModel() {
-		res = GWT.create(Ressources.class);
+		res = GWT.create(Resources.class);
 		compositeIndiCell = createCompositeCell();
 		dataProviderExtensionMap = new ListDataProvider<Entry<Predicate, HashSet<ArrayList<Individual>>>>();
 		dataProviderExtension = new ListDataProvider<ArrayList<Individual>>();
@@ -189,7 +184,7 @@ public class PredicateExtensionsModel implements TreeViewModel {
 	
 	private class ExtensionCell extends AbstractCell<ArrayList<Individual>> {
 
-		private final String imageHtml = AbstractImagePrototype.create(res.individual()).getHTML();
+		private final String imageHtml = AbstractImagePrototype.create(res.defaultIndividual()).getHTML();
 		
 		@Override
 		public void render(com.google.gwt.cell.client.Cell.Context context,
@@ -215,7 +210,7 @@ public class PredicateExtensionsModel implements TreeViewModel {
 	
 	private class IndividualCell extends AbstractCell<Individual> {
 
-		private final String imageHtml = AbstractImagePrototype.create(res.individual()).getHTML();
+		private final String imageHtml = AbstractImagePrototype.create(res.defaultIndividual()).getHTML();
 		
 		@Override
 		public void render(com.google.gwt.cell.client.Cell.Context context,
