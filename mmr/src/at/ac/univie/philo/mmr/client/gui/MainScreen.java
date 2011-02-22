@@ -3,12 +3,9 @@
  */
 package at.ac.univie.philo.mmr.client.gui;
 
-import java.util.ArrayList;
-
 import at.ac.univie.philo.mmr.client.Dummy;
 import at.ac.univie.philo.mmr.client.ModalParsingService;
 import at.ac.univie.philo.mmr.client.ModalParsingServiceAsync;
-import at.ac.univie.philo.mmr.client.gui.UniverseDetailsForm.DetailStyle;
 import at.ac.univie.philo.mmr.shared.examples.UniverseFactory;
 import at.ac.univie.philo.mmr.shared.expressions.Expression;
 import at.ac.univie.philo.mmr.shared.semantic.Individual;
@@ -16,21 +13,19 @@ import at.ac.univie.philo.mmr.shared.semantic.Universe;
 import at.ac.univie.philo.mmr.shared.semantic.World;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.event.logical.shared.AttachEvent;
-import com.google.gwt.event.logical.shared.OpenEvent;
-import com.google.gwt.event.logical.shared.OpenHandler;
-import com.google.gwt.event.logical.shared.AttachEvent.Handler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.cellview.client.TreeNode;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -40,30 +35,13 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.cellview.client.CellTree;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
-import com.google.gwt.user.cellview.client.TreeNode;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.TreeViewModel;
-import com.google.gwt.view.client.AbstractDataProvider;
-import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.SelectionModel.AbstractSelectionModel;
-import com.google.gwt.view.client.NoSelectionModel;
-import com.google.gwt.view.client.TreeViewModel.NodeInfo;
-import com.google.gwt.view.client.TreeViewModel.DefaultNodeInfo;
-import com.google.gwt.cell.client.TextCell;
-import com.google.gwt.dom.client.SpanElement;
 
 /**
  * @author Bethy
@@ -103,9 +81,11 @@ public class MainScreen extends Composite {
 	  interface DetailStyle extends CssResource {
 		    String mainbox();
 		    String addBorder();
+		    String alignElements();
 		  }
 
-		 @UiField DetailStyle style;
+		 @UiField 
+		 DetailStyle style;
 	 
 		
 		@UiField
@@ -184,6 +164,7 @@ public class MainScreen extends Composite {
 
 	    
 		initWidget(uiBinder.createAndBindUi(this));
+	    cellTree.addStyleName(style.alignElements());
 	    setUpFormular();
 	    
 	    overallDockPanel.setWidth("100%");
@@ -386,6 +367,14 @@ public class MainScreen extends Composite {
 		mainPanel.remove(0);
 		mainPanel.add(lastUniverseDetailsWidget);
 
+	}
+	
+	public void showSelectedIndividual(Individual value, World world) {
+		IndividualDetailsForm indiDetailsForm = new IndividualDetailsForm(value, world, this);
+		mainPanel.remove(0);
+		mainPanel.add(indiDetailsForm);
+		indiDetailsForm.setWidth("100%");
+		indiDetailsForm.setHeight("100%");
 	}
 	
 	public void showSelectedWorld(World w) {

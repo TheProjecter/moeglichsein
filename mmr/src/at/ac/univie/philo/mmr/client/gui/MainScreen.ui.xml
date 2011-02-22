@@ -41,6 +41,14 @@
 			border-color: #ff0000;
 		}
 		
+		.alignElements div {
+			text-align: left;
+		}
+		
+		.alignElements {
+			text-align:left;
+		}
+		
 		.beta {
 			vertical-align:super;
 			color:red;
@@ -50,7 +58,7 @@
 		
 	</ui:style>
 	
-	<ui:with field='res' type='at.ac.univie.philo.mmr.client.gui.Ressources'/>
+	<ui:with field='res' type='at.ac.univie.philo.mmr.client.gui.Resources'/>
 			<g:DockLayoutPanel ui:field="overallDockPanel" width="1024px" height="768px" unit="PX">
 			<g:north size="70">
 				<g:HorizontalPanel ui:field="headerHorizonalPanel" styleName="{style.headerbox}" borderWidth="1" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE">

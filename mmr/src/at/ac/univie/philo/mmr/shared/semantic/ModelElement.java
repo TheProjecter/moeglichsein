@@ -2,8 +2,10 @@ package at.ac.univie.philo.mmr.shared.semantic;
 
 import java.io.File;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Image;
 
+import at.ac.univie.philo.mmr.client.gui.Resources;
 import at.ac.univie.philo.mmr.shared.exceptions.NotAnIconException;
 
 /**

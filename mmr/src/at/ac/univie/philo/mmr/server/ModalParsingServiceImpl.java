@@ -1,5 +1,10 @@
 package at.ac.univie.philo.mmr.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.jdo.PersistenceManager;
+
 import at.ac.univie.philo.mmr.client.Dummy;
 import at.ac.univie.philo.mmr.client.ModalParsingService;
 import at.ac.univie.philo.mmr.server.parsetree.ModallogicParser;
@@ -7,6 +12,7 @@ import at.ac.univie.philo.mmr.shared.FieldVerifier;
 import at.ac.univie.philo.mmr.shared.exceptions.ExpressionParsingException;
 import at.ac.univie.philo.mmr.shared.expressions.Expression;
 
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -55,4 +61,15 @@ public class ModalParsingServiceImpl extends RemoteServiceServlet implements
 	public Dummy dummy(Dummy d) {
 		return d;
 	}
+
+//	@Override
+//	public List<Image> retrieveImages() {
+//		PersistenceManager pm = PersistenceMgrFactory.get().getPersistenceManager();     
+//		String query = "select from " + ImageBlob.class.getName();     
+//		List<ImageBlob> imageblobs = (List<ImageBlob>) pm.newQuery(query).execute();
+//		List<Image> images = new ArrayList<Image>();
+//		for (ImageBlob ib : imageblobs) {
+//			Image i = new Image
+//		}
+//	}
 }

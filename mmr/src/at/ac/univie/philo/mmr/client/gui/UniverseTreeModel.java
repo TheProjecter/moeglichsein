@@ -14,6 +14,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.resources.rg.ImageResourceGenerator;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
@@ -37,7 +38,7 @@ public final class UniverseTreeModel implements TreeViewModel {
 	private ListDataProvider<Universe> dataProvider;
 	private ListDataProvider<World> dataProviderWorld;
 	private ListDataProvider<Individual> dataProviderIndi;
-	private Ressources res = null;
+	private Resources res = null;
 //	private CellTree tree;
 	private final MainScreen parentWidget;
 	
@@ -48,7 +49,7 @@ public final class UniverseTreeModel implements TreeViewModel {
 		universes_ = new ArrayList<Universe>();
 		universes_.add(universeFactory.getPizzaUniverse());
 	    if (res == null) {
-	        res = GWT.create(Ressources.class);
+	        res = GWT.create(Resources.class);
 	    }
 	 // Create a data provider that contains the list of universes.
 		dataProvider = new ListDataProvider<Universe>(
@@ -149,7 +150,7 @@ public final class UniverseTreeModel implements TreeViewModel {
 
 	private class IndividualCell extends AbstractCell<Individual> {
 		
-			World world;
+			private World world;
 
 			public IndividualCell(World world) {
 				super("click", "keydown");
@@ -160,7 +161,17 @@ public final class UniverseTreeModel implements TreeViewModel {
 	          @Override
 	          public void render(Context context, Individual individual, SafeHtmlBuilder sb) {
 	            if (individual != null) {
-	              sb.appendEscaped(individual.getName());
+	            		Image icon = individual.getIcon();
+//	            		icon.setHeight("10px");
+//	            		icon.setWidth("10px");
+//	            		icon.setPixelSize(10, 10);
+//	            		icon.setSize("10px", "10px");
+	            		
+		              sb.appendHtmlConstant("<table><tr><td>");
+		              sb.appendHtmlConstant("<img width='30px' src='"+icon.getUrl()+"'></img>").appendEscaped(" ");
+		              sb.appendHtmlConstant("</td><td>");
+		              sb.appendEscaped(individual.getName());
+		              sb.appendHtmlConstant("</td></tr></table>");
 	            }
 	          }
 	          
@@ -174,7 +185,8 @@ public final class UniverseTreeModel implements TreeViewModel {
 				    }
 				    selectionModelWorld.setSelected(world, false);
 				    selectionModelUniverse.setSelected(world.getUniverse(), false);
-				    Window.alert("blub. Individual "+value.toString()+" of World: "+world.getName());
+				    parentWidget.showSelectedIndividual(value, world);
+//				    Window.alert("blub. Individual "+value.toString()+" of World: "+world.getName());
 				  }
 	          
 	          

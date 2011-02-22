@@ -91,7 +91,7 @@ public class UniverseDetailsForm extends Composite {
 			UiBinder<Widget, UniverseDetailsForm> {
 	}
 
-	interface DetailStyle extends CssResource {
+	public interface DetailStyle extends CssResource {
 		String mouseover();
 
 		String leftDistance();
