@@ -342,7 +342,7 @@ void overwriteExtension(HashSet<ArrayList<Individual>> indilist, Predicate...pre
 	
 	
 	/**
-	 * Gets a Collection, which contains every existing individual in this world.
+	 * Gets a Collection, which contains every existing individual in this world. Existing only means that it is member of at least one extension of a predicate in this world.
 	 *
 	 * @return the inventory
 	 */

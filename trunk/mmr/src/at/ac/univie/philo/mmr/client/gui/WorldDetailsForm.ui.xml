@@ -4,15 +4,25 @@
 	xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
 	<ui:style
+		type="at.ac.univie.philo.mmr.client.gui.WorldDetailsForm.DetailStyle"
 		src="defaultStyle.css">
 	</ui:style>
 
 
-<g:VerticalPanel ui:field="browserVPanel" borderWidth="1">
+<g:VerticalPanel ui:field="browserVPanel" borderWidth="0">
   <g:HTMLPanel ui:field="headingHtml">
   <h2>Extensions in World: <span ui:field='worldName'/></h2>
     </g:HTMLPanel>
-
+<g:HorizontalPanel ui:field="extensionToolBox"
+				addStyleNames='{style.toolBox}'>
+				<g:Label ui:field="labelEmptyExtension" addStyleNames='{style.interactiveElementOff}'>Empty Extension</g:Label>
+				<g:Label ui:field="labelExportExtension" addStyleNames='{style.interactiveElementOff}'>Export Extension</g:Label>
+				<g:Label ui:field="labelAddExtensionElement" addStyleNames='{style.interactiveElementOff}'>Add Extension Element</g:Label>
+				<g:Label ui:field="labelRemoveExtensionElement" addStyleNames='{style.interactiveElementOff}'>Remove Extension Element</g:Label>
+			</g:HorizontalPanel>
+<g:HTMLPanel addStyleNames='{style.toolBoxDistance}'>
+	<div>Choose a predicate to view and edit its extension:</div>
+</g:HTMLPanel>
           	<c:CellBrowser height="10px" addStyleNames='{style.structuredTable}' defaultColumnWidth='300'
 	   ui:field="extensionBrowser"></c:CellBrowser>
 

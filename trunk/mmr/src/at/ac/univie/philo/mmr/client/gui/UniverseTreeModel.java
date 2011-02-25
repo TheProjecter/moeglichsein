@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 
@@ -33,7 +34,7 @@ public final class UniverseTreeModel implements TreeViewModel {
 
 	private ArrayList<Universe> universes_;
 	private final SingleSelectionModel<Individual> selectionModel = new SingleSelectionModel<Individual>();
-	private final SingleSelectionModel<World> selectionModelWorld = new SingleSelectionModel<World>();
+	private SingleSelectionModel<World> selectionModelWorld = new SingleSelectionModel<World>();
 	private final SingleSelectionModel<Universe> selectionModelUniverse = new SingleSelectionModel<Universe>();
 	private ListDataProvider<Universe> dataProvider;
 	private ListDataProvider<World> dataProviderWorld;
@@ -43,7 +44,7 @@ public final class UniverseTreeModel implements TreeViewModel {
 	private final MainScreen parentWidget;
 	
 	public UniverseTreeModel(final MainScreen parentWidget) {
-
+		
 		this.parentWidget = parentWidget;
 		UniverseFactory universeFactory = UniverseFactory.get();
 		universes_ = new ArrayList<Universe>();
@@ -66,7 +67,8 @@ public final class UniverseTreeModel implements TreeViewModel {
 		          Individual selected = selectionModel.getSelectedObject();
 		          if (selected != null) {
 //		            Window.alert("You selected Indi: " + selected.getName());
-		          }
+		        	  onIndividualSelected();
+		          }		          
 		          
 		        }
 		      });
@@ -77,8 +79,10 @@ public final class UniverseTreeModel implements TreeViewModel {
 		          if (selected != null) {
 		           selectionModelUniverse.setSelected(selected.getUniverse(), false);
 		           parentWidget.showSelectedWorld(selected);
+		           onWorldSelected();
 		          }
-		        }
+		          
+		         }
 		      });
 		
 		
@@ -88,12 +92,47 @@ public final class UniverseTreeModel implements TreeViewModel {
 		          if (selected != null) {
 //		            Window.alert("You selected Universe: " + selected.getName());
 		            parentWidget.showSelectedUniverse(selected);
+		            onUniverseSelected();
 		          }
+		          
 		        }
 		      });
 		
 	}
+
+	protected void onIndividualSelected() {
+		//unselect Universe and World (if selected)
+		unselectUniverse();
+        unselectWorld();
+	}
+	private void onWorldSelected() {
+		unselectUniverse();
+		unselectIndividual();
+	}
+	private void onUniverseSelected() {
+		unselectWorld();
+		unselectIndividual();
+	}
 	
+	private void unselectUniverse() {
+		Universe u = selectionModelUniverse.getSelectedObject();
+        if (u!= null) {
+      	  selectionModelUniverse.setSelected(u, false);
+        }
+	}
+	private void unselectWorld() {
+		World w = selectionModelWorld.getSelectedObject();
+		if (w != null) {
+			selectionModelWorld.setSelected(w, false);
+		}
+	}
+	private void unselectIndividual() {
+		Individual i = selectionModel.getSelectedObject();
+		if (i != null) {
+			selectionModel.setSelected(i, false);
+		}
+	}
+
 	public void updateModel(Universe u) {
 		dataProvider.refresh();
 		dataProviderIndi.refresh();

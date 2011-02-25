@@ -281,6 +281,21 @@ public class Universe {
 		return highestC.getIndex()+1;
 	}
 	
+	public boolean isFreeIndividualName(String indiName) {
+		for (Individual i : getIndividuals()) {
+			if (i.getName().equals(indiName)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void addIndividual(Individual individual) {
+		if (individual != null) {
+			this.individuals.add(individual);
+		}
+	}
+	
 //	public void getRequiredConstraintForAccessibleWorlds(World win, HashSet<World> world) {
 //		if (win == null ){
 //			throw new IllegalArgumentException("Input-Check failed because Input-World is null.");
