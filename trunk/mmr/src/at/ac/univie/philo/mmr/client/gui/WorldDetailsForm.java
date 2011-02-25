@@ -128,9 +128,7 @@ public class WorldDetailsForm extends Composite {
 	}
 	
 	public void deactivateLabel(Label label) {
-		label.removeStyleName(style.interactiveElementOff());
-		label.removeStyleName(style.interactiveElement());
-		label.addStyleName(style.interactiveElementOff());
+		label.setStyleName(style.interactiveElementOff());
 	}
 	
 	protected void updateToolBox(
