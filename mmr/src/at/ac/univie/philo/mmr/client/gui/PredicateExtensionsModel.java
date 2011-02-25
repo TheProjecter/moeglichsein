@@ -60,7 +60,9 @@ public class PredicateExtensionsModel implements TreeViewModel {
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				lastIndividual = selectionModel.getSelectedObject();
-				worldDetailsPage.updateToolBox(lastIndividual);
+				if(lastIndividual != null) {
+					worldDetailsPage.updateToolBox(lastIndividual);
+				}
 			}
 		});
 		selectionModelExtensionElement.addSelectionChangeHandler(new Handler() {
@@ -68,8 +70,10 @@ public class PredicateExtensionsModel implements TreeViewModel {
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				lastExtensionElement = selectionModelExtensionElement.getSelectedObject();
-				worldDetailsPage.updateToolBox(lastExtensionElement);
-				unselectIndividual();
+				if (lastExtensionElement != null) {
+					worldDetailsPage.updateToolBox(lastExtensionElement);
+					unselectIndividual();
+				}
 			}
 		});
 		selectionModelPredicateEntry.addSelectionChangeHandler(new Handler() {
@@ -77,9 +81,12 @@ public class PredicateExtensionsModel implements TreeViewModel {
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				lastPredicateEntry = selectionModelPredicateEntry.getSelectedObject();
-				worldDetailsPage.updateToolBox(lastPredicateEntry);
-				unselectExtensionElement();
-				unselectIndividual();
+				if (lastPredicateEntry != null) {
+					unselectExtensionElement();
+					unselectIndividual();
+					worldDetailsPage.updateToolBox(lastPredicateEntry);
+				}
+
 			}
 		});
 	}
