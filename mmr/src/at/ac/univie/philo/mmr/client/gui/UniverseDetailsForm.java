@@ -46,6 +46,8 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.logical.shared.AttachEvent;
+import com.google.gwt.event.logical.shared.AttachEvent.Handler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -84,6 +86,9 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 public class UniverseDetailsForm extends Composite {
 
+	
+	private boolean isFirstNewIndividual = true;
+	
 	private static UniverseDetailsFormUiBinder uiBinder = GWT
 			.create(UniverseDetailsFormUiBinder.class);
 
@@ -186,7 +191,7 @@ public class UniverseDetailsForm extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		createRenameUniverseInteraction();
 		createAddWorldInteraction();
-//		createAddIndividualInteraction();
+		createAddIndividualInteraction();
 		createAddConstantInteraction();
 
 		labelChangeAccessabilityConstraint.setText("Change Accessibility Constraint "+accessabilityConstraint
@@ -216,6 +221,164 @@ public class UniverseDetailsForm extends Composite {
 
 	}
 
+	private void createAddIndividualInteraction() {
+		labelAddIndividual.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+
+		final DialogBox dialogBox = new DialogBox();
+		dialogBox.setText("Create New Individual");
+		HTMLPanel explainationText = new HTMLPanel("<div>To create a new individual affects the semantical level because after creating it there is one more thing in the universe to speak and reason about.<br/><br/> If you add an Individual, you can later add it to any extension of any world.<br/><br/><i>(Note that this a generous introduction of individuals. You will find other approaches in modal logic. One alternative assigns one individual to exactly one world. In this approach the concept of a possible world implies that each world has his own set of unique individuals. Between worlds there might be similar individuals (i.e. with similar properties such that modal operators still make sense) but you have to model these similarities with an additional relation. Thus, we rejected to offer this possibility in this tool, but you should be aware that this is a decision on the semantical level.)</i></div>");
+		final TextBox individualName= new TextBox();
+		individualName.setText("Ordinary Name Of Individual");
+		individualName.setWidth("100%");
+		individualName.setFocus(true);
+		individualName.selectAll();
+		individualName.addStyleName(style.leftDistance());
+		final HorizontalPanel indiOrdinaryNameContainer = new HorizontalPanel();
+		indiOrdinaryNameContainer.addStyleName(style.distance());
+		Button indiNameHelpButton = new Button("?");
+		indiNameHelpButton.addStyleName(style.leftDistance());
+		indiNameHelpButton.setTitle("What is the ordinary name of an Individual?");
+		indiNameHelpButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent e) {
+				final DialogBox dialogBox = new DialogBox();
+				dialogBox.setText("What is the ordinary name of an Individual?");
+				VerticalPanel vp = new VerticalPanel();
+				vp.addStyleName(style.distance());
+				HTMLPanel hpanel = new HTMLPanel("<div>The ordinary name is not a name in our artificial language. It is just a name we usually refer to when we speak about an individual. For humans it usually is easier to associate something with a name like 'Mr. Spok' than the constant name in the artificial language 'a_1'. Thus, this makes life easier when constructing extensions of predicates or when reading comments about the evaluation process.</div>");
+				Button ok = new Button("OK");
+				ok.addStyleName(style.distance());
+				ok.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						dialogBox.hide();
+					}
+				});
+				vp.add(hpanel);
+				vp.add(ok);	
+				dialogBox.add(vp);
+				dialogBox.show();
+				individualName.setVisible(true);
+				individualName.selectAll();
+				dialogBox.setAnimationEnabled(true);
+				dialogBox.center();
+			}
+		});
+		indiOrdinaryNameContainer.add(individualName);
+		indiOrdinaryNameContainer.add(indiNameHelpButton);
+		final Label alreadyTakenLabel = new Label("Ordinary Name already used by another Individual.");
+		alreadyTakenLabel.addStyleName(style.leftDistance());
+
+		individualName.addKeyUpHandler(new KeyUpHandler() {
+			
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+
+				String currentText = individualName.getText();
+				if(!universe.isFreeIndividualName(currentText)) {
+					markInputAsInvalid(individualName);
+					indiOrdinaryNameContainer.add(alreadyTakenLabel);
+					indiOrdinaryNameContainer.setCellVerticalAlignment(alreadyTakenLabel, HasVerticalAlignment.ALIGN_MIDDLE);
+					
+				} else {
+					indiOrdinaryNameContainer.remove(alreadyTakenLabel);
+					markInputAsValid(individualName);
+				}
+				
+			}
+			
+		});
+
+		indiOrdinaryNameContainer.setCellVerticalAlignment(individualName, HasVerticalAlignment.ALIGN_MIDDLE);
+		indiOrdinaryNameContainer.setCellVerticalAlignment(indiNameHelpButton, HasVerticalAlignment.ALIGN_MIDDLE);
+		Button apply = new Button("Create");
+		apply.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+					String indiName = individualName.getText();
+				if(!universe.isFreeIndividualName(indiName)) {
+					Window.alert("Ordinary name is already taken by another Individual. This is not a problem for the artificial language but in order to not confuse yourself please use another name.");
+					return;
+				}
+				universe.addIndividual(new Individual(indiName,null));
+				updateModel();
+				globalIndividualsCellTable.redraw();
+				dialogBox.hide();
+				if (isFirstNewIndividual) {
+					isFirstNewIndividual = false;
+					final DialogBox informationBox = new DialogBox();
+					informationBox.setText(indiName+" successfully created");
+					HTMLPanel explaination = new HTMLPanel("You successfully created "+indiName+".<br/><br/>A few advises: <ul><li>Currently this individual has no property, it just exists and from the point of view of the artificial language it is invisible.</li><li>If you want to directly refer to it, create a constant.</li><li>Usally Individuals have some properties (i.e. are parts of predicate extensions). You may want to add the individual to an extension in at least one world or create a new predicate for it.</li></ul>");
+					Button ok = new Button("OK");
+					ok.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							informationBox.hide();
+						}
+					});
+					
+					VerticalPanel frame = new VerticalPanel();
+					frame.add(explaination);
+					frame.add(ok);
+					informationBox.add(frame);
+					informationBox.setAnimationEnabled(true);
+					informationBox.show();
+					informationBox.center();
+				}
+			}
+
+
+		});
+		Button abort = new Button("Abort");
+		abort.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				dialogBox.hide();
+			}
+		});
+		
+		VerticalPanel framePanel = new VerticalPanel();
+		framePanel.setSpacing(10);
+		framePanel.addStyleName(style.distance());
+		HorizontalPanel buttonPanel = new HorizontalPanel();
+		buttonPanel.addStyleName(style.distance());
+		buttonPanel.add(apply);
+		buttonPanel.add(abort);
+		framePanel.add(explainationText);
+		framePanel.add(indiOrdinaryNameContainer);
+		framePanel.add(buttonPanel);
+		dialogBox.setWidget(framePanel);
+		dialogBox.setAnimationEnabled(true);
+		dialogBox.center();
+		
+			}
+		});
+		
+		//mouse-over-events
+		labelAddIndividual.addMouseOverHandler(new MouseOverHandler() {
+
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				labelAddIndividual.addStyleName(style.mouseover());
+			}
+		});
+		labelAddIndividual.addMouseOutHandler(new MouseOutHandler() {
+
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				labelAddIndividual.removeStyleName(style.mouseover());
+			}
+		});
+	}
+	
 	private void createAddConstantInteraction() {
 		labelAddConstant.addClickHandler(new ClickHandler() {
 			

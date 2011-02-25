@@ -20,13 +20,18 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionChangeEvent.*;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 
 public class PredicateExtensionsModel implements TreeViewModel {
 
 	private final SingleSelectionModel<Individual> selectionModel = new SingleSelectionModel<Individual>();
+	private final SingleSelectionModel<ArrayList<Individual>> selectionModelExtensionElement = new SingleSelectionModel<ArrayList<Individual>>();
+	private final SingleSelectionModel<Entry<Predicate, HashSet<ArrayList<Individual>>>> selectionModelPredicateEntry = new SingleSelectionModel<Entry<Predicate,HashSet<ArrayList<Individual>>>>();
 	private final Cell<Individual>  compositeIndiCell;
 	private HashMap<Predicate, HashSet<ArrayList<Individual>>> extensionMap;
 	private Resources res;
@@ -34,13 +39,64 @@ public class PredicateExtensionsModel implements TreeViewModel {
 	private ListDataProvider<Entry<Predicate, HashSet<ArrayList<Individual>>>> dataProviderExtensionMap;
 	private ListDataProvider<ArrayList<Individual>> dataProviderExtension;
 	private ListDataProvider<Individual> dataProviderIndis;
+
+	private Entry<Predicate, HashSet<ArrayList<Individual>>> lastPredicateEntry = null;
+	private Individual lastIndividual = null;
+	private ArrayList<Individual> lastExtensionElement = null;
 	
-	public PredicateExtensionsModel() {
+	private WorldDetailsForm worldDetailsPage;
+	
+	public PredicateExtensionsModel(final WorldDetailsForm worldDetailsPage) {
+
 		res = GWT.create(Resources.class);
 		compositeIndiCell = createCompositeCell();
 		dataProviderExtensionMap = new ListDataProvider<Entry<Predicate, HashSet<ArrayList<Individual>>>>();
 		dataProviderExtension = new ListDataProvider<ArrayList<Individual>>();
 		dataProviderIndis = new ListDataProvider<Individual>();
+		
+		this.worldDetailsPage = worldDetailsPage;
+		selectionModel.addSelectionChangeHandler(new Handler() {
+
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				lastIndividual = selectionModel.getSelectedObject();
+				worldDetailsPage.updateToolBox(lastIndividual);
+			}
+		});
+		selectionModelExtensionElement.addSelectionChangeHandler(new Handler() {
+			
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				lastExtensionElement = selectionModelExtensionElement.getSelectedObject();
+				worldDetailsPage.updateToolBox(lastExtensionElement);
+				unselectIndividual();
+			}
+		});
+		selectionModelPredicateEntry.addSelectionChangeHandler(new Handler() {
+			
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				lastPredicateEntry = selectionModelPredicateEntry.getSelectedObject();
+				worldDetailsPage.updateToolBox(lastPredicateEntry);
+				unselectExtensionElement();
+				unselectIndividual();
+			}
+		});
+	}
+
+	private void unselectIndividual() {
+		Individual i = selectionModel.getSelectedObject();
+		if (i != null) {
+			selectionModel.setSelected(i, false);
+		}	
+	}
+	
+	private void unselectExtensionElement(){
+		ArrayList<Individual> ai = selectionModelExtensionElement.getSelectedObject();
+		if (ai != null) {
+			selectionModelExtensionElement.setSelected(ai, false);
+		}	
+		
 	}
 	
 	private CompositeCell<Individual> createCompositeCell() {
@@ -127,7 +183,7 @@ public class PredicateExtensionsModel implements TreeViewModel {
 	        Cell<Entry<Predicate, HashSet<ArrayList<Individual>>>> cell = new PredicateCell();
 
 	        // Return a node info that pairs the data provider and the cell.
-	        return new DefaultNodeInfo<Entry<Predicate, HashSet<ArrayList<Individual>>>>(dataProviderExtensionMap, cell);
+	        return new DefaultNodeInfo<Entry<Predicate, HashSet<ArrayList<Individual>>>>(dataProviderExtensionMap, cell, selectionModelPredicateEntry, null);
 			
 		}
 		
@@ -138,7 +194,7 @@ public class PredicateExtensionsModel implements TreeViewModel {
 			
 	        Cell<ArrayList<Individual>> cell = new ExtensionCell();
 	        
-	        return new DefaultNodeInfo<ArrayList<Individual>>(dataProviderExtension, cell);
+	        return new DefaultNodeInfo<ArrayList<Individual>>(dataProviderExtension, cell, selectionModelExtensionElement, null);
 		}
 		
 		if (value instanceof ArrayList<?>) {
@@ -167,7 +223,7 @@ public class PredicateExtensionsModel implements TreeViewModel {
 				Entry<Predicate, HashSet<ArrayList<Individual>>> value,
 				SafeHtmlBuilder sb) {
 			Predicate p = value.getKey();
-			sb.appendHtmlConstant("<ul><li><b>");
+			sb.appendHtmlConstant("<table><tr><td><b>");
 			sb.appendEscaped(p.getName()+"( ");
 			int numArity = p.getArity();
 			for(int i=1; i<=numArity; i++) {
@@ -177,7 +233,7 @@ public class PredicateExtensionsModel implements TreeViewModel {
 				sb.appendHtmlConstant("<font color='maroon'>x"+i+"</font>");
 			}
 			
-            sb.appendHtmlConstant(" )</b> <font color=#c0c0c0>("+value.getValue().size()+")</font></li></ul>");
+            sb.appendHtmlConstant(" )</b> <font color=#c0c0c0>("+value.getValue().size()+")</font></td></tr></table>");
 		}
 		
 	}
@@ -215,8 +271,9 @@ public class PredicateExtensionsModel implements TreeViewModel {
 		@Override
 		public void render(com.google.gwt.cell.client.Cell.Context context,
 				Individual value, SafeHtmlBuilder sb) {	
-				sb.appendHtmlConstant(imageHtml).appendEscaped(" ");
-				sb.appendEscaped(value.toString());
+
+            sb.appendHtmlConstant("<img width='30px' src='"+value.getIcon().getUrl()+"'></img>").appendEscaped(" ");
+			sb.appendEscaped(value.toString());
 			}
 	}
 		

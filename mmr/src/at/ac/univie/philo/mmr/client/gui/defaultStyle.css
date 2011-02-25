@@ -33,6 +33,16 @@
 				margin-bottom: 5px;
 			}
 			
+			.interactiveElementOff {
+				margin-left: 10px;
+				font-style: italic;
+				font-weight: bold;
+				color: #c0c0c0;
+				margin-right: 10px;
+				margin-top:5px;
+				margin-bottom: 5px;
+			}
+			
 			.leftDistance {
 				margin-left: 20px;
 				margin-bottom: 20px;
@@ -113,6 +123,10 @@
 				border: 1px solid black;
 				border-collapse: collapse;				
 			}
+			.toolBoxDistance {
+				margin-top:10px;
+				margin-left: 2%;
+			}
       
 		    .structuredTable {
 		    	margin-top: 10px;
@@ -120,4 +134,19 @@
 		      	border: 6px;
 		      	border-color: #ff0000;
 		      	height: 500px;
+		    }
+		    
+		    .selection {
+		    }
+		    
+		    .GHGCQQ-BCC {
+		    	background:#FFFFCC;
+		    	background-color: #FFFFCC;
+		    	margin-right:10px;
+		    }
+		    
+		    .GHGCQQ-BEC {
+		    	background:#FFFFCC;
+		    	background-color: #FFFFCC;
+		    	margin-right:10px;
 		    }

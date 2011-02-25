@@ -1,10 +1,17 @@
 package at.ac.univie.philo.mmr.client.gui;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map.Entry;
+
+import at.ac.univie.philo.mmr.shared.expressions.Predicate;
+import at.ac.univie.philo.mmr.shared.semantic.Individual;
 import at.ac.univie.philo.mmr.shared.semantic.World;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -18,6 +25,7 @@ import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -32,6 +40,35 @@ public class WorldDetailsForm extends Composite {
 	interface WorldDetailsFormUiBinder extends
 			UiBinder<Widget, WorldDetailsForm> {
 	}
+	
+	public interface DetailStyle extends CssResource {
+		String mouseover();
+
+		String leftDistance();
+
+		String distance();
+
+		String grid();
+		
+		String bigger();
+		
+		String buttonCenter();
+		
+		String validInput();
+		
+		String invalidInput();
+		
+		String setCurserPointer();
+		
+		String selection();
+		
+		String interactiveElement();
+		
+		String interactiveElementOff();
+	}
+	
+	@UiField
+	DetailStyle style;
 
 	
 	@UiField(provided = true)
@@ -49,6 +86,18 @@ public class WorldDetailsForm extends Composite {
 	@UiField
 	HTMLPanel headingHtml;
 	
+	@UiField
+	Label labelEmptyExtension;
+
+	@UiField
+	Label labelExportExtension;
+
+	@UiField
+	Label labelAddExtensionElement;
+
+	@UiField
+	Label labelRemoveExtensionElement;
+	
 	public WorldDetailsForm(World w) {
 		this.world = w;
 		initCellBrowser();
@@ -64,19 +113,58 @@ public class WorldDetailsForm extends Composite {
 	    int browserheight = ch - (17*ch/100);
 	    extensionBrowser.setHeight(browserheight+"px");
 	    extensionBrowser.onResize();
-//	    surroundingScrollPanel.setAlwaysShowScrollBars(false);
+	    extensionBrowser.addStyleName(style.selection());
 	    headingHtml.setWidth("100%");
 	    headingHtml.setHeight("100%");
 
 		worldName.setInnerText(w.getName());
 
 	}
+	
+	public void activateLabel(Label label) {
+		label.removeStyleName(style.interactiveElement());
+		label.removeStyleName(style.interactiveElementOff());
+		label.addStyleName(style.interactiveElement());
+	}
+	
+	public void deactivateLabel(Label label) {
+		label.removeStyleName(style.interactiveElementOff());
+		label.removeStyleName(style.interactiveElement());
+		label.addStyleName(style.interactiveElementOff());
+	}
+	
+	protected void updateToolBox(
+			Entry<Predicate, HashSet<ArrayList<Individual>>> lastPredicateEntry2) {
+		//we selected one Predicate and the Extension-Elements are shown.
+		//we can now activate all Buttons
 
+		deactivateLabel(labelRemoveExtensionElement);
+		deactivateLabel(labelAddExtensionElement);
+		activateLabel(labelEmptyExtension);
+		activateLabel(labelExportExtension);
+	
+	}
 
+	protected void updateToolBox(ArrayList<Individual> lastExtensionElement2) {
+		activateLabel(labelRemoveExtensionElement);
+		activateLabel(labelAddExtensionElement);
+
+//		deactivateLabel(labelEmptyExtension);
+//		deactivateLabel(labelExportExtension);
+
+		
+	}
+
+	protected void updateToolBox(Individual lastIndividual2) {
+		activateLabel(labelAddExtensionElement);
+		activateLabel(labelEmptyExtension);
+		activateLabel(labelExportExtension);
+		activateLabel(labelRemoveExtensionElement);
+	}
 	
 	private void initCellBrowser() {
 	    // Create a model for the tree.
-	    PredicateExtensionsModel model = new PredicateExtensionsModel();
+	    PredicateExtensionsModel model = new PredicateExtensionsModel(this);
 
 	    
 	    /*
