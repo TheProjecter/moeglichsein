@@ -94,8 +94,6 @@
 						<p1:CellTree ui:field="cellTree"/>
 					 <!--  ToolBox (AddButton) -->
 					<g:HorizontalPanel ui:field="navigationHorizontalButtonPanel">
-						<g:Button ui:field='addButton'>Add</g:Button>
-						<g:Button ui:field='delButton'>Delete</g:Button>
 					</g:HorizontalPanel>
 				</g:VerticalPanel>
 				</g:ScrollPanel>

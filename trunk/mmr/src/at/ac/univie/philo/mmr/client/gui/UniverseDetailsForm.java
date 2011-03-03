@@ -14,6 +14,7 @@ import at.ac.univie.philo.mmr.shared.examples.UniverseFactory;
 import at.ac.univie.philo.mmr.shared.exceptions.ConstraintViolationException;
 import at.ac.univie.philo.mmr.shared.expressions.Constant;
 import at.ac.univie.philo.mmr.shared.expressions.ConstantExpression;
+import at.ac.univie.philo.mmr.shared.expressions.Predicate;
 import at.ac.univie.philo.mmr.shared.semantic.AccessabilityConstraint;
 import at.ac.univie.philo.mmr.shared.semantic.AccessabilityRelation;
 import at.ac.univie.philo.mmr.shared.semantic.Individual;
@@ -114,6 +115,8 @@ public class UniverseDetailsForm extends Composite {
 		String invalidInput();
 		
 		String setCurserPointer();
+
+		String errorText();
 	}
 
 	@UiField
@@ -160,6 +163,18 @@ public class UniverseDetailsForm extends Composite {
 	@UiField
 	HTMLPanel individualTableExplainationPanel;
 
+	@UiField(provided=true)
+	CellTable<Predicate> predicatesCellTable;
+
+	@UiField(provided=true)
+	SimplePager predicatesPager;
+
+	@UiField
+	HorizontalPanel predToolBox;
+
+	@UiField
+	Label labelAddPredicate;
+
 
 	// @UiField
 	// HTMLPanel htmlPanelAccess;
@@ -173,7 +188,8 @@ public class UniverseDetailsForm extends Composite {
 	private MainScreen parentWidget;
 	private UniverseTreeModel universeTree;
 	private ListDataProvider<Entry<Constant, Individual>> dataProviderIndividual;
-
+	private ListDataProvider<Predicate> dataProviderPredicates;
+	
 	public UniverseDetailsForm(Universe u, final MainScreen parentWidget) {
 		if (u != null && parentWidget != null) {
 			this.universe = u;
@@ -185,11 +201,14 @@ public class UniverseDetailsForm extends Composite {
 		constants = universe.getConstantMap();
 		universeTree = parentWidget.getUniverseTree();
 		dataProviderIndividual = new ListDataProvider<Entry<Constant, Individual>>();
-
+		dataProviderPredicates = new ListDataProvider<Predicate>();
+		
 		createWorldAccessTable();
 		createGlobalIndividualsTable();
+		createPredicatesTable();
 		initWidget(uiBinder.createAndBindUi(this));
 		createRenameUniverseInteraction();
+		createAddPredicateInteraction();
 		createAddWorldInteraction();
 		createAddIndividualInteraction();
 		createAddConstantInteraction();
@@ -218,7 +237,139 @@ public class UniverseDetailsForm extends Composite {
 		indiToolBox.setWidth("100%");
 		indiToolBox.setHeight("100%");
 		individualTableExplainationPanel.setWidth("95%");
+		
+		predicatesCellTable.setWidth("95%");
+		predicatesCellTable.setHeight("100%");
+		predToolBox.setWidth("95%");
+		predToolBox.setHeight("100%");
 
+	}
+
+	private void createAddPredicateInteraction() {
+		labelAddPredicate.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				
+				final DialogBox dialogBox = new DialogBox();
+				dialogBox.setText("Create New Predicate");
+				HTMLPanel explainationText = new HTMLPanel("<div>Creating a new predicate enriches the structure of each world because it allows you to make individuals more distinct from others and make them to what makes up an individual: a set of properties. Some might be common to, some might be distrinct from other individuals. Moreover, you can connect individuals together with predicates which have an arity greater than 1.<br/><br/> After introducing a new predicate you can use it in modal logic expressions.<br/><br/></div>");
+				final Label predLabel = new Label("Name: ");
+				final TextBox predicateName= new TextBox();
+				predicateName.setText("PRED");
+				predicateName.setWidth("100%");
+				predicateName.setFocus(true);
+				predicateName.selectAll();
+				predicateName.addStyleName(style.leftDistance());
+				final HorizontalPanel predicateNameContainer = new HorizontalPanel();
+				predicateNameContainer.setSpacing(10);
+				
+				final HorizontalPanel arityPanel = new HorizontalPanel();
+				final Label arityText = new Label("Arity: ");
+				final ObjectDropBox<Integer> aritySelector = new ObjectDropBox<Integer>();
+				aritySelector.addItem(1);
+				aritySelector.addItem(2);
+				aritySelector.addItem(3);
+				aritySelector.addItem(4);
+				aritySelector.addItem(5);
+				aritySelector.addStyleName(style.leftDistance());
+				arityPanel.addStyleName(style.distance());
+				arityPanel.add(arityText);
+				arityPanel.add(aritySelector);
+				
+				predicateNameContainer.add(predLabel);
+				predicateNameContainer.add(predicateName);
+				predicateName.setMaxLength(10);
+				final Label alreadyTakenLabel = new Label("Predicate Name already used or invalid.");
+				alreadyTakenLabel.addStyleName(style.leftDistance());
+
+				predicateName.addKeyUpHandler(new KeyUpHandler() {
+					
+					@Override
+					public void onKeyUp(KeyUpEvent event) {
+
+						String currentText = predicateName.getText();
+						predicateName.setText(currentText.toUpperCase());
+						if(!universe.isFreePredicateName(currentText) || !UniverseFactory.validPredicateName(currentText)) {
+							markInputAsInvalid(predicateName);
+							predicateNameContainer.add(alreadyTakenLabel);
+							predicateNameContainer.setCellVerticalAlignment(alreadyTakenLabel, HasVerticalAlignment.ALIGN_MIDDLE);
+							
+						} else {
+							predicateNameContainer.remove(alreadyTakenLabel);
+							markInputAsValid(predicateName);
+						}
+						
+					}
+					
+				});
+
+				predicateNameContainer.setCellVerticalAlignment(predicateName, HasVerticalAlignment.ALIGN_MIDDLE);
+				Button apply = new Button("Create");
+				apply.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+							String predName = predicateName.getText();
+							Integer arity = aritySelector.getSelectedObject();
+							if (arity == null) {
+								arity = 1;
+							}
+						if(!universe.isFreeIndividualName(predName) || !UniverseFactory.validPredicateName(predName)) {
+							Window.alert("I'm afraid but Predicate name "+predName+" is invalid or already used.");
+							return;
+						}
+						universe.addPredicate(new Predicate(predName,0,arity));
+						updateModel();
+						predicatesCellTable.redraw();
+						dialogBox.hide();
+					}
+
+
+				});
+				Button abort = new Button("Abort");
+				abort.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						dialogBox.hide();
+					}
+				});
+				
+				VerticalPanel framePanel = new VerticalPanel();
+				framePanel.setSpacing(10);
+				framePanel.addStyleName(style.distance());
+				HorizontalPanel buttonPanel = new HorizontalPanel();
+				buttonPanel.addStyleName(style.distance());
+				buttonPanel.add(apply);
+				buttonPanel.add(abort);
+				framePanel.add(explainationText);
+				framePanel.add(predicateNameContainer);
+				framePanel.add(arityPanel);
+				framePanel.add(buttonPanel);
+				dialogBox.setWidget(framePanel);
+				dialogBox.setAnimationEnabled(true);
+				dialogBox.center();				
+				
+			}
+		});
+		
+		//mouse-over-events
+		labelAddPredicate.addMouseOverHandler(new MouseOverHandler() {
+
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				labelAddPredicate.addStyleName(style.mouseover());
+			}
+		});
+		labelAddPredicate.addMouseOutHandler(new MouseOutHandler() {
+
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				labelAddPredicate.removeStyleName(style.mouseover());
+			}
+		});
 	}
 
 	private void createAddIndividualInteraction() {
@@ -858,6 +1009,146 @@ public class UniverseDetailsForm extends Composite {
 
 	}
 
+	private void createPredicatesTable() {
+		predicatesCellTable = new CellTable<Predicate>();
+		predicatesCellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+		predicatesCellTable.setTitle("Click on the content of the table cells to rename the predicate");
+
+		SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+		predicatesPager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+		predicatesPager.setDisplay(predicatesCellTable);
+		
+		//Predname as EditTExtCell
+		final EditTextCell editCell = new EditTextCell();
+		Column<Predicate, String> predColumn = new Column<Predicate, String>(
+				editCell) {
+
+			@Override
+			public String getValue(Predicate p) {
+				return p.getName();
+			}
+		};
+		predicatesCellTable.addColumn(predColumn, "Predicate Name");
+		predColumn.setFieldUpdater(new FieldUpdater<Predicate, String>() {
+
+			@Override
+			public void update(int index, final Predicate p, String value) {
+				//that's not an update
+				if (p.getName().equals(value)) {
+					return;
+				}
+				
+				if (UniverseFactory.validPredicateName(value) && universe.isFreePredicateName(value)) {
+					p.setName(value);
+					editCell.clearViewData(p);
+					updateModel();
+				} else {
+					final DialogBox db = new DialogBox();
+					db.setText("Renaming Failed: Invalid or Duplicate Predicate Name");
+					db.setAutoHideEnabled(true);
+					VerticalPanel vp = new VerticalPanel();
+					HTMLPanel explainPanel = new HTMLPanel("<div>You tried to modify a predicate name. Unfortunately, you entered an invalid name or one that was already used to refer to another predicate, even if the arities are different. The system don't want to get you confused so it disallowed such ambiguities.</div>");
+					explainPanel.addStyleName(style.errorText());
+					Button ok = new Button("OK");
+					ok.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							db.hide();
+							editCell.clearViewData(p);
+							updateModel();
+
+						}
+					});
+					vp.add(explainPanel);
+					vp.add(ok);
+					vp.addStyleName(style.distance());
+					vp.setSpacing(10);
+					db.add(vp);
+					db.setAnimationEnabled(true);
+					db.show();
+					db.center();
+				}
+				
+			}
+		}); // end of setFieldUpdater
+		
+		//Arity as TextCell (not modifyable)
+		TextColumn<Predicate> arityColumn = new TextColumn<Predicate>() {
+
+			@Override
+			public String getValue(Predicate object) {
+				return object.getArity()+"";
+			}
+		};
+		predicatesCellTable.addColumn(arityColumn, "Arity");
+		//Del-Button-Column
+		Column<Predicate, String> delColumn = new Column<Predicate, String>(
+				new ButtonCell()) {
+
+					@Override
+					public String getValue(Predicate object) {
+						return "X";
+					}
+		};
+		predicatesCellTable.addColumn(delColumn, "Actions");
+
+		delColumn.setFieldUpdater(new FieldUpdater<Predicate, String>() {
+
+			@Override
+			public void update(int index, final Predicate object, String value) {
+				//remove World from Universe
+				final DialogBox db = new DialogBox();
+				db.setText("Confirm removal of Predicate "+object.getName());
+				db.setTitle("Confirm removal of Predicate "+object.getName());
+				VerticalPanel vp = new VerticalPanel();
+				vp.addStyleName(style.distance());
+				HTML confirmationText = new HTML("<div>Do you really want to remove Predicate <b>"+object.getName()+"</b> from Universe?</div><br/><div>This also removes all corresponding extensions in each world. This means, they are lost and evaluations which contain this predicate result in error messages. Just to inform you what you are about to do.</div>");
+				confirmationText.addStyleName(style.distance());
+				HorizontalPanel hp = new HorizontalPanel();
+				hp.addStyleName(style.distance());
+				hp.setWidth("40%");
+				hp.setSpacing(10);
+				Button yes = new Button("yes");
+				yes.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						universe.removePredicate(object);
+						//update the model of whole application
+						updateModel();
+						db.hide();
+					}
+				});
+				Button no = new Button("no");
+				no.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						db.hide();
+					}
+				});
+				hp.add(yes);
+				hp.add(no);
+				vp.add(confirmationText);
+				vp.add(hp);
+				db.add(vp);
+				db.center();
+				db.setAnimationEnabled(true);
+				db.show();
+			}
+		});
+		
+		// Push the data into the widget.
+		ArrayList<Predicate> allEntries = new ArrayList<Predicate>(
+				universe.getPredicates());
+		// globalIndividualsCellTable.setRowData(0, allIndis);
+
+		dataProviderPredicates.addDataDisplay(predicatesCellTable);
+		dataProviderPredicates.setList(allEntries);
+		
+	}
+	
 	private void createWorldAccessTable() {
 		// Create a CellTable
 		accessCellTable = new CellTable<World>();
@@ -876,8 +1167,9 @@ public class UniverseDetailsForm extends Composite {
 		// accessPager.setWidth("100%");
 
 		// Add a text column to show the name.
+		final EditTextCell editCell = new EditTextCell();
 		Column<World, String> worldColumn = new Column<World, String>(
-				new EditTextCell()) {
+				editCell) {
 
 			@Override
 			public String getValue(World w) {
@@ -888,15 +1180,46 @@ public class UniverseDetailsForm extends Composite {
 		worldColumn.setFieldUpdater(new FieldUpdater<World, String>() {
 
 			@Override
-			public void update(int index, World w, String value) {
-				if (UniverseFactory.validWorldName(value)) {
+			public void update(int index, final World w, String value) {
+				//that's not an update
+				if (w.getName().equals(value)) {
+					return;
+				}
+				
+				if (UniverseFactory.validWorldName(value) && universe.isFreeWorldName(value)) {
 					w.setName(value);
+					editCell.clearViewData(w);
 					updateModel();
 				} else {
-					Window.alert("Worldname invalid");
+					final DialogBox db = new DialogBox();
+					db.setText("Renaming Failed: Invalid or Duplicate World Name");
+					db.setAutoHideEnabled(true);
+					VerticalPanel vp = new VerticalPanel();
+					HTMLPanel explainPanel = new HTMLPanel("<div>You tried to use either an invalid world name or one which already identifies another world. You might not want this. Thus, to keep things in order for you, rename is reversed and don't affect the universe.</div>");
+					explainPanel.addStyleName(style.errorText());
+					Button ok = new Button("OK");
+					ok.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							db.hide();
+							editCell.clearViewData(w);
+							updateModel();
+
+						}
+					});
+					vp.add(explainPanel);
+					vp.add(ok);
+					vp.addStyleName(style.distance());
+					vp.setSpacing(10);
+					db.add(vp);
+					db.setAnimationEnabled(true);
+					db.show();
+					db.center();
 				}
+				
 			}
-		});
+		}); // end of setFieldUpdater
 
 		// Add a text column to show the address.
 		Column<World, HashSet<World>> accessColumn = new Column<World, HashSet<World>>(
@@ -915,7 +1238,6 @@ public class UniverseDetailsForm extends Composite {
 					final HashSet<World> value) {
 				if (value == null)
 					return;
-
 				final AccessabilityRelation axxRel = object.getUniverse()
 						.getRelations();
 				AccessabilityConstraint requiredConstraint = axxRel
@@ -1080,6 +1402,14 @@ public class UniverseDetailsForm extends Composite {
 		accessCellTable.redraw();
 		dataProviderIndividual.refresh();
 		globalIndividualsCellTable.redraw();
+		
+		ArrayList<Predicate> allPreds = new ArrayList<Predicate>(universe.getPredicates());
+		dataProviderPredicates.setList(allPreds);
+		dataProviderPredicates.refresh();
+		predicatesCellTable.redraw();
+
+		
+		universeTree.updateModel(universe);
 	}
 
 	private void createGlobalIndividualsTable() {
@@ -1099,8 +1429,9 @@ public class UniverseDetailsForm extends Composite {
 		globalIndividualsPager.setWidth("100%");
 		globalIndividualsPager.setPageSize(5);
 
+		final EditTextCell editCell = new EditTextCell();
 		Column<Entry<Constant, Individual>, String> indiColumn = new Column<Entry<Constant, Individual>, String>(
-				new EditTextCell()) {
+				editCell) {
 
 			@Override
 			public String getValue(Entry<Constant, Individual> entry) {
@@ -1114,12 +1445,42 @@ public class UniverseDetailsForm extends Composite {
 
 					@Override
 					public void update(int index,
-							Entry<Constant, Individual> i, String value) {
-						if (UniverseFactory.validIndividualName(value)) {
+							final Entry<Constant, Individual> i, String value) {
+						//that's not an update
+						if (i.getValue().getName().equals(value)) {
+							return;
+						}
+						
+						if (UniverseFactory.validIndividualName(value) && universe.isFreeIndividualName(value)) {
 							i.getValue().setName(value);
+							editCell.clearViewData(i);
 							updateModel();
 						} else {
-							Window.alert("IndividualName invalid");
+							final DialogBox db = new DialogBox();
+							db.setText("Renaming Failed: Invalid or Duplicate Ordinary Individual Name");
+							db.setAutoHideEnabled(true);
+							VerticalPanel vp = new VerticalPanel();
+							HTMLPanel explainPanel = new HTMLPanel("<div>The only purpose for ordinary names here are to provide you a familiar name for an individual. You tried to use either an invalid ordinary individual name or one which already connects to another individual. Although ambiguities are somethinges important in ordinary language, it makes things very complicated in the context of an artificial language. Thus, renaming is reversed and don't affect the universe.</div>");
+							explainPanel.addStyleName(style.errorText());
+							Button ok = new Button("OK");
+							ok.addClickHandler(new ClickHandler() {
+								
+								@Override
+								public void onClick(ClickEvent event) {
+									db.hide();
+									editCell.clearViewData(i);
+									updateModel();
+
+								}
+							});
+							vp.add(explainPanel);
+							vp.add(ok);
+							vp.addStyleName(style.distance());
+							vp.setSpacing(10);
+							db.add(vp);
+							db.setAnimationEnabled(true);
+							db.show();
+							db.center();
 						}
 					}
 

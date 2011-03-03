@@ -137,7 +137,7 @@ public class WorldDetailsForm extends Composite {
 		//we can now activate all Buttons
 
 		deactivateLabel(labelRemoveExtensionElement);
-		deactivateLabel(labelAddExtensionElement);
+		activateLabel(labelAddExtensionElement);
 		activateLabel(labelEmptyExtension);
 		activateLabel(labelExportExtension);
 	
@@ -145,8 +145,7 @@ public class WorldDetailsForm extends Composite {
 
 	protected void updateToolBox(ArrayList<Individual> lastExtensionElement2) {
 		activateLabel(labelRemoveExtensionElement);
-		activateLabel(labelAddExtensionElement);
-
+//		activateLabel(labelAddExtensionElement);
 //		deactivateLabel(labelEmptyExtension);
 //		deactivateLabel(labelExportExtension);
 
