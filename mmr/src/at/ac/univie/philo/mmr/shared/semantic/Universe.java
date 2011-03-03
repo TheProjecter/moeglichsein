@@ -295,6 +295,49 @@ public class Universe {
 			this.individuals.add(individual);
 		}
 	}
+
+	public boolean isFreeWorldName(String value) {
+		for (World w : this.getWorlds()) {
+			if (w.getName().equals(value)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean isFreePredicateName(String value) {
+		for (Predicate p : this.predicates) {
+			if (p.getName().equals(value)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void removePredicate(Predicate object) {
+		predicates.remove(object);
+		for(World w : getWorlds()) {
+			w.removePredicate(object);
+		}
+		
+	}
+	
+	public HashSet<Predicate> getPredicates() {
+		return new HashSet<Predicate>(predicates);
+	}
+
+	public void addPredicate(Predicate predicate) {
+
+		if (predicate != null) {
+			HashSet<Predicate> tempPreds = new HashSet<Predicate>();
+			tempPreds.add(predicate);
+			predicates.add(predicate);
+			for (World w : getWorlds()) {
+				w.addPredicates(tempPreds);
+			}
+		}
+		
+	}
 	
 //	public void getRequiredConstraintForAccessibleWorlds(World win, HashSet<World> world) {
 //		if (win == null ){

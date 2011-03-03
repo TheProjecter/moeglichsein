@@ -423,6 +423,11 @@ void overwriteExtension(HashSet<ArrayList<Individual>> indilist, Predicate...pre
 		inventory.remove(i);
 		setExtensionMap(newExtension);
 	}
+
+	public void removePredicate(Predicate object) {
+		extensionMap.remove(object);
+		
+	}
 	
 }
 

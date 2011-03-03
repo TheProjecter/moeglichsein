@@ -136,6 +136,10 @@
 		      	height: 500px;
 		    }
 		    
+		   	.errorText {
+		   		color:red;
+		   	}
+		    
 		    .selection {
 		    }
 		    

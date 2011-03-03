@@ -402,11 +402,11 @@ public class MainScreen extends Composite {
 		return this.treeModel;
 	}
 	
-	@UiField
-	Button addButton;
-	
-	@UiField
-	Button delButton;
+//	@UiField
+//	Button addButton;
+//	
+//	@UiField
+//	Button delButton;
 
 	@UiField
 	HTMLPanel quickEvalContainer;
@@ -416,15 +416,15 @@ public class MainScreen extends Composite {
 
 	}
 
-	@UiHandler("addButton")
-	void onClickAdd(ClickEvent e) {
-		Window.alert("Add under Development!");
-	}
-	
-	@UiHandler("delButton")
-	void onClickDel(ClickEvent e) {
-		Window.alert("Delete under Development!");
-	}
+//	@UiHandler("addButton")
+//	void onClickAdd(ClickEvent e) {
+//		Window.alert("Add under Development!");
+//	}
+//	
+//	@UiHandler("delButton")
+//	void onClickDel(ClickEvent e) {
+//		Window.alert("Delete under Development!");
+//	}
 
 	public void updateModel() {
 		//update cellTree

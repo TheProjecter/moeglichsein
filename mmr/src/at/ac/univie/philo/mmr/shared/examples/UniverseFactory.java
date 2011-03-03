@@ -286,5 +286,9 @@ public class UniverseFactory {
 	public static boolean validUniverseName(String universeName) {
 		return true;
 	}
+
+	public static boolean validPredicateName(String value) {
+		return value.matches("[a-zA-Z0-9]+");
+	}
 	
 }

@@ -36,5 +36,11 @@ public class Predicate extends Symbol implements IsSerializable {
 		}
 		return false;
 	}
+
+	public void setName(String value) {
+		if (value != null) {
+			this.name = value;
+		}
+	}
 	
 }
