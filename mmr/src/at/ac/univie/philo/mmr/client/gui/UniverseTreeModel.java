@@ -310,6 +310,10 @@ public final class UniverseTreeModel implements TreeViewModel {
 		return (value instanceof Individual);
 	}
 
+	public void selectUniverse(Universe universe) {
+		selectionModelUniverse.setSelected(universe, true);
+	}
+
 	
 	//not needed now..
 //	public CellTree getTree() {

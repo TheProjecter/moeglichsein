@@ -39,7 +39,7 @@
 			</g:north>
 			<g:south size="20">
 				<g:HTMLPanel ui:field="statusHtmlPanel">
-					<div class='{style.statusbox}'>Version: <span ui:field="version">unknown</span> ### Institut für Computersprachen, TU Wien ### Institut für Philosophie, Universität Wien</div>
+					<div class='{style.statusbox}'>Version: <a target='_blank' href='http://code.google.com/p/moeglichsein/source/list'><span ui:field="version">unknown</span></a> ### Institut für Computersprachen, TU Wien ### Institut für Philosophie, Universität Wien</div>
   				</g:HTMLPanel>
 			</g:south>
 
