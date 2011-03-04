@@ -1,19 +1,26 @@
 package at.ac.univie.philo.mmr.server;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.jdo.PersistenceManager;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import at.ac.univie.philo.mmr.client.Dummy;
 import at.ac.univie.philo.mmr.client.ModalParsingService;
 import at.ac.univie.philo.mmr.server.parsetree.ModallogicParser;
-import at.ac.univie.philo.mmr.shared.FieldVerifier;
 import at.ac.univie.philo.mmr.shared.exceptions.ExpressionParsingException;
 import at.ac.univie.philo.mmr.shared.expressions.Expression;
 
-import com.google.gwt.user.client.ui.Image;
+import com.google.appengine.api.mail.MailService;
+import com.google.appengine.api.mail.MailServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  * The server side implementation of the RPC service.
@@ -60,6 +67,32 @@ public class ModalParsingServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public Dummy dummy(Dummy d) {
 		return d;
+	}
+
+	@Override
+	public Void sendReport(String category, String question, String contact) throws RuntimeException {
+		        Properties props = new Properties();
+		        Session session = Session.getDefaultInstance(props, null);
+
+		        String msgBody = question;
+		            Message msg = new MimeMessage(session);
+		            try {
+						msg.setFrom(new InternetAddress("akalypse@gmail.com", "Moeglichsein Feedback"));
+						msg.addRecipient(Message.RecipientType.TO,
+		                             new InternetAddress("akalypse+moeglichsein@gmail.com", "AKAlypse"));
+						msg.setSubject("Moeglichsein: Feedback ("+category+")");
+						msg.setText(msgBody+"\n\n ---- \nsent by: "+contact);
+						Transport.send(msg);
+						return null;
+		            } catch (MessagingException e) {
+						throw new RuntimeException(e);
+					} catch (UnsupportedEncodingException e) {
+						throw new RuntimeException(e);
+					}
+		
+
+
+
 	}
 
 //	@Override

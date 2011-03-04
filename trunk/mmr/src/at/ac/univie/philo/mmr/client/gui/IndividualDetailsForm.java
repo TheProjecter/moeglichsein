@@ -1,12 +1,6 @@
 package at.ac.univie.philo.mmr.client.gui;
 
 import net.sourceforge.htmlunit.corejs.javascript.ast.ParenthesizedExpression;
-import gwtupload.client.IUploadStatus.Status;
-import gwtupload.client.IUploader;
-import gwtupload.client.IUploader.Utils;
-import gwtupload.client.PreloadedImage;
-import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
-import gwtupload.client.SingleUploader;
 import at.ac.univie.philo.mmr.client.gui.UniverseDetailsForm.DetailStyle;
 import at.ac.univie.philo.mmr.shared.semantic.Individual;
 import at.ac.univie.philo.mmr.shared.semantic.World;
@@ -47,7 +41,7 @@ public class IndividualDetailsForm extends Composite {
 	}
 	
 	private Resources res;
-	private SingleUploader defaultUploader;
+//	private SingleUploader defaultUploader;
 	private FlowPanel flowPanel;
 	private Individual individual;
 	private World world;
@@ -101,10 +95,10 @@ public class IndividualDetailsForm extends Composite {
 	protected void showIconSelector(Individual i) {
 		db.show();
 		db.setText("Select Icon for Individual "+i.getName());
-		defaultUploader = new SingleUploader();
+//		defaultUploader = new SingleUploader();
 //		defaultUploader.avoidRepeatFiles(true);
-		defaultUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
-		
+//		defaultUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
+//		
 		//retrieve all images from server -> put them as a pushbutton into flowpanel
 		
 		VerticalPanel vp = new VerticalPanel();
@@ -119,7 +113,7 @@ public class IndividualDetailsForm extends Composite {
 		
 		flowPanel = new FlowPanel();
 		
-		vp.add(defaultUploader);
+//		vp.add(defaultUploader);
 		vp.add(flowPanel);
 		vp.add(abort);
 		vp.addStyleName(style.distance());
@@ -130,39 +124,39 @@ public class IndividualDetailsForm extends Composite {
 	}
 	
 	// Load the image in the document and in the case of success attach it to the viewer
-	  private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
-	    public void onFinish(IUploader uploader) {
-	      if (uploader.getStatus() == Status.SUCCESS) {
-
-	        new PreloadedImage(uploader.fileUrl(), showImage);
-	        
-	        // The server can send information to the client.
-	        // You can parse this information using XML or JSON libraries
-	        Document doc = XMLParser.parse(uploader.getServerResponse());
-	        String size = Utils.getXmlNodeValue(doc, "size");
-	        String type = Utils.getXmlNodeValue(doc, "ctype");
-	        if (!type.contains("image")) {
-	        	Window.alert("You have uploaded a non-image file (type: "+type+" )");
-	        }
-	        System.out.println(size + " " + type);
-	      }
-	    }
-	  };
-
-	  // Attach an image to the pictures viewer
-	  private OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
-	    public void onLoad(PreloadedImage image) {
-	      image.setWidth("45px");
-	      image.addClickHandler(changeIconClickHandler);
-	      flowPanel.add(image);
-	      indiIconHolder.clear();
-	      indiIconHolder.add(image);
-	      individual.setIcon(image);
-	      db.hide();
-	      updateModel();
-
-	    }
-	  };
+//	  private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
+//	    public void onFinish(IUploader uploader) {
+//	      if (uploader.getStatus() == Status.SUCCESS) {
+//
+//	        new PreloadedImage(uploader.fileUrl(), showImage);
+//	        
+//	        // The server can send information to the client.
+//	        // You can parse this information using XML or JSON libraries
+//	        Document doc = XMLParser.parse(uploader.getServerResponse());
+//	        String size = Utils.getXmlNodeValue(doc, "size");
+//	        String type = Utils.getXmlNodeValue(doc, "ctype");
+//	        if (!type.contains("image")) {
+//	        	Window.alert("You have uploaded a non-image file (type: "+type+" )");
+//	        }
+//	        System.out.println(size + " " + type);
+//	      }
+//	    }
+//	  };
+//
+//	  // Attach an image to the pictures viewer
+//	  private OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
+//	    public void onLoad(PreloadedImage image) {
+//	      image.setWidth("45px");
+//	      image.addClickHandler(changeIconClickHandler);
+//	      flowPanel.add(image);
+//	      indiIconHolder.clear();
+//	      indiIconHolder.add(image);
+//	      individual.setIcon(image);
+//	      db.hide();
+//	      updateModel();
+//
+//	    }
+//	  };
 	
 	@UiField
 	VerticalPanel mainVPanel;

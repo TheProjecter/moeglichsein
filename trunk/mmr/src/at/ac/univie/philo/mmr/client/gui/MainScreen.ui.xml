@@ -3,66 +3,21 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:m="urn:import:at.ac.univie.philo.mmr.client.gui">
 	
-	<ui:style type="at.ac.univie.philo.mmr.client.gui.MainScreen.DetailStyle">
-		/* Add CSS here. See the GWT docs on UI Binder for more details */
-		.important {
-			font-weight: bold;
-		}
-		.headerbox {
-			background-color: skyblue;
-			border: '0px';
-			border-color: black;
-		}
-		
-		.header {
-			vertical-align: middle;
-			font-size: large;
-		}
-		
-		.navibox {
-			background-color:#FFFFCC;
-			border: 0px;
-			border-color: #000000;
-		}
-		
-		.statusbox {
-			background-color: lightgray;
-			font-weight: bold;
-			text-align:center;
-			letter-spacing:0.20em;
-		}
-		
-		.mainbox {
-			background-color: #c0c0c0;
-		}
-		
-		.addBorder {
-			border: '5px';
-			border-color: #ff0000;
-		}
-		
-		.alignElements div {
-			text-align: left;
-		}
-		
-		.alignElements {
-			text-align:left;
-		}
-		
-		.beta {
-			vertical-align:super;
-			color:red;
-			font-size: small;
-			font-weight: bold;
-		}
-		
+	
+	<ui:style
+		type="at.ac.univie.philo.mmr.client.gui.MainScreen.DetailStyle"
+		src="defaultStyle.css">
 	</ui:style>
+	
 	
 	<ui:with field='res' type='at.ac.univie.philo.mmr.client.gui.Resources'/>
 			<g:DockLayoutPanel ui:field="overallDockPanel" width="1024px" height="768px" unit="PX">
 			<g:north size="70">
 				<g:HorizontalPanel ui:field="headerHorizonalPanel" styleName="{style.headerbox}" borderWidth="0" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE">
-						<g:HTML styleName="{style.header}" horizontalAlignment="ALIGN_CENTER"><div>Mit M&oslash;eglichkeiten rechnen <span class='{style.beta}'>B&#x2203;T&#x2200;</span></div></g:HTML>
+						<g:VerticalPanel ui:field="logoBox">
+						<g:HTML styleName="{style.header}"><div>Mit M&oslash;eglichkeiten rechnen <span class='{style.beta}'>B&#x2203;T&#x2200;</span></div></g:HTML>
+						<g:Label addStyleNames="{style.interactiveElement} {style.sendFeedback}" ui:field="sendFeedbackLabel">Send Feedback</g:Label>
+						</g:VerticalPanel>
 						<g:HTMLPanel ui:field="quickEvalContainer">
 	    					<table align="center">
 	      						<tr>

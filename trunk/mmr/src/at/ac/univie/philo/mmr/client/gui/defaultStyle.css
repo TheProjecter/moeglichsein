@@ -1,3 +1,55 @@
+		.important {
+			font-weight: bold;
+		}
+		.headerbox {
+			background-color: skyblue;
+			border: '0px';
+			border-color: black;
+		}
+		
+		.header {
+			vertical-align: middle;
+			font-size: large;
+		}
+		
+		.navibox {
+			background-color:#FFFFCC;
+			border: 0px;
+			border-color: #000000;
+		}
+		
+		.statusbox {
+			background-color: lightgray;
+			font-weight: bold;
+			text-align:center;
+			letter-spacing:0.20em;
+		}
+		
+		.mainbox {
+			background-color: #c0c0c0;
+		}
+		
+		.addBorder {
+			border: '5px';
+			border-color: #ff0000;
+		}
+		
+		.alignElements div {
+			text-align: left;
+		}
+		
+		.alignElements {
+			text-align:left;
+		}
+		
+		.beta {
+			vertical-align:super;
+			color:red;
+			font-size: small;
+			font-weight: bold;
+		}
+		
+			
 			.cellTable {
 				margin-top: 10px;
 				margin-left: 2%;
@@ -154,3 +206,11 @@
 		    	background-color: #FFFFCC;
 		    	margin-right:10px;
 		    }
+		    
+		.sendFeedback {
+			margin-top:5px;
+			margin-left:0px;
+			font-size: small;
+			vertical-align: middle;
+			text-align: left;
+		}
