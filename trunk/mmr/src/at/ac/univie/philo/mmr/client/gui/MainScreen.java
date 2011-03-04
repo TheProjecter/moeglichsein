@@ -203,9 +203,14 @@ public class MainScreen extends Composite {
 	    quickEvalContainer.setWidth("100%");
 	    quickEvalContainer.setHeight("100%");
 	    version.setInnerText(Dummy.VERSION);
-	    
 	    setupFeedbackInteraction();
+	    treeModel.selectUniverse(referenceUniverse);
+	    expandFirstUniverse();
 	    
+	}
+
+	private void expandFirstUniverse() {
+		cellTree.getRootTreeNode().setChildOpen(0, true);
 	}
 
 	private void setupFeedbackInteraction() {
