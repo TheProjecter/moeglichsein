@@ -262,7 +262,6 @@ public class WorldPizzaTest extends TestCase {
 		w2 = new World("Pizza2",extensions);
 		w3 = new World("Pizza3",extensions);
 		
-		try {
 			w2.overwriteExtension(p7Blue, p4RedExt); //Salami and Tomatoe are blue in this world
 			w2.overwriteExtension(p4Red, p7BlueExt); //Nothing is Red in this world
 			
@@ -277,9 +276,6 @@ public class WorldPizzaTest extends TestCase {
 //				}
 			}
 			w3.overwriteExtension(p10SmallerThan, p10SmallerThanExt);
-		} catch (IndividuumDoesNotExistExcetion e1) {
-			e1.printStackTrace();
-		} 
 		
 		try {
 			u = new Universe("PizzaUniverse", AccessabilityConstraint.S5, true, constantMapping, w,w2,w3);

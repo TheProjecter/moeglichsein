@@ -280,7 +280,7 @@ public class UniverseDetailsForm extends Composite {
 				
 				predicateNameContainer.add(predLabel);
 				predicateNameContainer.add(predicateName);
-				predicateName.setMaxLength(10);
+				predicateName.setMaxLength(20);
 				final Label alreadyTakenLabel = new Label("Predicate Name already used or invalid.");
 				alreadyTakenLabel.addStyleName(style.leftDistance());
 
@@ -290,7 +290,9 @@ public class UniverseDetailsForm extends Composite {
 					public void onKeyUp(KeyUpEvent event) {
 
 						String currentText = predicateName.getText();
+						int cursorPos = predicateName.getCursorPos();
 						predicateName.setText(currentText.toUpperCase());
+						predicateName.setCursorPos(cursorPos);
 						if(!universe.isFreePredicateName(currentText) || !UniverseFactory.validPredicateName(currentText)) {
 							markInputAsInvalid(predicateName);
 							predicateNameContainer.add(alreadyTakenLabel);
@@ -593,13 +595,20 @@ public class UniverseDetailsForm extends Composite {
 				try {
 					constIndex = Integer.valueOf(newConstantTextBox.getText());
 				} catch (NumberFormatException e){
-					Window.alert(newConstantTextBox.getText()+" is not an integer.");
+					Window.alert("I'm afraid but "+newConstantTextBox.getText()+" is not an integer and therefore cannot be an index.");
 					return;
 				}
-				constants.put(new Constant("a", constIndex), individualDropBox.getSelectedObject());
-				updateModel();
-				globalIndividualsCellTable.redraw();
-				dialogBox.hide();
+				
+				Individual selectedIndividual = individualDropBox.getSelectedObject();
+				
+				if(isFreeIdentifier(constIndex+"", selectedIndividual)) {
+					constants.put(new Constant("a", constIndex), selectedIndividual);
+					updateModel();
+					globalIndividualsCellTable.redraw();
+					dialogBox.hide();
+				} else {
+					Window.alert("I'm afraid but constant a_"+constIndex+ "is already used. Try another one.");
+				}
 			}
 		});
 		Button abort = new Button("Abort");
@@ -1039,7 +1048,7 @@ public class UniverseDetailsForm extends Composite {
 				}
 				
 				if (UniverseFactory.validPredicateName(value) && universe.isFreePredicateName(value)) {
-					p.setName(value);
+					p.setName(value.toUpperCase());
 					editCell.clearViewData(p);
 					updateModel();
 				} else {
@@ -1685,12 +1694,17 @@ public class UniverseDetailsForm extends Composite {
 					try {
 						constIndex = Integer.valueOf(newConstantTextBox.getText());
 					} catch (NumberFormatException e){
-						Window.alert(newConstantTextBox.getText()+" is not an integer.");
+						Window.alert("I'm afraid but a_"+newConstantTextBox.getText()+" is not a valid constant.");
 						return;
 					}
-					valueUpdater.update(new Constant("a",constIndex));
-					globalIndividualsCellTable.redraw();
-					dialogBox.hide();
+					
+					if(isFreeIdentifier(constIndex+"", refIndi)) {
+						valueUpdater.update(new Constant("a",constIndex));
+						globalIndividualsCellTable.redraw();
+						dialogBox.hide();
+					} else {
+						Window.alert("I'm afraid but a_"+constIndex+" is already used. Try again.");
+					}							
 				}
 			});
 			abort = new Button("Abort");

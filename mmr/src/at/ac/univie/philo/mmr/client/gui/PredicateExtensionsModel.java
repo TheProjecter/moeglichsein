@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 
+import at.ac.univie.philo.mmr.shared.exceptions.PredicateNotExistsException;
 import at.ac.univie.philo.mmr.shared.expressions.Predicate;
 import at.ac.univie.philo.mmr.shared.semantic.Individual;
 import at.ac.univie.philo.mmr.shared.semantic.World;
@@ -89,6 +90,18 @@ public class PredicateExtensionsModel implements TreeViewModel {
 
 			}
 		});
+	}
+	
+	public Individual getSelectedIndividual() {
+		return selectionModel.getSelectedObject();
+	}
+	
+	public Entry<Predicate, HashSet<ArrayList<Individual>>> getSelectedExtension() {
+		return selectionModelPredicateEntry.getSelectedObject();
+	}
+	
+	public ArrayList<Individual> getSelectedExtensionElement() {
+		return selectionModelExtensionElement.getSelectedObject();
 	}
 
 	private void unselectIndividual() {
@@ -282,6 +295,42 @@ public class PredicateExtensionsModel implements TreeViewModel {
             sb.appendHtmlConstant("<img width='30px' src='"+value.getIcon().getUrl()+"'></img>").appendEscaped(" ");
 			sb.appendEscaped(value.toString());
 			}
+	}
+
+	public void updateModel() {
+		
+		Entry<Predicate, HashSet<ArrayList<Individual>>> selection = getSelectedExtension();
+
+		if(selection != null) {
+			ArrayList<Entry<Predicate, HashSet<ArrayList<Individual>>>> aephai = new ArrayList<Entry<Predicate,HashSet<ArrayList<Individual>>>>(worldDetailsPage.world.getExtensionMap().entrySet());
+			dataProviderExtensionMap.setList(aephai);
+			dataProviderExtensionMap.refresh();
+			
+			Predicate selectedPredicate = selection.getKey();
+			if (selectedPredicate != null) {
+				//update extension of selected predicate
+				 HashSet<ArrayList<Individual>> hai = new HashSet<ArrayList<Individual>>();
+				try {
+					hai = worldDetailsPage.world.getExtension(selectedPredicate);
+				} catch (PredicateNotExistsException e) {
+					GWT.log("Predicate does not exist - "+e.toString());
+				}
+				if(getSelectedExtensionElement() != null) {
+					selectionModelExtensionElement.setSelected(selectionModelExtensionElement.getSelectedObject(), false);
+				}
+				ArrayList<ArrayList<Individual>> extensionList = new ArrayList<ArrayList<Individual>>(hai);
+				dataProviderExtension.setList(extensionList);			
+				dataProviderExtension.refresh();
+			}
+		}
+		
+//
+//		ArrayList<Individual> selectedExtensionElement = getSelectedExtensionElement();
+//		if (selectedExtensionElement != null) {
+//			dataProviderIndis.setList(selectedExtensionElement);
+//			dataProviderIndis.refresh();
+//		}
+
 	}
 		
 	

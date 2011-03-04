@@ -92,9 +92,8 @@ public class World {
 	 *
 	 * @param p the predicate, whose extension will be extended.
 	 * @param indisequences the individuals, which are added to the extension of predicate p.
-	 * @throws IndividuumDoesNotExistExcetion 
 	 */
-	public void extendExtension(Predicate p, ArrayList<Individual> ...indisequences ) throws IndividuumDoesNotExistExcetion {
+	public void extendExtension(Predicate p, HashSet<ArrayList<Individual>> indisequences ) {
 		if (p != null && indisequences != null) {
 			//Is there such a Predicate?
 			int predarity = p.getArity();
@@ -108,9 +107,6 @@ public class World {
 			//Fill the Extension with the given Individuals
 			for (ArrayList<Individual> indisequence: indisequences) {
 				int indisequenceArity = indisequence.size();
-//				if (!hasExistingIndividuals(indisequence)) {
-//					throw new IndividuumDoesNotExistExcetion("At least one given Individual dos not exist in this world.");
-//				}
 				if (indisequenceArity == predarity) {
 					extension.add(indisequence);
 					inventory.addAll(indisequence);
@@ -135,9 +131,11 @@ public class World {
 	 */
 	public void extendExtension(ArrayList<Individual> indilist, Predicate...predicates ) throws IndividuumDoesNotExistExcetion {
 		if (predicates != null) {
+			HashSet<ArrayList<Individual>> indiset = new HashSet<ArrayList<Individual>>();
+			indiset.add(indilist);
 //			if (!hasExistingIndividuals(indilist)) throw new IndividuumDoesNotExistExcetion("At least one Individual in the given Sequence does not exist in this World "+this.getName()+".");
 			for (Predicate p: predicates) {
-				extendExtension(p, indilist);
+				extendExtension(p, indiset);
 			}
 		} else {
 			throw new IllegalArgumentException("there is no given predicate.");
@@ -166,10 +164,9 @@ public class World {
 	 *
 	 * @param p the predicate p, whose extension will be overwritten.
 	 * @param the sequence of individuals who form the new extension for Predicate p. If the arity is 1, it is a set of sequences with the length 1.
-	 * @throws IllegalArgumentException if the arity does not match with the given sequence of individuals. 
-	 * @throws IndividuumDoesNotExistExcetion when the individual does not exist.
+	 * @throws IllegalArgumentException if the arity does not match with the given sequence of individuals.
 	 */
-	public void overwriteExtension(Predicate p, HashSet<ArrayList<Individual>> ...extensions ) throws IndividuumDoesNotExistExcetion {
+	public void overwriteExtension(Predicate p, HashSet<ArrayList<Individual>> ...extensions ) {
 		if (p != null && extensions != null) {
 			int predarity = p.getArity();
 			HashSet<ArrayList<Individual>> extension = new HashSet<ArrayList<Individual>>();
@@ -179,9 +176,6 @@ public class World {
 					if (predarity != ai.size()) {
 						throw new IllegalArgumentException("At least one sequence of individuals has different size ("+indilist.size()+"instead of "+predarity+") than needed by the arity of the given Predicate");
 					}
-	//				if (!hasExistingIndividuals(indilist)) {
-	//					throw new IndividuumDoesNotExistExcetion("At least one given Individual dos not exist in this world.");
-	//				}
 					extension.add(ai);
 					inventory.addAll(ai);
 				}
@@ -189,6 +183,7 @@ public class World {
 			
 			//Put the Set into the ExtensionMap, instead of the old one
 			extensionMap.put(p, extension);
+			setExtensionMap(extensionMap);
 		} else {
 			throw new IllegalArgumentException("InputCheck failed because some parameter is null.");
 		}
@@ -326,6 +321,7 @@ void overwriteExtension(HashSet<ArrayList<Individual>> indilist, Predicate...pre
 	 */
 	private void setExtensionMap (HashMap<Predicate,HashSet<ArrayList<Individual>>> extensionMap) {
 		//make a copy
+		inventory.clear();
 		this.extensionMap = new HashMap<Predicate, HashSet<ArrayList<Individual>>>();
 		for(Entry<Predicate,HashSet<ArrayList<Individual>>> entry : extensionMap.entrySet()) {
 			Predicate p = entry.getKey();
@@ -426,7 +422,7 @@ void overwriteExtension(HashSet<ArrayList<Individual>> indilist, Predicate...pre
 
 	public void removePredicate(Predicate object) {
 		extensionMap.remove(object);
-		
+		setExtensionMap(extensionMap);		
 	}
 	
 }
