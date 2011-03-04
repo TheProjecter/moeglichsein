@@ -338,6 +338,21 @@ public class Universe {
 		}
 		
 	}
+
+	/**
+	 * 
+	 * @param arity
+	 * @return a set of predicates which have an arity of the given int-parameter
+	 */
+	public HashSet<Predicate> getPredicates(int arity) {
+		HashSet<Predicate> predicates = new HashSet<Predicate>();
+		for (Predicate p : getPredicates()) {
+			if (p.getArity() == arity) {
+				predicates.add(p);
+			}
+		}
+		return predicates;
+	}
 	
 //	public void getRequiredConstraintForAccessibleWorlds(World win, HashSet<World> world) {
 //		if (win == null ){

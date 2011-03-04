@@ -51,7 +51,7 @@ public class MainScreen extends Composite {
 
 	private Universe referenceUniverse;
 	private final UniverseFactory universeFactory;
-	private final ObjectDropBox<World> worldSelector;
+	public final ObjectDropBox<World> worldSelector;
 	private UniverseTreeModel treeModel = null;
 	private TreeNode lastUniverseTreeNode = null;
 	private Widget lastUniverseDetailsWidget = null;
@@ -378,7 +378,7 @@ public class MainScreen extends Composite {
 	}
 	
 	public void showSelectedWorld(World w) {
-		Widget widget = new WorldDetailsForm(w);
+		Widget widget = new WorldDetailsForm(w, this);
 		mainPanel.remove(0);
 		mainPanel.add(widget);
 		widget.setWidth("100%");
@@ -425,6 +425,13 @@ public class MainScreen extends Composite {
 //	void onClickDel(ClickEvent e) {
 //		Window.alert("Delete under Development!");
 //	}
+
+	/**
+	 * Returns the last selected Universe
+	 */
+	public Universe getReferenceUniverse() {
+		return referenceUniverse;
+	}
 
 	public void updateModel() {
 		//update cellTree

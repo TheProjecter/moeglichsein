@@ -173,8 +173,8 @@ public final class UniverseTreeModel implements TreeViewModel {
 	        // LEVEL 2 - LEAF.
 	        // We want the children of the playlist. Return the songs.
 	    	  ArrayList<Individual> indis = new ArrayList<Individual>(((World) value).getInventory());
-	         dataProviderIndi = new ListDataProvider<Individual>(
-	            (indis));
+	         dataProviderIndi.setList(indis);
+	         dataProviderIndi.refresh();
 
 	        // Create a cell to display a Universe
 	        Cell<Individual> cell = new IndividualCell((World)value);

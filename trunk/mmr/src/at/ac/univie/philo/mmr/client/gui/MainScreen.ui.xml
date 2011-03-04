@@ -11,7 +11,7 @@
 		.headerbox {
 			background-color: skyblue;
 			border: '0px';
-			border-color: red;
+			border-color: black;
 		}
 		
 		.header {
@@ -61,7 +61,7 @@
 	<ui:with field='res' type='at.ac.univie.philo.mmr.client.gui.Resources'/>
 			<g:DockLayoutPanel ui:field="overallDockPanel" width="1024px" height="768px" unit="PX">
 			<g:north size="70">
-				<g:HorizontalPanel ui:field="headerHorizonalPanel" styleName="{style.headerbox}" borderWidth="1" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE">
+				<g:HorizontalPanel ui:field="headerHorizonalPanel" styleName="{style.headerbox}" borderWidth="0" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE">
 						<g:HTML styleName="{style.header}" horizontalAlignment="ALIGN_CENTER"><div>Mit M&oslash;eglichkeiten rechnen <span class='{style.beta}'>B&#x2203;T&#x2200;</span></div></g:HTML>
 						<g:HTMLPanel ui:field="quickEvalContainer">
 	    					<table align="center">

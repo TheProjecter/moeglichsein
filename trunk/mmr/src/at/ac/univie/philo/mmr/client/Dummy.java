@@ -17,7 +17,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class Dummy implements IsSerializable { 
 	
-	public static final String VERSION = "0.7";
+	public static final String VERSION = "0.8";
 	
 	BinaryExpression be;
 	ConstantExpression ce;

@@ -16,7 +16,7 @@
 <g:HorizontalPanel ui:field="extensionToolBox"
 				addStyleNames='{style.toolBox}'>
 				<g:Label ui:field="labelEmptyExtension" addStyleNames='{style.interactiveElementOff}'>Empty Extension</g:Label>
-				<g:Label ui:field="labelExportExtension" addStyleNames='{style.interactiveElementOff}'>Export Extension</g:Label>
+				<g:Label ui:field="labelExportExtension" addStyleNames='{style.interactiveElementOff}'>Copy Extension</g:Label>
 				<g:Label ui:field="labelAddExtensionElement" addStyleNames='{style.interactiveElementOff}'>Add Extension Element</g:Label>
 				<g:Label ui:field="labelRemoveExtensionElement" addStyleNames='{style.interactiveElementOff}'>Remove Extension Element</g:Label>
 			</g:HorizontalPanel>
