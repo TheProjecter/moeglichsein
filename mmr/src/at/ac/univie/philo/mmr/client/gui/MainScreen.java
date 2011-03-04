@@ -19,6 +19,10 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -37,8 +41,10 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -82,6 +88,9 @@ public class MainScreen extends Composite {
 		    String mainbox();
 		    String addBorder();
 		    String alignElements();
+		    String mouseover();
+			String distance();
+			String grid();
 		  }
 
 		 @UiField 
@@ -120,6 +129,9 @@ public class MainScreen extends Composite {
 		
 		@UiField
 		SpanElement version;
+		
+		@UiField
+		Label sendFeedbackLabel;
 
 	/**
 	 * Because this class has a default constructor, it can
@@ -192,8 +204,155 @@ public class MainScreen extends Composite {
 	    quickEvalContainer.setHeight("100%");
 	    version.setInnerText(Dummy.VERSION);
 	    
+	    setupFeedbackInteraction();
 	    
-	    
+	}
+
+	private void setupFeedbackInteraction() {
+		sendFeedbackLabel.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				final DialogBox db = new DialogBox(true);
+				db.setStyleName(style.grid());
+				db.setHeight("30%");
+				db.setWidth("30%");
+				db.setText("Send Feedback To Developer");
+				db.setAnimationEnabled(true);
+				
+				VerticalPanel vp = new VerticalPanel();
+				vp.setSpacing(10);
+				vp.setStyleName(style.distance());
+				
+				HorizontalPanel purposeContainer = new HorizontalPanel();
+				Label purposeLabel = new Label("Feedback Type:");
+				final ListBox purposeListBox = new ListBox(false);
+				purposeListBox.addItem("Feature Request");
+				purposeListBox.addItem("Bug Report");
+				purposeListBox.addItem("Usability Question");
+				purposeListBox.addItem("Other");
+				purposeContainer.add(purposeLabel);
+				purposeContainer.add(purposeListBox);
+				
+				HorizontalPanel contactContainer = new HorizontalPanel();
+				Label contactLabel = new Label("E-Mail (optional):");
+				final TextBox contactBox = new TextBox();
+				contactContainer.add(contactLabel);
+				contactContainer.add(contactBox);
+				
+				HorizontalPanel textContainer = new HorizontalPanel();
+				Label textLabel = new Label("Your Message:");
+				final TextArea textBox = new TextArea();
+				textBox.setCharacterWidth(30);
+				textBox.setHeight("100px");
+				textBox.setFocus(true);
+				textContainer.add(textLabel);
+				textContainer.add(textBox);
+				
+				HorizontalPanel buttonContainer = new HorizontalPanel();
+				Button send = new Button("Send Report");
+				send.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						//get input
+						String type = purposeListBox.getItemText(purposeListBox.getSelectedIndex());
+						String message = textBox.getText();
+						String contact = contactBox.getText();
+						sendReportToServer(type, message, contact);
+						db.hide();
+					}
+				});
+				Button abort = new Button("Abort");
+				abort.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						db.hide();
+					}
+				});
+				buttonContainer.add(send);
+				buttonContainer.add(abort);
+				
+				vp.add(purposeContainer);
+				vp.add(textContainer);
+				vp.add(contactContainer);
+				vp.add(buttonContainer);
+				
+				db.add(vp);
+				db.center();
+				db.show();
+			}
+		});
+		
+		//mouse-over-events
+		sendFeedbackLabel.addMouseOverHandler(new MouseOverHandler() {
+
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				sendFeedbackLabel.addStyleName(style.mouseover());
+			}
+		});
+		sendFeedbackLabel.addMouseOutHandler(new MouseOutHandler() {
+
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				sendFeedbackLabel.removeStyleName(style.mouseover());
+			}
+		});
+	}
+	
+	private void sendReportToServer(String type,
+			String message, String contact) {
+		parsingService.sendReport(type, message, contact, new AsyncCallback<Void> () {
+			
+			@Override
+			public void onSuccess(Void result) {
+					final DialogBox db = new DialogBox();
+					VerticalPanel vp = new VerticalPanel();
+					vp.addStyleName(style.distance());
+					vp.addStyleName(style.grid());
+					HTMLPanel error = new HTMLPanel("<div>Feedback successfully transmitted. If you submitted your contact, you'll get an answer ASAP.<br/><br/> Best regards,<br/> Andreas Kirchner</a></div>");
+					Button ok = new Button("OK");
+					ok.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							db.hide();
+						}
+					});
+					vp.add(error);
+					vp.add(ok);
+					db.add(vp);
+					db.center();
+					db.setAnimationEnabled(true);
+					db.show();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				final DialogBox db = new DialogBox();
+				VerticalPanel vp = new VerticalPanel();
+				vp.addStyleName(style.distance());
+				vp.addStyleName(style.grid());
+				HTMLPanel error = new HTMLPanel("<div>An error occured during report transmission:<br/><br/>"+caught.toString()+"<br/><br/><i>Sorry for any inconvenience. Please send a mail directly to <a href='mailto:akalypse+moeglichsein@gmail.com'>the developer</a></div>");
+				Button ok = new Button("OK");
+				ok.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						db.hide();
+					}
+				});
+				vp.add(error);
+				vp.add(ok);
+				db.add(vp);
+				db.center();
+				db.setAnimationEnabled(true);
+				db.show();
+				
+			}
+		});
 	}
 
 	private void setUpFormular() {
@@ -413,8 +572,8 @@ public class MainScreen extends Composite {
 	
 	public SimplePanel getMainScreen() {
 		return simplePanelForParserPanel;
-
 	}
+
 
 //	@UiHandler("addButton")
 //	void onClickAdd(ClickEvent e) {

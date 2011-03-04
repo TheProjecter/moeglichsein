@@ -13,5 +13,6 @@ import com.google.gwt.user.client.ui.Image;
 public interface ModalParsingServiceAsync {
 	void parse(String input, AsyncCallback<Expression> callback);
 	void dummy(Dummy d, AsyncCallback< Dummy> callback);
+	void sendReport(String category, String question, String contact, AsyncCallback<Void> callback);
 //	void retrieveImages(AsyncCallback<List<Image>> callback);
 }

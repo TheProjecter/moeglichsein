@@ -56,7 +56,7 @@
 			<h2>Predicates and Their Arity</h2>
 			<div class='{style.explaination}'><div>Below you see a list of predicates and their arities.</div>
 				<ul><li><b>Notes for the semantical/ontological level:</b> To model that an individual has certain properties or an individual has a relation to other individuals, one needs predicates. In each world, one predicate PRED is assigned to one extension. The extension describes which individuals have this property PRED or which individuals are in this particular relation PRED with each other.</li>
-					<li><b>Notes for the syntactical level:</b> To refer to a predicate we need unamigious names again. Our language only allows uppercase predicate names like SMALLERTHAN or RED. Additionally to the name of the predicate, one has to append the arity with a leading '^'. To summarize for one example: SMALLERTHAN^2 refers to one and only one predicate.</li>
+					<li><b>Notes for the syntactical level:</b> To refer to a predicate we need unambigious names. Our language only allows uppercase predicate names like SMALLERTHAN or RED. Additionally to the name of the predicate, one has to append the arity with a leading '^'. To summarize for one example: SMALLERTHAN^2 refers to one and only one predicate whose extension is a set of lists of size 2.</li>
 					<li><b>General Note:</b> If you create a predicate, the system automatically creates an empty extension for each world. You can modify them later in the World-View.</li>
 				</ul>						  </div>
 			<g:HorizontalPanel ui:field="predToolBox"

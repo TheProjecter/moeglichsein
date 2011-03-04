@@ -2,10 +2,6 @@
 <module rename-to='mmr'>
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User'/>
-  <!-- Include GWTUpload library -->   
-  <inherits name="gwtupload.GWTUpload"/>   
-  <!-- Load dinamically predefined styles in the library when the application starts -->
-  <stylesheet src="Upload.css"/> 
 
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->

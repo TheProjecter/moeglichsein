@@ -3,6 +3,7 @@ package at.ac.univie.philo.mmr.client.gui;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import at.ac.univie.philo.mmr.shared.exceptions.IndividuumDoesNotExistExcetion;
 import at.ac.univie.philo.mmr.shared.expressions.Predicate;
@@ -31,6 +32,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -365,7 +367,74 @@ public class WorldDetailsForm extends Composite {
 		@Override
 		public void onClick(ClickEvent event) {
 			if (isLabelActive(labelAddExtensionElement)) {
-				Window.alert("add extensionelement");
+				Entry<Predicate, HashSet<ArrayList<Individual>>> selection = model.getSelectedExtension();
+				final ArrayList<Individual> selectedExtensionElement = model.getSelectedExtensionElement();
+				final Predicate selectedPred = selection.getKey();
+				final int arity = selectedPred.getArity();
+				final HashSet<ArrayList<Individual>> extensionElements = selection.getValue();
+				Set<Individual> allIndividuals = parentWidget.getReferenceUniverse().getIndividuals();
+				
+				if (selectedPred != null) {				
+					final DialogBox db = new DialogBox(true);
+					db.setText("Add Extension Element to "+selectedPred.toString());
+					db.setAnimationEnabled(true);
+					
+					VerticalPanel vp = new VerticalPanel();
+					vp.setSpacing(10);
+					vp.setStyleName(style.distance());
+					HTMLPanel explain = new HTMLPanel("<div></div>");
+					
+					Label tip = new Label("Select an Individual for each parameter:");
+					final Grid grid = new Grid(arity, 2);
+					grid.setStyleName(style.grid());
+					//for each param one row
+					for (int i=0; i<arity; i++) {
+						grid.setWidget(i, 0, new Label((i+1)+"."));
+						grid.setWidget(i, 1, new ObjectDropBox<Individual>(allIndividuals));					
+					}
+					grid.setCellSpacing(10);
+					HorizontalPanel buttonPanel = new HorizontalPanel();
+					Button create = new Button("Create");
+					create.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							//assemble extensionElement
+							ArrayList<Individual> extensionElement= new ArrayList<Individual>();
+							for (int i=0; i<arity; i++) {
+								ObjectDropBox<Individual> iSelector = (ObjectDropBox<Individual>)grid.getWidget(i, 1);
+								Individual selectedIndividual = iSelector.getSelectedObject();
+								if (selectedIndividual != null) {
+									extensionElement.add(selectedIndividual);
+								}
+							}
+							//update Extension
+							world.extendExtension(extensionElement, selectedPred);
+							updateModel();
+							db.hide();
+						}
+					});
+					Button abort = new Button("Abort");
+					abort.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							db.hide();
+						}
+					});
+					buttonPanel.add(create);
+					buttonPanel.add(abort);
+					buttonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+					buttonPanel.setSpacing(10);
+					
+					vp.add(explain);
+					vp.add(tip);
+					vp.add(grid);
+					vp.add(buttonPanel);
+					db.add(vp);
+					db.center();
+					db.show();
+				}
 			}
 		}
 	};

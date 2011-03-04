@@ -43,4 +43,9 @@ public class Predicate extends Symbol implements IsSerializable {
 		}
 	}
 	
+	@Override
+	public String toString() {
+		return index == 0 ? name+"^"+arity : name+"^"+arity+"_"+index;
+	}
+	
 }

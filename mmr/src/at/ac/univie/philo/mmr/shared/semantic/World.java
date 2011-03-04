@@ -129,7 +129,7 @@ public class World {
 	 * @param predicates Every's predicate-extension will be enriched with the individual a.
 	 * @throws IndividuumDoesNotExistExcetion when the individuum a does not exist in this world.
 	 */
-	public void extendExtension(ArrayList<Individual> indilist, Predicate...predicates ) throws IndividuumDoesNotExistExcetion {
+	public void extendExtension(ArrayList<Individual> indilist, Predicate...predicates ) {
 		if (predicates != null) {
 			HashSet<ArrayList<Individual>> indiset = new HashSet<ArrayList<Individual>>();
 			indiset.add(indilist);

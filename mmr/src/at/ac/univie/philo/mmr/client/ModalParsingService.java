@@ -6,6 +6,7 @@ import at.ac.univie.philo.mmr.shared.expressions.Expression;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+
 /**
  * The client side stub for the RPC service.
  */
@@ -13,5 +14,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface ModalParsingService extends RemoteService {
 	Expression parse(String expression) throws ExpressionParsingException;
 	Dummy dummy(Dummy d);
+	Void sendReport(String category, String question, String contact) throws RuntimeException;
 //	List<Image> retrieveImages();
 }
