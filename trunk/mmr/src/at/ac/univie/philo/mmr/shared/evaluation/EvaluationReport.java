@@ -63,8 +63,12 @@ public class EvaluationReport implements IsSerializable{
 	 * @return the EvaluationResult for the rootExpression for the given World w
 	 * @throws EvaluationException
 	 */
-	public EvaluationResult getResult(World w) throws EvaluationException {
-		return getResult(w, rootExpression);
+	public EvaluationResult getResult(World w) {
+		try {
+			return getResult(w, rootExpression);
+		} catch (EvaluationException e) {
+			return null;
+		}
 	}
 
 	private void checkInputParams(World w, Expression expr) throws EvaluationException {
@@ -75,4 +79,9 @@ public class EvaluationReport implements IsSerializable{
 			throw new EvaluationException("World "+w.getName()+" is not included in Universe "+universe.getName());
 		}
 	}
+	
+	public Expression getRootExpression() {
+		return rootExpression;
+	}
+	
 }

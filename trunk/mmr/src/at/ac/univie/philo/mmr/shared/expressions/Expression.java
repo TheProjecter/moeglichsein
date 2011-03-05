@@ -1,7 +1,8 @@
 package at.ac.univie.philo.mmr.shared.expressions;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -72,6 +73,14 @@ public abstract class Expression implements IsSerializable {
 			}
 		}
 		return false;
+	}
+
+	public List<Expression> getChildExpressions() {
+		ArrayList<Expression> res = new ArrayList<Expression>();
+		for (Expression expr : operands) {
+			res.add(expr); 
+		}
+		return res;
 	}
 	
 }
