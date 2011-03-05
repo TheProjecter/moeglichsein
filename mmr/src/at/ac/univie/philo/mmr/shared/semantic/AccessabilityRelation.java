@@ -6,13 +6,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import at.ac.univie.philo.mmr.shared.exceptions.ConstraintViolationException;
 
 
 /**
  * The Class AccessabilityRelation uses a Graph implementation to represent the accessability relation between possible worlds.
  */
-public class AccessabilityRelation {
+public class AccessabilityRelation implements IsSerializable {
 
 	/** The graph. A world represents a node. */
 	private HashMap<World, HashSet<World>> accessMap;

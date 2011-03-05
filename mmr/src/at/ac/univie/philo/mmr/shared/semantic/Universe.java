@@ -12,6 +12,8 @@ import java.util.Map.Entry;
 
 import org.junit.Assert;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import at.ac.univie.philo.mmr.shared.exceptions.ConstraintViolationException;
 import at.ac.univie.philo.mmr.shared.exceptions.IndividuumDoesNotExistExcetion;
 import at.ac.univie.philo.mmr.shared.expressions.Constant;
@@ -20,7 +22,7 @@ import at.ac.univie.philo.mmr.shared.expressions.Predicate;
 /**
  * The Class Universe is the main class for working with this API. Nearly every other Entitiy-Class is used here.
  */
-public class Universe {
+public class Universe implements IsSerializable {
 
 	/** The name. */
 	private String name;
@@ -33,6 +35,13 @@ public class Universe {
 	private HashSet<Predicate> predicates;
 	
 	private HashSet<Individual> individuals;
+	
+	/**
+	 * Dummy Constructor for GWT Serialization. Don't use it yourself!
+	 */
+	public Universe() {
+		
+	}
 	
 	/**
 	 * Instantiates a new universe with a certain name.

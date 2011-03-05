@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+import at.ac.univie.philo.mmr.shared.evaluation.EvaluationResult;
 import at.ac.univie.philo.mmr.shared.exceptions.IndividuumDoesNotExistExcetion;
 import at.ac.univie.philo.mmr.shared.exceptions.PredicateNotExistsException;
 import at.ac.univie.philo.mmr.shared.expressions.Constant;
@@ -15,13 +18,12 @@ import at.ac.univie.philo.mmr.shared.expressions.FunctionExpression;
 import at.ac.univie.philo.mmr.shared.expressions.Predicate;
 import at.ac.univie.philo.mmr.shared.expressions.TruthExpression;
 import at.ac.univie.philo.mmr.shared.visitors.CommentPrinter;
-import at.ac.univie.philo.mmr.shared.visitors.EvaluationResult;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class World. It stores every information of one (possible) world.
  */
-public class World {
+public class World implements IsSerializable{
 
 	/** The name of the world. */
 	private String name;
@@ -34,6 +36,13 @@ public class World {
 	
 	/** Link to the corresponding Universe */
 	private Universe universe = null;
+	
+	/**
+	 * Dummy Constructor for GWT Serialization. Don't use it yourself!
+	 */
+	public World() {
+		
+	}
 	
 	/**
 	 * Instantiates a new world.
@@ -380,6 +389,11 @@ void overwriteExtension(HashSet<ArrayList<Individual>> indilist, Predicate...pre
 					this.inventory.equals(otherWorld.inventory);
 		}
 		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return name.hashCode();
 	}
 	
 	public String getString() {

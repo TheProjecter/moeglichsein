@@ -72,10 +72,11 @@ public class IndividualDetailsForm extends Composite {
 		changeImage.setTitle("Change the current icon by uploading/selecting another one.");
 		changeImage.addClickHandler(changeIconClickHandler);
 		
-		Image icon = i.getIcon();
-		if (icon == null) {
-			icon = new Image(res.defaultIndividual());
+		String imageUrl = i.getImageUrl();
+		if (imageUrl == null) {
+			imageUrl = res.defaultIndividual().getURL();
 		}
+		Image icon = new Image(imageUrl);
 		icon.addClickHandler(changeIconClickHandler);
 		
 		indiIconHolder.add(icon);

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+import at.ac.univie.philo.mmr.shared.evaluation.EvaluationResult;
 import at.ac.univie.philo.mmr.shared.exceptions.NotASentenceException;
 import at.ac.univie.philo.mmr.shared.expressions.ConstantExpression;
 import at.ac.univie.philo.mmr.shared.expressions.Expression;
@@ -14,7 +15,6 @@ import at.ac.univie.philo.mmr.shared.expressions.VariableExpression;
 import at.ac.univie.philo.mmr.shared.semantic.Individual;
 import at.ac.univie.philo.mmr.shared.semantic.Universe;
 import at.ac.univie.philo.mmr.shared.semantic.World;
-import at.ac.univie.philo.mmr.shared.visitors.EvaluationResult;
 import at.ac.univie.philo.mmr.shared.visitors.ExpressionEvaluationVisitor;
 
 public class AllQuantor implements IQuantor, IsSerializable {

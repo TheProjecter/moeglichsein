@@ -61,5 +61,17 @@ public abstract class Expression implements IsSerializable {
 	public Expression myClone() {
 		return this;
 	}
+
+	public boolean hasSubExpression(Expression expr) {
+		if (this.equals(expr)) {
+			return true;
+		}
+		for(Expression e : operands) {
+			 if (e.hasSubExpression(expr)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }

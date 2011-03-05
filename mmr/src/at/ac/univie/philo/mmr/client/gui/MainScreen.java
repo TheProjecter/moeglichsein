@@ -6,7 +6,11 @@ package at.ac.univie.philo.mmr.client.gui;
 import at.ac.univie.philo.mmr.client.Dummy;
 import at.ac.univie.philo.mmr.client.ModalParsingService;
 import at.ac.univie.philo.mmr.client.ModalParsingServiceAsync;
+import at.ac.univie.philo.mmr.shared.evaluation.EvaluationReport;
+import at.ac.univie.philo.mmr.shared.evaluation.EvaluationResult;
 import at.ac.univie.philo.mmr.shared.examples.UniverseFactory;
+import at.ac.univie.philo.mmr.shared.exceptions.EvaluationException;
+import at.ac.univie.philo.mmr.shared.exceptions.NotASentenceException;
 import at.ac.univie.philo.mmr.shared.expressions.Expression;
 import at.ac.univie.philo.mmr.shared.semantic.Individual;
 import at.ac.univie.philo.mmr.shared.semantic.Universe;
@@ -91,7 +95,7 @@ public class MainScreen extends Composite {
 		    String mouseover();
 			String distance();
 			String grid();
-		  }
+	}
 
 		 @UiField 
 		 DetailStyle style;
@@ -465,12 +469,12 @@ public class MainScreen extends Composite {
 				sendButton.setEnabled(false);
 				textToServerLabel.setText(textToServer);
 				serverResponseLabel.setText("");
-				parsingService.parse(textToServer,
-						new AsyncCallback<Expression>() {
+				parsingService.parse(textToServer, referenceUniverse,
+						new AsyncCallback<EvaluationReport>() {
 							public void onFailure(Throwable caught) {
 								// Show the RPC error message to the user
 								dialogBox
-										.setText("Parser Check (World: "+selectedWorld.getName()+") - Failure");
+										.setText("Evaluation (World: "+selectedWorld.getName()+") - Failure");
 								serverResponseLabel
 										.addStyleName("serverResponseLabelError");
 								serverResponseLabel.setHTML(caught.getMessage());
@@ -479,15 +483,30 @@ public class MainScreen extends Composite {
 							}
 
 							@Override
-							public void onSuccess(Expression result) {
-								dialogBox.setText("Parser Check (World: "+selectedWorld.getName()+")");
-								serverResponseLabel
-										.removeStyleName("serverResponseLabelError");
+							public void onSuccess(EvaluationReport result) {
+								dialogBox.setText("Evaluation (World: "+selectedWorld.getName()+")");
 								
-								if (result != null) {
-									serverResponseLabel.setHTML("<br/>Expression parsed successfully. Variables: "+result.allVariables()+" (Free Variables: "+result.freeVariables()+" ).<br/>");
+								if (result != null) {					
+									EvaluationResult evalResult;
+									try {
+										
+										evalResult = result.getResult(selectedWorld);
+										serverResponseLabel.removeStyleName("serverResponseLabelError");
+										serverResponseLabel.setHTML("<br/>"+evalResult.getValue()+"<br/>");	
+										
+									} catch (EvaluationException e) {
+										
+										serverResponseLabel.addStyleName("serverResponseLabelError");
+										serverResponseLabel.setHTML("<div>"+e.toString()+"</div>");
+										
+									}catch (NotASentenceException e) {
+										
+										serverResponseLabel.addStyleName("serverResponseLabelError");
+										serverResponseLabel.setHTML("<div>The expression you typed does not evaluate to a TruthState: "+e.toString()+"</div>");
+									}
 								} else {
-									serverResponseLabel.setHTML("<br/>Not parsed successfull.<br/>");
+									serverResponseLabel.addStyleName("serverResponseLabelError");
+									serverResponseLabel.setHTML("<br/>Evaluation failed.<br/>");
 								}
 								
 								dialogBox.center();
