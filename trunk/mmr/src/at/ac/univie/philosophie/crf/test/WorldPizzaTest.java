@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Image;
 
 
 import at.ac.univie.philo.mmr.server.parsetree.ModallogicParser;
+import at.ac.univie.philo.mmr.shared.evaluation.EvaluationResult;
 import at.ac.univie.philo.mmr.shared.exceptions.ConstraintViolationException;
 import at.ac.univie.philo.mmr.shared.exceptions.IndividuumDoesNotExistExcetion;
 import at.ac.univie.philo.mmr.shared.exceptions.NotASentenceException;
@@ -29,7 +30,6 @@ import at.ac.univie.philo.mmr.shared.semantic.AccessabilityConstraint;
 import at.ac.univie.philo.mmr.shared.semantic.Individual;
 import at.ac.univie.philo.mmr.shared.semantic.Universe;
 import at.ac.univie.philo.mmr.shared.semantic.World;
-import at.ac.univie.philo.mmr.shared.visitors.EvaluationResult;
 import at.ac.univie.philo.mmr.shared.visitors.ExpressionEvaluationVisitor;
 
 
@@ -84,20 +84,26 @@ public class WorldPizzaTest extends TestCase {
 		parser = new ModallogicParser();
 		
 		//setup some icons (null for now)
-		Image ico1 = null;
-		Image ico2 = null;
-		Image ico3 = null;
+		Image ico1 = new Image("http://www.buehne-pepperoni.de/skin/images/pepperoni_logo.gif");
+		Image ico2 = new Image("http://www.grundschulmaterial.de/inhalte/de/Klasse14/Deutsch/Klasse%201/Anlautbilder/K-P/PRV-Mais-98384.jpg");
+		Image ico3 = new Image("http://www.grundschulmaterial.de/inhalte/de/Klasse14/Deutsch/Klasse%201/Anlautbilder/K-P/PRV-Mais-98384.jpg");
+
 	
 		// #########################################################
 		//                 setup some individuals
 		// #########################################################
 		
-		a1Pepperoni = new Individual("Pepperoni",ico1);
-		a2Champignon = new Individual("Champignon",ico1);
-		a3Tomatoe = new Individual("Tomatoe",ico2);
-		a4Capres = new Individual("Capres",ico3);
-		a5Mais = new Individual("Mais",ico3);
-		a6Salami = new Individual("Salami",ico1);
+
+		// #########################################################
+		// setup some individuals
+		// #########################################################
+
+		a1Pepperoni = new Individual("Pepperoni", ico1.getUrl());
+		a2Champignon = new Individual("Champignon", ico1.getUrl());
+		a3Tomatoe = new Individual("Tomatoe", ico2.getUrl());
+		a4Capres = new Individual("Capres", ico3.getUrl());
+		a5Mais = new Individual("Mais", ico3.getUrl());
+		a6Salami = new Individual("Salami", ico1.getUrl());
 		
 		// #########################################################
 		//                 setup some constants

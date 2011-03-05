@@ -1,26 +1,24 @@
 package at.ac.univie.philo.mmr.server;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
-import at.ac.univie.philo.mmr.client.Dummy;
-import at.ac.univie.philo.mmr.client.ModalParsingService;
-import at.ac.univie.philo.mmr.server.parsetree.ModallogicParser;
-import at.ac.univie.philo.mmr.shared.exceptions.ExpressionParsingException;
-import at.ac.univie.philo.mmr.shared.expressions.Expression;
-
-import com.google.appengine.api.mail.MailService;
-import com.google.appengine.api.mail.MailServiceFactory;
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 import java.util.Properties;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import at.ac.univie.philo.mmr.client.Dummy;
+import at.ac.univie.philo.mmr.client.ModalParsingService;
+import at.ac.univie.philo.mmr.server.parsetree.ModallogicParser;
+import at.ac.univie.philo.mmr.shared.evaluation.EvaluationReport;
+import at.ac.univie.philo.mmr.shared.exceptions.ExpressionParsingException;
+import at.ac.univie.philo.mmr.shared.expressions.Expression;
+import at.ac.univie.philo.mmr.shared.semantic.Universe;
+
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
  * The server side implementation of the RPC service.
@@ -29,7 +27,7 @@ import javax.mail.internet.MimeMessage;
 public class ModalParsingServiceImpl extends RemoteServiceServlet implements
 		ModalParsingService {
 
-	public Expression parse(String input) throws ExpressionParsingException {
+	public EvaluationReport parse(String input, Universe universe) throws ExpressionParsingException {
 		// Verify that the input is valid. 
 //		if (!FieldVerifier.isValidName(input)) {
 //			// If the input is not valid, throw an IllegalArgumentException back to
@@ -46,7 +44,9 @@ public class ModalParsingServiceImpl extends RemoteServiceServlet implements
 		userAgent = escapeHtml(userAgent);
 		ModallogicParser parser = new ModallogicParser();
 		Expression exp = parser.parse(input);
-		return exp;
+		
+		EvaluationReport report = new EvaluationReport(exp, universe);
+		return report;
 	}
 
 	/**

@@ -200,14 +200,14 @@ public final class UniverseTreeModel implements TreeViewModel {
 	          @Override
 	          public void render(Context context, Individual individual, SafeHtmlBuilder sb) {
 	            if (individual != null) {
-	            		Image icon = individual.getIcon();
+	            		String imageUrl = individual.getImageUrl();
 //	            		icon.setHeight("10px");
 //	            		icon.setWidth("10px");
 //	            		icon.setPixelSize(10, 10);
 //	            		icon.setSize("10px", "10px");
 	            		
 		              sb.appendHtmlConstant("<table><tr><td>");
-		              sb.appendHtmlConstant("<img width='30px' src='"+icon.getUrl()+"'></img>").appendEscaped(" ");
+		              sb.appendHtmlConstant("<img width='30px' src='"+imageUrl+"'></img>").appendEscaped(" ");
 		              sb.appendHtmlConstant("</td><td>");
 		              sb.appendEscaped(individual.getName());
 		              sb.appendHtmlConstant("</td></tr></table>");

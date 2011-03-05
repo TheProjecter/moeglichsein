@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import at.ac.univie.philo.mmr.shared.evaluation.Comment;
+import at.ac.univie.philo.mmr.shared.evaluation.EvaluationResult;
 import at.ac.univie.philo.mmr.shared.exceptions.NotAExtensionResultException;
 import at.ac.univie.philo.mmr.shared.exceptions.NotASentenceException;
 import at.ac.univie.philo.mmr.shared.expressions.Expression;
@@ -13,7 +15,6 @@ import at.ac.univie.philo.mmr.shared.semantic.Individual;
 import at.ac.univie.philo.mmr.shared.semantic.Universe;
 import at.ac.univie.philo.mmr.shared.semantic.World;
 import at.ac.univie.philo.mmr.shared.visitors.CommentPrinter;
-import at.ac.univie.philo.mmr.shared.visitors.EvaluationResult;
 import at.ac.univie.philo.mmr.shared.visitors.ExpressionEvaluationVisitor;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -28,9 +29,8 @@ public class PossibilityOperator implements IModalOperator, IsSerializable {
 		//if there are free variables in it, we merge the results together.
 		boolean hasFreeVars = false;
 		HashMap<World,HashSet<ArrayList<Individual>>> resultingSequences = new HashMap<World, HashSet<ArrayList<Individual>>>();
-		try {
-			CommentPrinter.print("Diamond: We have to find at least one World which is accessible from World "+ initialWorld.getName()+ " and in this world the Scope holds: "+scope);
-			
+		Comment comment = new Comment("Diamond: We have to find at least one World which is accessible from World "+ initialWorld.getName()+ " and in this world the Scope holds: "+scope);
+		try {	
 			for (World w : universe.getAccessibleWorlds(initialWorld)) {
 				ExpressionEvaluationVisitor visitor = new ExpressionEvaluationVisitor(w, universe);
 				scope.accept(visitor);
@@ -38,13 +38,13 @@ public class PossibilityOperator implements IModalOperator, IsSerializable {
 				
 				if(scopeResult.isSentence()) {
 					if (scopeResult.getValue().getValue().equals(TruthValue.TRUE)) {
-						CommentPrinter.print("Diamond: In World "+w.getName()+" the Scope "+scope+" does hold. That means we found an example and the Diamond-Expression evaluates to true.");
+						comment.addLine("Diamond: In World "+w.getName()+" the Scope "+scope+" does hold. That means we found an example and the Diamond-Expression evaluates to true.");
 						if(hasFreeVars) {
-							return new EvaluationResult(resultingSequences);
+							return new EvaluationResult(resultingSequences, comment);
 						}
-						return new EvaluationResult(new TruthExpression(true));
+						return new EvaluationResult(new TruthExpression(true), comment);
 					} else {
-						CommentPrinter.print("Diamond: In World "+w.getName()+" the Scope "+scope+" does not hold. Lets look in the other worlds.");
+						comment.addLine("Diamond: In World "+w.getName()+" the Scope "+scope+" does not hold. Lets look in the other worlds.");
 					}
 				} else {
 					hasFreeVars = true;
@@ -58,8 +58,8 @@ public class PossibilityOperator implements IModalOperator, IsSerializable {
 		}
 		
 
-		CommentPrinter.print("Diamond: We checked for all Worlds that the Scope "+scope+" hold and did not find one. The Possibility-Expression therefore evalutes to false.");
-		return new EvaluationResult(new TruthExpression(false));
+		comment.addLine("Diamond: We checked for all Worlds that the Scope "+scope+" hold and did not find one. The Possibility-Expression therefore evalutes to false.");
+		return new EvaluationResult(new TruthExpression(false), comment);
 	}
 
 	@Override

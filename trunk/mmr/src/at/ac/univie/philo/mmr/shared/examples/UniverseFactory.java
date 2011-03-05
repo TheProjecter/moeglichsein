@@ -66,20 +66,20 @@ public class UniverseFactory {
 	@SuppressWarnings("unchecked")
 	private Universe createPizzaUniverse() {
 		// setup some icons (null for now)
-		Image ico1 = null;
-		Image ico2 = null;
-		Image ico3 = null;
+		Image ico1 = new Image("http://www.buehne-pepperoni.de/skin/images/pepperoni_logo.gif");
+		Image ico2 = new Image("http://www.grundschulmaterial.de/inhalte/de/Klasse14/Deutsch/Klasse%201/Anlautbilder/K-P/PRV-Mais-98384.jpg");
+		Image ico3 = new Image("http://www.grundschulmaterial.de/inhalte/de/Klasse14/Deutsch/Klasse%201/Anlautbilder/K-P/PRV-Mais-98384.jpg");
 
 		// #########################################################
 		// setup some individuals
 		// #########################################################
 
-		Individual a1Pepperoni = new Individual("Pepperoni", ico1);
-		Individual a2Champignon = new Individual("Champignon", ico1);
-		Individual a3Tomatoe = new Individual("Tomatoe", ico2);
-		Individual a4Capres = new Individual("Capres", ico3);
-		Individual a5Mais = new Individual("Mais", ico3);
-		Individual a6Salami = new Individual("Salami", ico1);
+		Individual a1Pepperoni = new Individual("Pepperoni", ico1.getUrl());
+		Individual a2Champignon = new Individual("Champignon", ico1.getUrl());
+		Individual a3Tomatoe = new Individual("Tomatoe", ico2.getUrl());
+		Individual a4Capres = new Individual("Capres", ico3.getUrl());
+		Individual a5Mais = new Individual("Mais", ico3.getUrl());
+		Individual a6Salami = new Individual("Salami", ico1.getUrl());
 
 		// #########################################################
 		// setup some constants

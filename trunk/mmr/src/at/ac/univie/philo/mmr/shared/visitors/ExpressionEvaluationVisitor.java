@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import at.ac.univie.philo.mmr.shared.Constants;
+import at.ac.univie.philo.mmr.shared.evaluation.Comment;
+import at.ac.univie.philo.mmr.shared.evaluation.EvaluationResult;
+import at.ac.univie.philo.mmr.shared.evaluation.EvaluationStorage;
 import at.ac.univie.philo.mmr.shared.exceptions.NotAExtensionResultException;
 import at.ac.univie.philo.mmr.shared.exceptions.NotASentenceException;
 import at.ac.univie.philo.mmr.shared.exceptions.PredicateNotExistsException;
@@ -37,21 +39,23 @@ import at.ac.univie.philo.mmr.shared.semantic.World;
 
 public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 
-	HashMap<Expression,EvaluationResult> cache;
+	EvaluationStorage cache;
 	World initWorld;
 	Universe universe;
 	HashMap<Constant,Individual> constantMap;
+	private Comment errorComment;
 	
 	public ExpressionEvaluationVisitor(World initWorld, Universe universe) {
 		if (initWorld != null && universe != null) {
 			this.initWorld = initWorld;
 			this.universe = universe;
-			cache = new HashMap<Expression, EvaluationResult>();
+			
+			cache = new EvaluationStorage();
+			constantMap = universe.getConstantMap();
+			errorComment = new Comment();
 		} else {
 			throw new IllegalArgumentException("input null");
 		}
-		
-		constantMap = universe.getConstantMap();
 	}
 	
 	private void valid(Expression expression) {
@@ -64,7 +68,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 	public boolean preVisit(Expression expression) {
 		valid(expression);
 		
-		if(cache.containsKey(expression)) {
+		if(cache.hasResult(expression)) {
 			return false;
 		}
 		return true;
@@ -76,34 +80,29 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		Expression left = expression.getLeft();
 		Expression right = expression.getRight();
 		
-		EvaluationResult leftRes = cache.get(left);
-		EvaluationResult rightRes = cache.get(right);
+		EvaluationResult leftRes = cache.getResult(left);
+		EvaluationResult rightRes = cache.getResult(right);
 		
 		
 		if (leftRes != null && rightRes != null) {
 			IBinaryOperator op = expression.getOperator();
 			try {
 				TruthExpression binaryResult = op.evaluate(leftRes.getValue(), rightRes.getValue());
-				cache.put(expression, new EvaluationResult(binaryResult));
-				
-				if (Constants.SHOWEVALSTEPS) {
-					CommentPrinter.print("Left side "+ left.toString() + "evalutes to:" + leftRes.toString());
-					CommentPrinter.print("Right side "+ right.toString() + "evalutes to:" + rightRes.toString());
-					CommentPrinter.print("Result of "+ expression.toString() + "evalutes to:" + binaryResult.toString());
-				}
-				
+				Comment comment = new Comment(leftRes.toString() + " " + op.getName() + " " + rightRes.toString() +" evaluates to: " +binaryResult.toString());
+				cache.addResult(expression, new EvaluationResult(binaryResult, comment));
+							
 			} catch (NotASentenceException e) {
-				throw new RuntimeException("It should not occur that left and right Expressions do not evaluate to a TruthExpression");
+				errorComment.addLine("It should not occur that left or right Expressions of "+expression.toString()+" do not evaluate to a TruthExpression");
 			}
 		} else {
-			throw new RuntimeException("It should not occur that left and right Expressions are not yet evaluated when the BinaryExpression is to be evaluated.");
+			errorComment.addLine("It should not occur that left and right Expressions of "+expression.toString()+" are not yet evaluated when the BinaryExpression is to be evaluated.");
 		}
 		
 		
 	}
 	
 	public EvaluationResult getResultOf(Expression e) {
-		return cache.get(e);
+		return cache.getResult(e);
 	}
 
 	@Override
@@ -117,32 +116,31 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		} else if (qu instanceof AllQuantor) {
 			evalres = evaluateAllExpression(expression);
 		}
-		cache.put(expression, evalres);
+		cache.addResult(expression, evalres);
 	}
 
 	private EvaluationResult evaluateAllExpression(QuantorExpression expression) {
 		Collection<Individual> indis = initWorld.getInventory();
 		VariableExpression v = new VariableExpression(expression.getBoundedVar());
-		if (Constants.SHOWEVALSTEPS) {
-			CommentPrinter.print("We require for all Individuals in World "+initWorld.getName() + " that the expression "+ expression.getScope() +" evaluates to true when replacing the Quantor-Variable "+v.toString()+" with the Individual:");
-		}
+		Comment comment = new Comment("We require for all Individuals a in World "+initWorld.getName() + " that the expression "+ expression.getScope() +" evaluates to true when replacing the Quantor-Variable "+v.toString()+" with Individual a:");
+
 		for (Individual i : indis) {
 			Expression exptemp = expression.getScope().replace(v, new ConstantExpression(i));
 			exptemp.accept(this);
 			EvaluationResult exptempRes = this.getResultOf(exptemp);
 			try {
 				if (exptempRes.getValue().getValue().equals(TruthValue.FALSE)) {
-					CommentPrinter.print("Is it true in World "+initWorld.getName() + " that: "+exptemp.toString()+ " ? No. We found a Counter-Example. So the allquantor-Expression evalutes to false.");
-					return new EvaluationResult(new TruthExpression(false));
+					comment.addLine("Is it true in World "+initWorld.getName() + " that: "+exptemp.toString()+ " ? No. We found a Counter-Example. So the allquantor-Expression evalutes to false.");
+					return new EvaluationResult(new TruthExpression(false), comment);
 				} else {
-					CommentPrinter.print("Is it true in World "+initWorld.getName() + " that: "+exptemp.toString()+ " ? Yes, but we need to check for the other individuals too.");
+					comment.addLine("Is it true in World "+initWorld.getName() + " that: "+exptemp.toString()+ " ? Yes, but we need to check for the other individuals too.");
 				}
 			} catch (NotASentenceException e) {
-				throw new RuntimeException("it should not occur that the evaluation of the scope of a quantor does not evaluate to a sentence. That may imply that we have a free variable and have not dealt with is for now.");
+				errorComment.addLine("It should not occur that evaluation of scope of a quantor does not evaluate to a sentence. That may imply that we have a free variable and have not dealt with is for now.");
 			}
 		}
-		CommentPrinter.print("We did not found any Individual that makes the Scope false. That means, the allquantor-Expression evalutes to true.");	
-		return new EvaluationResult(new TruthExpression(true));
+		comment.addLine("We have not found any Individual that makes the Scope false. That means, the allquantor-Expression evalutes to true.");	
+		return new EvaluationResult(new TruthExpression(true), comment);
 	}
 
 	private EvaluationResult evaluateExistenceExpression(
@@ -151,7 +149,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		//until we found one which evaluates to true
 		Collection<Individual> indis = initWorld.getInventory();
 		VariableExpression v = new VariableExpression(expression.getBoundedVar());
-		CommentPrinter.print("We are looking for at least one Individual in World "+initWorld.getName() + " such that the expression "+ expression.getScope() +" evaluates to true when replacing the Quantor-Variable "+v.toString()+" with the Individual:");	
+		Comment comment = new Comment("We are looking for at least one Individual in World "+initWorld.getName() + " such that the expression "+ expression.getScope() +" evaluates to true when replacing the Quantor-Variable "+v.toString()+" with the Individual:");	
 
 		
 		for (Individual i : indis) {
@@ -160,18 +158,18 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 			EvaluationResult exptempRes = this.getResultOf(exptemp);
 			try {
 				if (exptempRes.getValue().getValue().equals(TruthValue.TRUE)) {
-					CommentPrinter.print("Is it true in World "+initWorld.getName() + " that: "+exptemp.toString()+ " ? Yes. So the quantor-Expression evalutes to true.");	
-					return new EvaluationResult(new TruthExpression(true));
+					comment.addLine("Is it true in World "+initWorld.getName() + " that: "+exptemp.toString()+ " ? Yes. So the quantor-Expression evalutes to true.");	
+					return new EvaluationResult(new TruthExpression(true),comment);
 				} else {
-					CommentPrinter.print("Is it true in World "+initWorld.getName() + " that: "+exptemp.toString()+ " ? No.");	
+					comment.addLine("Is it true in World "+initWorld.getName() + " that: "+exptemp.toString()+ " ? No.");	
 				}
 			} catch (NotASentenceException e) {
-				throw new RuntimeException("it should not occur that the evaluation of the scope of a quantor does not evaluate to a sentence. That may imply that we have a free variable and have not dealt with is for now.");
+				errorComment.addLine("it should not occur that the evaluation of the scope of a quantor does not evaluate to a sentence. That may imply that we have a free variable and have not dealt with is for now.");
 			}
 		}
-		CommentPrinter.print("We did not found an Individual that makes the Scope true. That means, the quantor-Expression evalutes to false.");	
+		comment.addLine("We have not found an Individual that makes the Scope true. That means, the quantor-Expression evalutes to false.");	
 		
-		return new EvaluationResult(new TruthExpression(false));
+		return new EvaluationResult(new TruthExpression(false), comment);
 	}
 
 	@Override
@@ -180,15 +178,15 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		
 		IModalOperator mod = expression.getModalOperator();
 		EvaluationResult exprRes = mod.evaluate(expression.getScope(), universe, initWorld);
-		cache.put(expression, exprRes);
-		CommentPrinter.print("Evaluation of ModalExpression "+expression.toString() +" evaluates to "+exprRes.toString() + " in World "+initWorld.getName()+".");
+		cache.addResult(expression, exprRes);
+//		CommentPrinter.print("Evaluation of ModalExpression "+expression.toString() +" evaluates to "+exprRes.toString() + " in World "+initWorld.getName()+".");
 	}
 
 	@Override
 	public void visit(NegationExpression expression) {
 		valid(expression);
 		Expression position = expression.getOperand(0);
-		EvaluationResult positionRes= cache.get(position);
+		EvaluationResult positionRes= cache.getResult(position);
 		NegationOperator negOp = expression.getOperator();
 	
 		try {
@@ -196,16 +194,16 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 
 				if (positionRes.isSentence()) {
 					TruthExpression truthRes = negOp.evaluate(positionRes.getValue());
-					cache.put(expression, new EvaluationResult(truthRes));
-					CommentPrinter.print("The unnegated Expression " +position.toString() + " has evaluation result: " + positionRes.toString()+" in World "+initWorld.getName());
-					CommentPrinter.print("That means that " +expression.toString() + "evaluates to: " + truthRes.toString() +" in World "+initWorld.getName());
+					
+					Comment comment = new Comment("Negated Expression of " +position.toString() + " evaluates to: " + truthRes.toString() +" in World "+initWorld.getName());
+					cache.addResult(expression, new EvaluationResult(truthRes, comment));
 				} else {
-					CommentPrinter.print("We have to negotiate a set of sequences of possible Assignments because there are free variables involved.");
+					Comment comment = new Comment("We have to negotiate a set of sequences of possible Assignments because there are free variables involved.");
 					HashMap<World,HashSet<ArrayList<Individual>>> complement = getComplementOfSet(positionRes.getResult());
-					cache.put(expression, new EvaluationResult(complement));
+					cache.addResult(expression, new EvaluationResult(complement, comment));
 				}
 		} else {
-			throw new RuntimeException("It should not occur that the child node of the negation expression is not called for evaluation before the neg-expr-node itself.");
+			errorComment.addLine("It should not occur that the child node of the negation expression is not called for evaluation before the neg-expr-node itself.");
 		}
 		} catch (NotASentenceException e) {
 			// does not occur!
@@ -252,14 +250,15 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		
 //		ArrayList<ArrayList<Individual>> resultextension = new ArrayList<ArrayList<Individual>>();
 		ArrayList<Individual> evaluatedTerms = new ArrayList<Individual>();
-		CommentPrinter.print("PredicateExpression "+expression+". We need to evaluate the terms first for the World: "+initWorld.getName()+":");
+		Comment comment = new Comment("PredicateExpression "+expression+". We need to evaluate the terms first for the World: "+initWorld.getName()+":");
 		for(int i=0; i<terms.length; i++) {
-			EvaluationResult res = cache.get(terms[i]);
+			EvaluationResult res = cache.getResult(terms[i]);
 			if (!res.isSentence()) {
 				try {
 					HashSet<ArrayList<Individual>> allmatchingindis = res.getResult(initWorld);
 					if (allmatchingindis == null) {
-						throw new RuntimeException("Null result for Term: "+terms[i]);
+						errorComment.addLine("Null result for Term: "+terms[i]);
+						return;
 					}
 					if (allmatchingindis.size() != 1) {
 						//there are free variables. We have to go to each of them and store the ones which give a true evaluation.
@@ -267,21 +266,19 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 						return;
 					}
 					Individual indi = extractIndividual(allmatchingindis);
-					CommentPrinter.print("Term #"+i+" "+terms[i] +" evaluates to "+indi);
+					comment.addLine("Term #"+i+" "+terms[i] +" evaluates to "+indi);
 					evaluatedTerms.add(i, indi);
 				} catch (NotAExtensionResultException e) {
-					e.printStackTrace();
-					//should not happen.
+					errorComment.addLine(e.toString());
 				}	
 			} else {
-				throw new RuntimeException("Something wrong. The Evaluation of a Term resulted in a TruthValue.");
-				
+				errorComment.addLine("Something wrong. The Evaluation of a Term resulted in a TruthValue.");
+				return;
 			}
 		}
 		
-		EvaluationResult predEval = evaluate(evaluatedTerms, expression.getSymbol(), initWorld);
-		CommentPrinter.print("TermEval finished. PredicateExpression "+expression+" evaluates to "+predEval);
-		cache.put(expression, predEval);
+		EvaluationResult predEval = evaluate(evaluatedTerms, expression.getSymbol(), initWorld, comment);
+		cache.addResult(expression, predEval);
 	}
 	
 	private EvaluationResult evaluatePredicateWithFreeVariables(PredicateExpression expression) {
@@ -295,7 +292,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 			//evaluate all possible PEs
 			for (PredicateExpression pe : allPossiblePredExpressions) {
 				visit(pe);
-				EvaluationResult evalRes = cache.get(pe);
+				EvaluationResult evalRes = cache.getResult(pe);
 				TermExpression[] terms = pe.getTerms();
 				if (evalRes.isSentence()) {
 					ArrayList<Individual> oneAi = new ArrayList<Individual>();
@@ -311,12 +308,12 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 					throw new RuntimeException("it should not happen that after assignment of all free Variable the PredicateExpression is still not a Sentence.");
 				}
 			}
-			return new EvaluationResult(haiResult, initWorld);
+			return new EvaluationResult(haiResult, initWorld, new Comment("Be aware that evaluation of expressions with free Variables is in experimental mode. Don't trust them too much."));
 				
 		} catch ( NotASentenceException e) {
-			e.printStackTrace();
 			//should not happen
-			throw new RuntimeException("it should not happen that after assignment of all free Variable the PredicateExpression is still not a Sentence.");
+			errorComment.addLine("it should not happen that after assignment of all free Variable the PredicateExpression is still not a Sentence.");
+			return null;
 		}
 	}
 
@@ -362,7 +359,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 			if (ai.size() == 1) {
 				return ai.get(0);
 			} else {
-				throw new RuntimeException("I found out that a Term evaluates to more than one Individual. That may imply unbounded (free) variables which are not supported yet.");
+				errorComment.addLine("I found out that a Term evaluates to more than one Individual. That may imply unbounded (free) variables which are not supported yet.");
 			}
 		}
 		return null;
@@ -371,13 +368,13 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 	@Override
 	public void visit(TruthExpression expression) {
 		valid(expression);
-		cache.put(expression, new EvaluationResult(expression));
+		cache.addResult(expression, new EvaluationResult(expression, new Comment("For this expression there is nothing to evaluate.")));
 	}
 
 	@Override
 	public void visit(VariableExpression expression) {
 		valid(expression);
-		CommentPrinter.print("Free variable detected: "+expression.toString());
+		Comment comment = new Comment("Free variable detected: "+expression.toString() +"Be aware that free variable handling is highly experimental.");
 //		CommentPrinter.print("I therefor place every individual of the inital world as possible result.");
 		//TODO! We have to make sure that in every world in this universe we have the same individuals
 		Collection<Individual> indis = initWorld.getInventory();
@@ -387,7 +384,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 			oneIndiList.add(indi);
 			allIndividuals.add(oneIndiList);
 		}
-		cache.put(expression, new EvaluationResult(allIndividuals, initWorld));
+		cache.addResult(expression, new EvaluationResult(allIndividuals, initWorld, comment));
 	}
 
 	@Override
@@ -398,7 +395,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		Individual i = evaluate(expression);
 		ai.add(i);
 		hai.add(ai);
-		cache.put(expression, new EvaluationResult(hai, initWorld));
+		cache.addResult(expression, new EvaluationResult(hai, initWorld, new Comment("Constant directly maps to Individual "+i.getName())));
 //		CommentPrinter.print("Constant in World "+initWorld.getName()+" maps to Individual "+i.toString());
 	}
 
@@ -406,8 +403,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 	public void visit(FunctionExpression expression) {
 		valid(expression);
 		EvaluationResult result = evaluate(expression);
-		cache.put(expression, result);
-		CommentPrinter.print("FunctionExpression "+expression+" evaluates to "+result);
+		cache.addResult(expression, result);
 	}
 	
 	/**
@@ -417,17 +413,24 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 	 * @param p the predicate
 	 * @return true, iff the sequence is defined in the extension of p. false, otherwise or if the predicate does not exist or the arities are different.
 	 */
-	public EvaluationResult evaluate(ArrayList<Individual> indilist, Predicate p, World w) {
+	public EvaluationResult evaluate(ArrayList<Individual> indilist, Predicate p, World w, Comment comment) {
+		
+		TruthExpression result = null;
 		if (indilist != null && p != null) {
 			try {
 				if (w.getExtension(p).contains(indilist)) {
-					return new EvaluationResult(new TruthExpression(true));
+					result = new TruthExpression(true);
 				} else {
-					return new EvaluationResult(new TruthExpression(false));	
+					result = new TruthExpression(false);	
 				}						
 			} catch (PredicateNotExistsException e) {
-				return new EvaluationResult(new TruthExpression(false));
+				//should not occur because every predicate 'exists' in each world
+				result = new TruthExpression(false);
+				comment.addLine("All Terms evaluated. But Predicate does not 'exist' in World " +w.getName()+ ". Therefore evaluates to "+result.toString());
+				return new EvaluationResult(result, comment);
 			}
+			comment.addLine("All Terms evaluated. Predicate "+p.toString()+" evaluates to "+result.toString());
+			return new EvaluationResult(result, comment);
 		} else {
 			throw new IllegalArgumentException("Input check failed because Individual or Predicate is null.");
 		}
@@ -447,7 +450,20 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 	}
 	
 	public EvaluationResult evaluate(FunctionExpression exp) {
-		throw new RuntimeException("Functions not yet supported.");
+		errorComment.addLine("Functions are not yet supported. Thus, FunctionExpression "+exp+" cannot be evaluated.");
+		return null;
+	}
+	
+	/**
+	 * The storage contains all intermediate results of the evaluated expression
+	 * @return
+	 */
+	public EvaluationStorage getEvaluationStorage() {
+		return this.cache;
+	}
+	
+	public Comment getErrors() {
+		return errorComment;
 	}
 
 }

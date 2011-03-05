@@ -292,7 +292,7 @@ public class PredicateExtensionsModel implements TreeViewModel {
 		public void render(com.google.gwt.cell.client.Cell.Context context,
 				Individual value, SafeHtmlBuilder sb) {	
 
-            sb.appendHtmlConstant("<img width='30px' src='"+value.getIcon().getUrl()+"'></img>").appendEscaped(" ");
+            sb.appendHtmlConstant("<img width='30px' src='"+value.getImageUrl()+"'></img>").appendEscaped(" ");
 			sb.appendEscaped(value.toString());
 			}
 	}
