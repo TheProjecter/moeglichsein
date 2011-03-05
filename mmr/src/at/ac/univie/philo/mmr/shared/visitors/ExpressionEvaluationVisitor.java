@@ -110,7 +110,6 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		valid(expression);
 		IQuantor qu = expression.getQuantor();
 		EvaluationResult evalres = null;
-		CommentPrinter.print("Evaluation of QuantorExpression "+expression.toString()+" :");
 		if (qu instanceof ExistenceQuantor) {
 			evalres = evaluateExistenceExpression(expression);
 		} else if (qu instanceof AllQuantor) {

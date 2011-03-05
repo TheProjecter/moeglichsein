@@ -123,6 +123,37 @@
 				font-size: x-large;
 			}
 			
+			.mainExpression {
+				padding-top:5px;
+				padding-bottom: 5px;
+				text-align: center;
+				text-shadow: white;
+				font-weight: bold;
+				background: skyblue;
+				border: 1px solid black;
+				border-collapse: collapse;
+				vertical-align: middle;
+			}
+			
+			.mainResult {
+				padding-top:5px;
+				padding-bottom: 5px;
+				text-align: center;
+				text-shadow: white;
+				font-weight: bold;
+
+				border: 1px solid black;
+				border-collapse: collapse;
+				vertical-align: middle;
+			}
+			
+			.truth {
+				background: lightgreen;
+			}
+			
+			.falseness {
+				background: #f00000;
+			}
 			.grid {
 				margin-top: 10px;
 				margin-left: 10px;

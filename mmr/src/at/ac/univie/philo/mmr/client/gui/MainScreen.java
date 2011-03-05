@@ -73,7 +73,7 @@ public class MainScreen extends Composite {
 	*/
 	interface MainScreenUiBinder extends UiBinder<Widget, MainScreen> {
 	}
-
+	
 	/**
 	 * The message displayed to the user when the server cannot be reached or
 	 * returns an error.
@@ -480,38 +480,15 @@ public class MainScreen extends Composite {
 								serverResponseLabel.setHTML(caught.getMessage());
 								dialogBox.center();
 								closeButton.setFocus(true);
+								sendButton.setEnabled(true);
 							}
 
 							@Override
 							public void onSuccess(EvaluationReport result) {
-								dialogBox.setText("Evaluation (World: "+selectedWorld.getName()+")");
-								
-								if (result != null) {					
-									EvaluationResult evalResult;
-									try {
-										
-										evalResult = result.getResult(selectedWorld);
-										serverResponseLabel.removeStyleName("serverResponseLabelError");
-										serverResponseLabel.setHTML("<br/>"+evalResult.getValue()+"<br/>");	
-										
-									} catch (EvaluationException e) {
-										
-										serverResponseLabel.addStyleName("serverResponseLabelError");
-										serverResponseLabel.setHTML("<div>"+e.toString()+"</div>");
-										
-									}catch (NotASentenceException e) {
-										
-										serverResponseLabel.addStyleName("serverResponseLabelError");
-										serverResponseLabel.setHTML("<div>The expression you typed does not evaluate to a TruthState: "+e.toString()+"</div>");
-									}
-								} else {
-									serverResponseLabel.addStyleName("serverResponseLabelError");
-									serverResponseLabel.setHTML("<br/>Evaluation failed.<br/>");
-								}
-								
-								dialogBox.center();
-								closeButton.setFocus(true);
+								showEvaluationResults(result, selectedWorld);
+								sendButton.setEnabled(true);
 							}
+								
 						});
 			}
 		}
@@ -579,6 +556,16 @@ public class MainScreen extends Composite {
 				}
 			}
 		}
+	}
+	
+	private void showEvaluationResults(
+			EvaluationReport result, World selectedWorld) {
+		Widget widget = new EvaluationResultsForm(result, selectedWorld, this);
+		mainPanel.remove(0);
+		mainPanel.add(widget);
+		widget.setWidth("100%");
+		widget.setHeight("100%");
+		
 	}
 
 	public UniverseTreeModel getUniverseTree() {

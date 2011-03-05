@@ -1,0 +1,44 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+	<ui:style
+		type="at.ac.univie.philo.mmr.client.gui.EvaluationResultsForm.DetailStyle"
+		src="defaultStyle.css">
+	</ui:style>
+	
+	<g:VerticalPanel ui:field='verticalPanel'>
+		<g:HTMLPanel ui:field='headPanel'>
+			<h1 class="{style.heading}">
+				Evaluation Results
+			</h1>
+		</g:HTMLPanel>
+		<g:HorizontalPanel ui:field='mainExpressionPanel'>
+			<g:Label ui:field='mainExpressionLabel'>Expression:</g:Label>
+			<g:Label ui:field='mainExpressionText' addStyleNames='{style.mainExpression}'>none</g:Label>
+		</g:HorizontalPanel>
+				<g:HorizontalPanel ui:field='mainResultPanel'>
+			<g:Label ui:field='mainResultLabel'>Result:</g:Label>
+			<g:Label ui:field='mainResultText' addStyleNames='{style.mainResult}'>none</g:Label>
+		</g:HorizontalPanel>
+		
+		<g:HorizontalPanel ui:field='detailsContainer'>
+			<c:CellTree ui:field='parsingTree'>
+			</c:CellTree>
+			<g:VerticalPanel ui:field='detailsInfoContainer'>
+				<g:SimplePanel ui:field='worldSelectionContainer'>
+				</g:SimplePanel>
+				<g:VerticalPanel ui:field='detailsCommentsContainer'>
+					<g:HorizontalPanel ui:field='inContainer' spacing='10'>
+						<g:Label ui:field='subExpressionLabel'>Expression:</g:Label>
+						<g:Label ui:field='subExpressionText'>none</g:Label>
+					</g:HorizontalPanel>
+					<g:HorizontalPanel ui:field='outContainer' spacing='10'>
+						<g:Label ui:field='resultExpressionLabel'>Result:</g:Label>
+						<g:Label ui:field='resultExpressionText'>none</g:Label>
+					</g:HorizontalPanel>
+				</g:VerticalPanel>			
+			</g:VerticalPanel>
+		</g:HorizontalPanel>
+	</g:VerticalPanel>
+</ui:UiBinder> 
