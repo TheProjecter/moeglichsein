@@ -43,9 +43,14 @@ public class ModalParsingServiceImpl extends RemoteServiceServlet implements
 		input = escapeHtml(input);
 		userAgent = escapeHtml(userAgent);
 		ModallogicParser parser = new ModallogicParser();
-		Expression exp = parser.parse(input);
-		
-		EvaluationReport report = new EvaluationReport(exp, universe);
+		Expression exp;
+		EvaluationReport report;
+		try {
+			exp = parser.parse(input);
+			report = new EvaluationReport(exp, universe);
+		} catch(Exception e) {
+			throw new ExpressionParsingException(e);
+		}
 		return report;
 	}
 

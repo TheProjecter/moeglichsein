@@ -10,7 +10,9 @@ import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel.*;
 import com.google.gwt.view.client.TreeViewModel;
 import com.google.gwt.view.client.TreeViewModel.DefaultNodeInfo;
 
@@ -25,9 +27,23 @@ public class ParseTreeModel implements TreeViewModel {
 		if (rootExpression != null && parentWidget != null) {
 			this.rootExpression = rootExpression;
 			this.parentWidget = parentWidget;
+			setupSelectionChangeHandler();
 		}
 	}
 	
+	private void setupSelectionChangeHandler() {
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				Expression expr = selectionModel.getSelectedObject(); 
+				if (expr != null) {
+					parentWidget.showEvalDetails(expr);
+				}
+			}
+		});
+	}
+
 	@Override
 	public <T> NodeInfo<?> getNodeInfo(T value) {
 		if (value == null) {

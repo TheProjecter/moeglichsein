@@ -40,4 +40,16 @@ public class ObjectDropBox<T> extends ListBox {
 		}
 		return null;
 	}
+
+	public boolean selectObject(T object) {
+		if (objects.contains(object)) {
+			for(int i=0; i<objects.size(); i++) {
+				if(objects.get(i).equals(object)) {
+					this.setSelectedIndex(i);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }
