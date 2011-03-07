@@ -14,12 +14,14 @@
 			</h1>
 		</g:HTMLPanel>
 		<g:HorizontalPanel ui:field='mainExpressionPanel'>
-			<g:Label ui:field='mainExpressionLabel'>Expression:</g:Label>
-			<g:Label ui:field='mainExpressionText' addStyleNames='{style.mainExpression}'>none</g:Label>
-		</g:HorizontalPanel>
-				<g:HorizontalPanel ui:field='mainResultPanel'>
-			<g:Label ui:field='mainResultLabel'>Result:</g:Label>
-			<g:Label ui:field='mainResultText' addStyleNames='{style.mainResult}'>none</g:Label>
+		<g:VerticalPanel ui:field='mainExpressionLabelContainer' spacing='10'>
+					<g:Label ui:field='mainExpressionLabel'>Expression:</g:Label>
+					<g:Label ui:field='mainResultLabel'>Result:</g:Label>
+		</g:VerticalPanel>
+		<g:VerticalPanel ui:field='mainExpressionTextContainer' spacing='10'>	
+					<g:Label ui:field='mainExpressionText' addStyleNames='{style.mainExpression}'>none</g:Label>
+					<g:Label ui:field='mainResultText' addStyleNames='{style.mainResult}'>none</g:Label>
+		</g:VerticalPanel>
 		</g:HorizontalPanel>
 		
 		<g:HorizontalPanel ui:field='detailsContainer'>
@@ -40,5 +42,7 @@
 				</g:VerticalPanel>			
 			</g:VerticalPanel>
 		</g:HorizontalPanel>
+		<g:HTMLPanel><h3>Comments about the Evaluation Process</h3></g:HTMLPanel>
+		<g:SimplePanel ui:field='commentsContainer'></g:SimplePanel>
 	</g:VerticalPanel>
 </ui:UiBinder> 

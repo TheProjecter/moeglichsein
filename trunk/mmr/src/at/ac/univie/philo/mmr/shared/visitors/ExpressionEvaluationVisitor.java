@@ -176,7 +176,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		valid(expression);
 		
 		IModalOperator mod = expression.getModalOperator();
-		EvaluationResult exprRes = mod.evaluate(expression.getScope(), universe, initWorld);
+		EvaluationResult exprRes = mod.evaluate(expression, universe, initWorld);
 		cache.addResult(expression, exprRes);
 //		CommentPrinter.print("Evaluation of ModalExpression "+expression.toString() +" evaluates to "+exprRes.toString() + " in World "+initWorld.getName()+".");
 	}
@@ -438,7 +438,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 	public Individual evaluate(ConstantExpression exp) {
 		Individual hardCodedIndividual = exp.getIndividual();
 		if (hardCodedIndividual == null) {
-			Individual i = constantMap.get((Constant)exp.getSymbol());
+			Individual i = constantMap.get(((Constant)exp.getSymbol()));
 			return i;
 		} else {
 			if (!initWorld.hasExistingIndividual(hardCodedIndividual)) {
@@ -463,6 +463,21 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 	
 	public Comment getErrors() {
 		return errorComment;
+	}
+
+	/**
+	 * makes a summary of the comments and written evaluation results of all evaluated expressions + occured Errors. This is useful for evaluation of f.ex. modal logic expressions which uses a separate Visitor which is not accessible from the top-level-visitor.
+	 * @return
+	 */
+	public Comment summarizeComments() {
+		Comment summaryWithErrors = new Comment();
+		summaryWithErrors.addLines(cache.summarizeComments());
+		if(errorComment.getLines().size() != 0) {
+		summaryWithErrors.addLine("# Errors #");
+		summaryWithErrors.addLines(errorComment);
+		summaryWithErrors.addLine("# End of Errors #");
+		}
+		return summaryWithErrors;
 	}
 
 }

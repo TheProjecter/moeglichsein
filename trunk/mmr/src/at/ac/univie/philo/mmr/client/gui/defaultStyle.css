@@ -126,6 +126,8 @@
 			.mainExpression {
 				padding-top:5px;
 				padding-bottom: 5px;
+				padding-left:10px;
+				padding-right:10px;
 				text-align: center;
 				text-shadow: white;
 				font-weight: bold;
@@ -138,6 +140,8 @@
 			.mainResult {
 				padding-top:5px;
 				padding-bottom: 5px;
+				padding-left:10px;
+				padding-right:10px;
 				text-align: center;
 				text-shadow: white;
 				font-weight: bold;

@@ -21,4 +21,5 @@ public class Constant extends Symbol implements IsSerializable {
 			throw new IllegalArgumentException("Invalid Constantname.");
 		}
 	}
+
 }

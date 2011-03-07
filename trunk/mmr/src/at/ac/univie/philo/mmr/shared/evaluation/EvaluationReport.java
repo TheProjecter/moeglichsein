@@ -63,12 +63,8 @@ public class EvaluationReport implements IsSerializable{
 	 * @return the EvaluationResult for the rootExpression for the given World w
 	 * @throws EvaluationException
 	 */
-	public EvaluationResult getResult(World w) {
-		try {
+	public EvaluationResult getResult(World w) throws EvaluationException {
 			return getResult(w, rootExpression);
-		} catch (EvaluationException e) {
-			return null;
-		}
 	}
 
 	private void checkInputParams(World w, Expression expr) throws EvaluationException {

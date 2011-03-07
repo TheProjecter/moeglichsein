@@ -1,6 +1,9 @@
 package at.ac.univie.philo.mmr.client.gui;
 
+import java.util.List;
+
 import at.ac.univie.philo.mmr.client.gui.UniverseDetailsForm.DetailStyle;
+import at.ac.univie.philo.mmr.shared.evaluation.Comment;
 import at.ac.univie.philo.mmr.shared.evaluation.EvaluationReport;
 import at.ac.univie.philo.mmr.shared.evaluation.EvaluationResult;
 import at.ac.univie.philo.mmr.shared.exceptions.EvaluationException;
@@ -16,7 +19,9 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -73,12 +78,14 @@ public class EvaluationResultsForm extends Composite {
 	@UiField
 	HorizontalPanel mainExpressionPanel;
 	@UiField
+	VerticalPanel mainExpressionLabelContainer;
+	@UiField
+	VerticalPanel mainExpressionTextContainer;
+	@UiField
 	Label mainExpressionLabel;
 	@UiField
 	Label mainExpressionText;
-	
-	@UiField
-	HorizontalPanel mainResultPanel;
+
 	@UiField
 	Label mainResultLabel;
 	@UiField
@@ -108,13 +115,16 @@ public class EvaluationResultsForm extends Composite {
 	Label resultExpressionLabel;
 	@UiField
 	Label resultExpressionText;
-	
+	@UiField
+	SimplePanel commentsContainer;
 	
 	private EvaluationReport report;
 	private World initWorld;
 	private MainScreen parentWidget;
 	private ParseTreeModel parseTreeModel;
 	private Expression rootExpression;
+	
+	private ObjectDropBox<World> worldSelector;
 	
 	public EvaluationResultsForm(EvaluationReport report, World initWorld, MainScreen parentWidget) {
 		if (report != null && initWorld != null && parentWidget != null) {
@@ -124,14 +134,49 @@ public class EvaluationResultsForm extends Composite {
 			this.parentWidget = parentWidget;
 			parseTreeModel = new ParseTreeModel(rootExpression, this);
 			parsingTree = new CellTree(parseTreeModel, null);
+			worldSelector = new ObjectDropBox<World>(parentWidget.getReferenceUniverse().getWorlds());
 			initWidget(uiBinder.createAndBindUi(this));		
+			worldSelectionContainer.setWidget(worldSelector);
+			worldSelector.selectObject(initWorld);
 			setupWidgets();
-			showEvalDetails(initWorld, rootExpression);
+			showEvalDetails(rootExpression);
+
 		}
 	}
 
-	public void showEvalDetails(World initWorld2, Expression rootExpression2) {
-		// TODO Auto-generated method stub
+	public void showEvalDetails(Expression expression) {
+		World selectedWorld = worldSelector.getSelectedObject();
+		if (selectedWorld == null) {
+			selectedWorld = initWorld;
+		}
+		subExpressionText.setText(expression.toString());
+		try {
+			EvaluationResult result = report.getResult(selectedWorld, expression);
+//			Window.alert(result.toString());
+			if (result != null) {
+				resultExpressionText.setText(result.toString());
+				Comment comment = result.getComment();
+				List<String> lines = comment.getLines();
+				Grid commentsGrid = new Grid(lines.size(), 2);
+				for (int i = 0; i<lines.size(); i++) {
+					commentsGrid.setWidget(i, 0, new Label((i+1)+""));
+					commentsGrid.setWidget(i, 1, new HTMLPanel("<div>"+lines.get(i)+"</div>"));
+				}
+				commentsGrid.addStyleName(style.grid());
+				commentsContainer.setWidget(commentsGrid);
+			} else {
+				resultExpressionText.setText("--");
+				HTMLPanel info = new HTMLPanel("<div>No special comments</div>");
+				info.setStyleName(style.grid());
+				commentsContainer.setWidget(info);
+			}
+		} catch (EvaluationException e) {
+			HTMLPanel errorPanel = new HTMLPanel("<div>Error: "+e.toString()+"</div>");
+			errorPanel.addStyleName(style.errorText());
+			commentsContainer.setWidget(errorPanel);
+		}
+		
+
 		
 	}
 
@@ -141,59 +186,39 @@ public class EvaluationResultsForm extends Composite {
 		verticalPanel.setStyleName(style.distance());
 		headPanel.setHeight("100%");
 		headPanel.setWidth("100%");
-		mainExpressionPanel.setHeight("100%");
-		mainExpressionPanel.setWidth("100%");
-		mainExpressionPanel.setSpacing(10);
-		mainExpressionPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		mainExpressionLabel.setHeight("100%");
-		mainExpressionLabel.setWidth("100%");
-		mainExpressionText.setHeight("100%");
-		mainExpressionText.setWidth("100%");
-		mainExpressionText.setText(rootExpression.toString());
-		mainExpressionPanel.setCellVerticalAlignment(mainExpressionLabel, HasVerticalAlignment.ALIGN_MIDDLE);
-		mainExpressionPanel.setCellVerticalAlignment(mainExpressionText, HasVerticalAlignment.ALIGN_MIDDLE);
-		mainExpressionPanel.setCellHorizontalAlignment(mainExpressionLabel, HasHorizontalAlignment.ALIGN_LEFT);
-		mainExpressionPanel.setCellHorizontalAlignment(mainExpressionText, HasHorizontalAlignment.ALIGN_LEFT);
 		
-		mainResultPanel.setHeight("100%");
-		mainResultPanel.setWidth("80%");
-		mainResultPanel.setSpacing(10);
-		mainResultPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-//		mainResultLabel.setHeight("100%");
-//		mainResultLabel.setWidth("100%");
-//		mainResultText.setHeight("100%");
-//		mainResultText.setWidth("100%");
-		EvaluationResult mainResult = report.getResult(initWorld);
-		TruthExpression truthExpression = null;
+
+		mainExpressionPanel.setSpacing(10);
+		mainExpressionText.setText(rootExpression.toString());
+
+
 		try {
-			truthExpression = mainResult.getValue();
+			EvaluationResult mainResult = report.getResult(initWorld);
+			TruthExpression truthExpression = mainResult.getValue();
 			if (truthExpression.getValue().equals(TruthValue.TRUE)) {
 				mainResultText.addStyleName(style.truth());
 			} else {
 				mainResultText.addStyleName(style.falseness());
 			}	
+			mainResultText.setText(truthExpression.toString());
+
 		} catch (NotASentenceException e) {
-			return;
+			Window.alert(e.toString());
+		} catch (EvaluationException e) {
+			Window.alert(e.toString());
 		}
+				
+
+		worldSelectionContainer.addStyleName(style.distance());
 		
-		
-		mainResultText.setText(truthExpression.toString());
-		mainResultPanel.setCellVerticalAlignment(mainResultLabel, HasVerticalAlignment.ALIGN_MIDDLE);
-		mainResultPanel.setCellVerticalAlignment(mainResultText, HasVerticalAlignment.ALIGN_MIDDLE);
-		mainResultPanel.setCellHorizontalAlignment(mainResultLabel, HasHorizontalAlignment.ALIGN_LEFT);
-		mainResultPanel.setCellHorizontalAlignment(mainResultText, HasHorizontalAlignment.ALIGN_LEFT);
-		
-		detailsContainer.setWidth("100%");
-		detailsContainer.setHeight("100%");
-		parsingTree.setHeight("100%");
-		parsingTree.setWidth("100%");
-		detailsInfoContainer.setWidth("100%");
-		detailsInfoContainer.setHeight("100%");
+
 		worldSelectionContainer.setWidth("100%");
 		worldSelectionContainer.setHeight("100%");
 		
 		detailsCommentsContainer.setWidth("100%");
 		detailsCommentsContainer.setHeight("100%");
+		
+		
 	}
 
 }

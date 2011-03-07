@@ -2,6 +2,7 @@ package at.ac.univie.philo.mmr.shared.evaluation;
 
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -32,5 +33,29 @@ public class EvaluationStorage implements IsSerializable {
 
 	public boolean hasResult(Expression expression) {
 		return evalStore.containsKey(expression);
+	}
+
+	public void addAllResults(EvaluationStorage exprRes) {
+		if (exprRes != null) {
+		evalStore.putAll(exprRes.evalStore);
+		} else {
+			throw new IllegalArgumentException("inputStorage is null");
+		}
+	}
+
+	public Comment summarizeComments() {
+		Comment summary = new Comment();
+		for(Entry<Expression,EvaluationResult> entry : evalStore.entrySet()) {
+			Expression expr = entry.getKey();
+			EvaluationResult result = entry.getValue();
+			if (result == null) {
+				summary.addLine("### "+expr.toString()+" == Evaluation failed ###");
+			} else {
+				summary.addLine("### "+expr.toString()+" == "+result.toString()+" due to the following reasoning ###");
+				summary.addLines(result.getComment());
+				summary.addLine("### END OF "+expr.toString() + "###");
+			}
+		}
+		return summary;
 	}
 }

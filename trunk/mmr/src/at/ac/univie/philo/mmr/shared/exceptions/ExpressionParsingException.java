@@ -16,4 +16,8 @@ public class ExpressionParsingException extends Exception implements Serializabl
 	public ExpressionParsingException(String msg) {
 		super(msg);
 	}
+	
+	public ExpressionParsingException(Throwable e) {
+		super(e);
+	}
 }

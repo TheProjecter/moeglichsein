@@ -43,7 +43,7 @@ public class Symbol implements IsSerializable {
 	public boolean equals(Object o) {
 		if (o instanceof Symbol) {
 			Symbol otherConst = (Symbol) o;
-			return this.name == otherConst.name && this.index == otherConst.index;
+			return this.name.equals(otherConst.name) && this.index == otherConst.index;
 		} else {
 			return false;
 		}
