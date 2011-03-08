@@ -1,9 +1,12 @@
 package at.ac.univie.philo.mmr.shared.examples;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import at.ac.univie.philo.mmr.client.gui.Resources;
 import at.ac.univie.philo.mmr.shared.exceptions.ConstraintViolationException;
 import at.ac.univie.philo.mmr.shared.expressions.Constant;
 import at.ac.univie.philo.mmr.shared.expressions.Predicate;
@@ -12,6 +15,7 @@ import at.ac.univie.philo.mmr.shared.semantic.Individual;
 import at.ac.univie.philo.mmr.shared.semantic.Universe;
 import at.ac.univie.philo.mmr.shared.semantic.World;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
@@ -20,6 +24,7 @@ public class UniverseFactory {
 
 	private static UniverseFactory instance_;
 	private static Universe pizzaUniverse = null;
+	private static Universe skifiUniverse = null;
 	private ListDataProvider<Universe> dataProviderUniverse;
 	private ListDataProvider<World> dataProviderWorld;
 	private ListDataProvider<Individual> dataProviderIndividual;
@@ -29,7 +34,7 @@ public class UniverseFactory {
 		dataProviderIndividual = new ListDataProvider<Individual>();
 		dataProviderWorld = new ListDataProvider<World>();
 	}
-
+	
 	/**
 	 * Add a display to the database. The current range of interest of the
 	 * display will be populated with data.
@@ -61,6 +66,290 @@ public class UniverseFactory {
 			pizzaUniverse = createPizzaUniverse();
 		}
 		return pizzaUniverse;
+	}
+	
+	public Universe getSkiFiUniverse() {
+		if (skifiUniverse == null) {
+			skifiUniverse = createSkiFiUniverse();
+		}
+		return skifiUniverse;
+	}
+
+	private Universe createSkiFiUniverse() {
+		Resources res = GWT.create(Resources.class);
+		
+		// #########################################################
+		// setup some individuals
+		// #########################################################
+		Individual a1Spok = new Individual("Spok", res.spok().getURL());
+		Individual a2Data = new Individual("CommanderData", res.commanderData().getURL());
+		Individual a3Sokrates = new Individual("Sokrates", res.sokrates().getURL());
+		Individual a4Sauron = new Individual("Sauron", res.sauron().getURL());
+		Individual a5ChuckNorris = new Individual("ChuckNorris", res.chuckNorris().getURL());
+		Individual a6Alice = new Individual("Alice", res.alice().getURL());
+		Individual a7Jesus = new Individual("Jesus", res.jesus().getURL());
+		Individual a8Jobs = new Individual("SteveJobs", res.jobs().getURL());
+		Individual a9Eve = new Individual("Eve", res.eve().getURL());
+		Individual a10GrinCat = new Individual("GrinCat", res.grinCat().getURL());
+		
+		// #########################################################
+		// setup some constants
+		// #########################################################
+		Constant a1 = new Constant("a", 1);
+		Constant a2 = new Constant("a", 2);
+		Constant a3 = new Constant("a", 3);
+		Constant a4 = new Constant("a", 4);
+		Constant a5 = new Constant("a", 5);
+		Constant a6 = new Constant("a", 6);
+		Constant a7 = new Constant("a", 7);
+		Constant a8 = new Constant("a", 8);
+		Constant a9 = new Constant("a", 9);
+		Constant a10 = new Constant("a", 10);
+		
+		HashMap<Constant, Individual> constantMapping = new HashMap<Constant, Individual>();
+		constantMapping.put(a1, a1Spok);
+		constantMapping.put(a2, a2Data);
+		constantMapping.put(a3, a3Sokrates);
+		constantMapping.put(a4, a4Sauron);
+		constantMapping.put(a5, a5ChuckNorris);
+		constantMapping.put(a6, a6Alice);
+		constantMapping.put(a7, a7Jesus);
+		constantMapping.put(a8, a8Jobs);
+		constantMapping.put(a9, a9Eve);
+		constantMapping.put(a10, a10GrinCat);
+		
+
+		
+		// #########################################################
+		// setup a Set of all existing Individuals
+		// #########################################################
+
+		HashSet<Individual> inventory = new HashSet<Individual>();
+		inventory.add(a1Spok);
+		inventory.add(a2Data);
+		inventory.add(a3Sokrates);
+		inventory.add(a4Sauron);
+		inventory.add(a5ChuckNorris);
+		inventory.add(a6Alice);
+		inventory.add(a7Jesus);
+		inventory.add(a8Jobs);
+		inventory.add(a9Eve);
+		inventory.add(a10GrinCat);
+		
+		// #########################################################
+		// setup some predicates
+		// #########################################################
+		Predicate pHuman = new Predicate("HUMAN", 0, 1);
+		Predicate pEvil = new Predicate("EVIL", 0, 1);
+		Predicate pHasSwissBankAccount = new Predicate("HASSWISSBANKACCOUNT", 0, 1);
+		Predicate pLikesApples = new Predicate("LIKESAPPLES", 0, 1);
+		Predicate pVegetarian = new Predicate("VEGETARIAN", 0, 1);
+		Predicate pDog = new Predicate("DOG", 0, 1);
+		Predicate pStudiesInMinTime = new Predicate("STUDIESINMINTIME", 0, 1);
+		Predicate pCanDance = new Predicate("CANDANCE", 0, 1);
+		Predicate pConservative = new Predicate("CONSERVATIVE", 0, 1);
+		Predicate pHasSmartphone = new Predicate("HASSMARTPHONE", 0, 1);
+
+		Predicate pGod = new Predicate("GOD", 0, 1);
+		
+		Predicate p2Friends = new Predicate("FRIENDOF", 0, 2);
+		Predicate p2OlderThan = new Predicate("OLDERTHAN", 0, 2);
+		Predicate p2SmarterThan = new Predicate("SMARTERTHAN", 0, 2);
+
+		// #########################################################
+		// define the extension of each predicate in World KPAX
+		// #########################################################
+
+		HashSet<ArrayList<Individual>> pExtHuman = new HashSet<ArrayList<Individual>>(); // Nobody is human
+		HashSet<ArrayList<Individual>> pExtEvil = new HashSet<ArrayList<Individual>>(); //Nobody is evil
+		HashSet<ArrayList<Individual>> pExtHasSwissBankAccount = new HashSet<ArrayList<Individual>>(createArity1Extension(a5ChuckNorris)); //Chuck Norris has a swiss bank account
+		HashSet<ArrayList<Individual>> pExtLikesApples = new HashSet<ArrayList<Individual>>(createArity1Extension(a9Eve));
+		HashSet<ArrayList<Individual>> pExtVegetarian = new HashSet<ArrayList<Individual>>(createArity1Extension(inventory));
+		HashSet<ArrayList<Individual>> pExtDog = new HashSet<ArrayList<Individual>>();
+		HashSet<ArrayList<Individual>> pExtStudiesInMinTime = new HashSet<ArrayList<Individual>>(createArity1Extension(a5ChuckNorris)); //Only Chuck Norris studies in minimal study time
+		HashSet<ArrayList<Individual>> pExtCanDance = new HashSet<ArrayList<Individual>>(createArity1Extension(a2Data,a6Alice,a9Eve,a10GrinCat));
+		HashSet<ArrayList<Individual>> pExtConservative = new HashSet<ArrayList<Individual>>();
+		HashSet<ArrayList<Individual>> pExtHasSmartphone = new HashSet<ArrayList<Individual>>(createArity1Extension(a8Jobs));
+		HashSet<ArrayList<Individual>> pExtGod = new HashSet<ArrayList<Individual>>(); //There is no god
+		HashSet<ArrayList<Individual>> p2ExtFriends = new HashSet<ArrayList<Individual>>(createArity2Extension(inventory)); 
+		HashSet<ArrayList<Individual>> p2ExtOlderThan = new HashSet<ArrayList<Individual>>();
+		HashSet<ArrayList<Individual>> p2ExtSmarterThan = new HashSet<ArrayList<Individual>>();		
+		
+		HashMap<Predicate, HashSet<ArrayList<Individual>>> extensions = new HashMap<Predicate, HashSet<ArrayList<Individual>>>();
+		extensions.put(p2Friends, p2ExtFriends); 
+		extensions.put(p2OlderThan, p2ExtOlderThan);
+		extensions.put(p2SmarterThan, p2ExtSmarterThan);
+		extensions.put(pCanDance, pExtCanDance);
+		extensions.put(pConservative, pExtConservative);
+		extensions.put(pDog, pExtDog);
+		extensions.put(pEvil, pExtEvil);
+		extensions.put(pGod, pExtGod);
+		extensions.put(pHasSmartphone, pExtHasSmartphone);
+		extensions.put(pHasSwissBankAccount, pExtHasSwissBankAccount);
+		extensions.put(pHuman, pExtHuman);
+		extensions.put(pLikesApples, pExtLikesApples);
+		extensions.put(pStudiesInMinTime, pExtStudiesInMinTime);
+		extensions.put(pVegetarian, pExtVegetarian);
+
+		// ###############################
+		//    WORLD K-PAX
+		// ###############################
+		
+		World kPax = new World("kPax", extensions);
+		
+		// #########################################################
+		// define the extension of each predicate in World aLeA
+		// #########################################################
+
+		pExtHuman = new HashSet<ArrayList<Individual>>(createArity1Extension(a1Spok,a2Data,a4Sauron,a10GrinCat)); // Fantasies are human
+		pExtEvil = new HashSet<ArrayList<Individual>>(createArity1Extension(a4Sauron)); //And Sauron is Evil
+		pExtHasSwissBankAccount = new HashSet<ArrayList<Individual>>(createArity1Extension(a6Alice));
+		pExtLikesApples = new HashSet<ArrayList<Individual>>(createArity1Extension(a9Eve,a10GrinCat));
+		pExtVegetarian = new HashSet<ArrayList<Individual>>(createArity1Extension(a1Spok,a2Data,a5ChuckNorris));
+		pExtDog = new HashSet<ArrayList<Individual>>(createArity1Extension(a4Sauron));
+		pExtStudiesInMinTime = new HashSet<ArrayList<Individual>>(createArity1Extension(a5ChuckNorris)); //Only Chuck Norris studies in minimal study time
+		pExtCanDance = new HashSet<ArrayList<Individual>>(createArity1Extension(a7Jesus));
+		pExtConservative = new HashSet<ArrayList<Individual>>();
+		pExtHasSmartphone = new HashSet<ArrayList<Individual>>(createArity1Extension(a8Jobs));
+		pExtGod = new HashSet<ArrayList<Individual>>(createArity1Extension(a9Eve)); //There is no god
+		p2ExtFriends = new HashSet<ArrayList<Individual>>(createArity2Extension(a9Eve,a1Spok,a9Eve,a2Data,a9Eve,a3Sokrates,a9Eve,a4Sauron,a9Eve,a5ChuckNorris,a9Eve,a6Alice,a9Eve,a7Jesus,a9Eve,a8Jobs,a9Eve,a9Eve,a9Eve,a10GrinCat,a1Spok,a10GrinCat,a3Sokrates,a4Sauron,a4Sauron,a3Sokrates,a5ChuckNorris,a6Alice,a6Alice,a5ChuckNorris)); 
+		p2ExtOlderThan = new HashSet<ArrayList<Individual>>(createArity2Extension(a10GrinCat,a1Spok,a10GrinCat,a2Data,a10GrinCat,a3Sokrates,a10GrinCat,a4Sauron,a10GrinCat,a5ChuckNorris,a10GrinCat,a6Alice,a10GrinCat,a7Jesus,a10GrinCat,a8Jobs,a10GrinCat,a9Eve));
+		p2ExtSmarterThan = new HashSet<ArrayList<Individual>>(createArity2Extension(a10GrinCat,a1Spok,a10GrinCat,a2Data,a10GrinCat,a3Sokrates,a10GrinCat,a4Sauron,a10GrinCat,a5ChuckNorris,a10GrinCat,a6Alice,a10GrinCat,a7Jesus,a10GrinCat,a8Jobs,a10GrinCat,a9Eve,a2Data,a6Alice,a5ChuckNorris,a6Alice));		
+		
+		HashMap<Predicate, HashSet<ArrayList<Individual>>> extensionsAlea = new HashMap<Predicate, HashSet<ArrayList<Individual>>>();
+		extensionsAlea.put(p2Friends, p2ExtFriends); 
+		extensionsAlea.put(p2OlderThan, p2ExtOlderThan);
+		extensionsAlea.put(p2SmarterThan, p2ExtSmarterThan);
+		extensionsAlea.put(pCanDance, pExtCanDance);
+		extensionsAlea.put(pConservative, pExtConservative);
+		extensionsAlea.put(pDog, pExtDog);
+		extensionsAlea.put(pEvil, pExtEvil);
+		extensionsAlea.put(pGod, pExtGod);
+		extensionsAlea.put(pHasSmartphone, pExtHasSmartphone);
+		extensionsAlea.put(pHasSwissBankAccount, pExtHasSwissBankAccount);
+		extensionsAlea.put(pHuman, pExtHuman);
+		extensionsAlea.put(pLikesApples, pExtLikesApples);
+		extensionsAlea.put(pStudiesInMinTime, pExtStudiesInMinTime);
+		extensionsAlea.put(pVegetarian, pExtVegetarian);
+
+		// ###############################
+		//    WORLD ALEA
+		// ###############################
+		
+		World alea = new World("aLeA", extensionsAlea);		
+		
+		// #########################################################
+		// define the extension of each predicate in World EARTH
+		// #########################################################
+
+		pExtHuman = new HashSet<ArrayList<Individual>>(createArity1Extension(a3Sokrates,a5ChuckNorris,a7Jesus,a8Jobs));
+		pExtEvil = new HashSet<ArrayList<Individual>>(createArity1Extension(a8Jobs)); 
+		pExtHasSwissBankAccount = new HashSet<ArrayList<Individual>>(createArity1Extension(a8Jobs));
+		pExtLikesApples = new HashSet<ArrayList<Individual>>(createArity1Extension(a9Eve));
+		pExtVegetarian = new HashSet<ArrayList<Individual>>(createArity1Extension(a8Jobs,a7Jesus));
+		pExtDog = new HashSet<ArrayList<Individual>>(createArity1Extension(a1Spok,a2Data,a4Sauron,a6Alice));
+		pExtStudiesInMinTime = new HashSet<ArrayList<Individual>>(createArity1Extension(a5ChuckNorris)); //Only Chuck Norris studies in minimal study time
+		pExtCanDance = new HashSet<ArrayList<Individual>>(createArity1Extension(a3Sokrates,a5ChuckNorris,a7Jesus,a8Jobs)); //All Humans can dance
+		pExtConservative = new HashSet<ArrayList<Individual>>(createArity1Extension(a8Jobs));
+		pExtHasSmartphone = new HashSet<ArrayList<Individual>>(createArity1Extension(a8Jobs));
+		pExtGod = new HashSet<ArrayList<Individual>>(createArity1Extension(a7Jesus)); //There is no god
+		p2ExtFriends = new HashSet<ArrayList<Individual>>(createArity2Extension(a9Eve,a1Spok,a9Eve,a2Data,a9Eve,a3Sokrates,a9Eve,a4Sauron,a9Eve,a5ChuckNorris,a9Eve,a6Alice,a9Eve,a7Jesus,a9Eve,a8Jobs,a9Eve,a9Eve,a9Eve,a10GrinCat,a1Spok,a10GrinCat,a3Sokrates,a4Sauron,a4Sauron,a3Sokrates,a5ChuckNorris,a6Alice,a6Alice,a5ChuckNorris)); 
+		p2ExtOlderThan = new HashSet<ArrayList<Individual>>(createArity2Extension(a3Sokrates,a1Spok,a3Sokrates,a2Data,a3Sokrates,a3Sokrates,a3Sokrates,a4Sauron,a3Sokrates,a5ChuckNorris,a3Sokrates,a6Alice,a3Sokrates,a7Jesus,a3Sokrates,a8Jobs,a3Sokrates,a9Eve,a3Sokrates,a10GrinCat));
+		p2ExtSmarterThan = new HashSet<ArrayList<Individual>>(createArity2Extension(a3Sokrates,a1Spok,a3Sokrates,a2Data,a3Sokrates,a3Sokrates,a3Sokrates,a4Sauron,a3Sokrates,a5ChuckNorris,a3Sokrates,a6Alice,a3Sokrates,a7Jesus,a3Sokrates,a8Jobs,a3Sokrates,a9Eve,a3Sokrates,a10GrinCat));		
+		
+		HashMap<Predicate, HashSet<ArrayList<Individual>>> extensionsEarth = new HashMap<Predicate, HashSet<ArrayList<Individual>>>();
+		extensionsEarth.put(p2Friends, p2ExtFriends); 
+		extensionsEarth.put(p2OlderThan, p2ExtOlderThan);
+		extensionsEarth.put(p2SmarterThan, p2ExtSmarterThan);
+		extensionsEarth.put(pCanDance, pExtCanDance);
+		extensionsEarth.put(pConservative, pExtConservative);
+		extensionsEarth.put(pDog, pExtDog);
+		extensionsEarth.put(pEvil, pExtEvil);
+		extensionsEarth.put(pGod, pExtGod);
+		extensionsEarth.put(pHasSmartphone, pExtHasSmartphone);
+		extensionsEarth.put(pHasSwissBankAccount, pExtHasSwissBankAccount);
+		extensionsEarth.put(pHuman, pExtHuman);
+		extensionsEarth.put(pLikesApples, pExtLikesApples);
+		extensionsEarth.put(pStudiesInMinTime, pExtStudiesInMinTime);
+		extensionsEarth.put(pVegetarian, pExtVegetarian);
+
+		// ###############################
+		//    WORLD ALEA
+		// ###############################
+		
+		World earth = new World("Earth", extensionsEarth);				
+	
+		
+		
+		
+		// #############################################
+		//     UNIVERSE STARGATE
+		// #############################################
+		Universe skiFi = null;
+		try {
+			skiFi = new Universe("Stargate", AccessabilityConstraint.S5, true, constantMapping, kPax,alea,earth);
+		} catch (ConstraintViolationException e) {
+		}
+		return skiFi;
+	}
+
+	/**
+	 * 
+	 * @param setOfIndividuals: one individual is one extension element.
+	 * @return a ready extension for Predicates with Arity 1
+	 */
+	private HashSet<ArrayList<Individual>> createArity1Extension(
+			HashSet<Individual> setOfIndividuals) {
+		return createArity1Extension(setOfIndividuals.toArray(new Individual[setOfIndividuals.size()]));
+	}
+	
+	private HashSet<ArrayList<Individual>> createArity1Extension(Individual ... individuals) {
+		HashSet<ArrayList<Individual>> extension = new HashSet<ArrayList<Individual>>();
+		for (Individual i : individuals) {
+			ArrayList<Individual> extensionElement = new ArrayList<Individual>();
+			extensionElement.add(i);
+			extension.add(extensionElement);
+		}
+		return extension;
+	}
+	
+	/**
+	 * 
+	 * @param setOfIndividuals: each element of the set is created as inside exactly one extension element with each other element
+	 * @return a ready extension for Predicates with Arity 2 where each of the individuals are in connection with each other (pairwise)
+	 */
+	private HashSet<ArrayList<Individual>> createArity2Extension(
+			HashSet<Individual> setOfIndividuals) {
+		HashSet<ArrayList<Individual>> extension = new HashSet<ArrayList<Individual>>();
+		for(Individual left: setOfIndividuals) {
+			for(Individual right: setOfIndividuals) {
+				ArrayList<Individual> extAr2 = new ArrayList<Individual>();
+				extAr2.add(left);
+				extAr2.add(right);
+				extension.add(extAr2);
+			}
+		}
+		return extension;
+	}
+	
+	/**
+	 * 
+	 * @param individuals: first individual gets connected with the second, third with the forth, ....
+	 * @return a ready Artiy2-Extension
+	 */
+	private HashSet<ArrayList<Individual>> createArity2Extension(Individual ... individuals) {
+		HashSet<ArrayList<Individual>> extension = new HashSet<ArrayList<Individual>>();
+		//if the number of individuals is even
+		if ((individuals.length % 2) == 0) {
+			for(int i=0; i<individuals.length; i=i+2) {
+				ArrayList<Individual> extAr2 = new ArrayList<Individual>();
+				Individual left = individuals[i];
+				Individual right = individuals[i+1];
+				extAr2.add(left);
+				extAr2.add(right);
+			}
+		}
+		return extension;
 	}
 
 	@SuppressWarnings("unchecked")

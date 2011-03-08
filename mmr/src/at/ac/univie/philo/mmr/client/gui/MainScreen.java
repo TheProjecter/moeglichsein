@@ -154,7 +154,7 @@ public class MainScreen extends Composite {
 	    // WorldSelector for EvaluationTextBox
 		worldSelector = new ObjectDropBox<World>();
 		universeFactory = UniverseFactory.get();
-		referenceUniverse = universeFactory.getPizzaUniverse();
+		referenceUniverse = universeFactory.getSkiFiUniverse();
 	    
 	    /*
 	     * Create the tree using the model. We use <code>null</code> as the default

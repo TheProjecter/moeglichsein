@@ -48,7 +48,7 @@ public final class UniverseTreeModel implements TreeViewModel {
 		this.parentWidget = parentWidget;
 		UniverseFactory universeFactory = UniverseFactory.get();
 		universes_ = new ArrayList<Universe>();
-		universes_.add(universeFactory.getPizzaUniverse());
+		universes_.add(universeFactory.getSkiFiUniverse());
 	    if (res == null) {
 	        res = GWT.create(Resources.class);
 	    }
