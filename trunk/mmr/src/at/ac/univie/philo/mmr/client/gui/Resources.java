@@ -14,4 +14,36 @@ public interface Resources extends ClientBundle {
 	  
 	  @Source("logo.jpg")
 	  ImageResource logo();
+	  
+	  @Source("alice.jpg")
+	  ImageResource alice();
+	  
+	  @Source("chucknorris.jpg")
+	  ImageResource chuckNorris();
+	  
+	  @Source("data.jpg")
+	  ImageResource commanderData();
+	  
+	  @Source("eve.jpg")
+	  ImageResource eve();
+	  
+	  @Source("jobs.jpg")
+	  ImageResource jobs();
+	  
+	  @Source("sauron.jpg")
+	  ImageResource sauron();
+	  
+	  @Source("spok.jpg")
+	  ImageResource spok();
+	  
+	  @Source("sokrates.jpg")
+	  ImageResource sokrates();
+	  
+	  @Source("jesus.jpg")
+	  ImageResource jesus();
+	  
+	  @Source("grincat.jpg")
+	  ImageResource grinCat();
+	  
 }
+

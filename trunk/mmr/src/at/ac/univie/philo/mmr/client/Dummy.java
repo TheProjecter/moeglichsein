@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.Image;
 
 public class Dummy implements IsSerializable { 
 	
-	public static final String VERSION = "0.93";
+	public static final String VERSION = "0.95";
 	
 	BinaryExpression be;
 	ConstantExpression ce;
