@@ -102,7 +102,9 @@ public class EvaluationResultsForm extends Composite {
 	VerticalPanel detailsInfoContainer;
 	@UiField
 	SimplePanel worldSelectionContainer;
-
+	@UiField
+	Label worldSelectionLabel;
+	
 	@UiField
 	VerticalPanel detailsCommentsContainer;
 	@UiField
@@ -119,6 +121,8 @@ public class EvaluationResultsForm extends Composite {
 	Label resultExpressionText;
 	@UiField
 	SimplePanel commentsContainer;
+	@UiField
+	HorizontalPanel worldSelectionMetaContainer;
 	
 	private EvaluationReport report;
 	private World initWorld;
@@ -174,18 +178,23 @@ public class EvaluationResultsForm extends Composite {
 				Grid commentsGrid = new Grid(lines.size(), 2);
 				for (int i = 0; i<lines.size(); i++) {
 					commentsGrid.setWidget(i, 0, new Label((i+1)+""));
-					commentsGrid.setWidget(i, 1, new HTMLPanel("<div>"+lines.get(i)+"</div>"));
+					String commentString = "<div>"+lines.get(i)+"</div>";
+					commentString = commentString.replaceAll("\n", "<br/>");
+					commentString = commentString.replaceAll("\t(.*)", "<p style='text-indent: 2.0em; margin:0px;'> $1 </p>");
+					commentsGrid.setWidget(i, 1, new HTMLPanel(commentString));
 				}
 				commentsGrid.addStyleName(style.grid());
 				commentsContainer.setWidget(commentsGrid);
 			} else {
 				resultExpressionText.setText("--");
 				HTMLPanel info = new HTMLPanel("<div>No special comments</div>");
+				info.setStyleName(style.distance());
 				info.setStyleName(style.grid());
 				commentsContainer.setWidget(info);
 			}
 		} catch (EvaluationException e) {
 			HTMLPanel errorPanel = new HTMLPanel("<div>Error: "+e.toString()+"</div>");
+			errorPanel.setStyleName(style.distance());
 			errorPanel.addStyleName(style.errorText());
 			commentsContainer.setWidget(errorPanel);
 		}
@@ -195,6 +204,7 @@ public class EvaluationResultsForm extends Composite {
 	}
 
 	private void setupWidgets() {
+		parsingTree.setHeight("100%");
 		verticalPanel.setHeight("100%");
 		verticalPanel.setWidth("100%");
 		verticalPanel.setStyleName(style.distance());
@@ -202,6 +212,9 @@ public class EvaluationResultsForm extends Composite {
 		headPanel.setWidth("100%");
 		
 
+		detailsInfoContainer.setWidth("100%");
+		detailsInfoContainer.setHeight("100%");
+		
 		mainExpressionPanel.setSpacing(10);
 		mainExpressionText.setText(rootExpression.toString());
 
@@ -222,7 +235,8 @@ public class EvaluationResultsForm extends Composite {
 			Window.alert(e.toString());
 		}
 				
-
+		worldSelectionMetaContainer.setCellVerticalAlignment(worldSelectionContainer, HasVerticalAlignment.ALIGN_MIDDLE);
+		worldSelectionMetaContainer.setCellVerticalAlignment(worldSelectionLabel, HasVerticalAlignment.ALIGN_MIDDLE);
 		worldSelectionContainer.addStyleName(style.distance());
 		
 
@@ -232,6 +246,7 @@ public class EvaluationResultsForm extends Composite {
 		detailsCommentsContainer.setWidth("100%");
 		detailsCommentsContainer.setHeight("100%");
 		
+		commentsContainer.setWidth("90%");
 		
 	}
 

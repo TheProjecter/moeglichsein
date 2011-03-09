@@ -23,7 +23,7 @@ public class XorOperator implements IBinaryOperator, IsSerializable {
 
 	@Override
 	public String getName() {
-		return "XOR";
+		return "\u2295";
 	}
 
 	@Override

@@ -20,6 +20,6 @@ public class NegationOperator implements IsSerializable {
 	}
 	
 	public String toString() {
-		return "\\neg";
+		return "\u00AC";
 	}
 }

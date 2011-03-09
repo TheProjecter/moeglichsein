@@ -24,7 +24,7 @@ public class BiconditionalOperator implements IBinaryOperator, IsSerializable {
 
 	@Override
 	public String getName() {
-		return "<->";
+		return "\u2194";
 	}
 
 	@Override

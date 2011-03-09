@@ -27,7 +27,7 @@ public class ExistenceQuantor implements IQuantor,IsSerializable {
 
 	@Override
 	public String getName() {
-		return "\\exists";
+		return "\u2203";
 	}
 
 }

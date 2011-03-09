@@ -99,9 +99,11 @@ public class EvaluationResult implements IsSerializable {
 			StringBuffer sb = new StringBuffer();
 			for(Entry<World,HashSet<ArrayList<Individual>>> entry : result.entrySet()) {
 				World w = entry.getKey();
-				sb.append(w.getName()+":\n");
-				sb.append(CommentPrinter.printExtension(result.get(w)));
-				sb.append("\n ---------------\n");
+				sb.append("Non-Sentence-Result: "+result.get(w).toString());
+
+//				sb.append(w.getName()+":\n");
+//				sb.append(CommentPrinter.printExtension(result.get(w)));
+//				sb.append("\n ---------------\n");
 			}
 			return sb.toString();
 		}

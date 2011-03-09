@@ -22,7 +22,7 @@ public class ImplicationOperator implements IBinaryOperator, IsSerializable {
 
 	@Override
 	public String getName() {
-		return "->";
+		return "\u2192";
 	}
 
 	@Override

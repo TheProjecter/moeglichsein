@@ -30,7 +30,7 @@ public class AllQuantor implements IQuantor, IsSerializable {
 
 	@Override
 	public String getName() {
-		return "\\forall";
+		return "\u2200";
 	}
 
 }
