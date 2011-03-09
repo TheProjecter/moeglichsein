@@ -367,7 +367,7 @@ public class MainScreen extends Composite {
 	private void setUpFormular() {
 		final Button sendButton = new Button("Evaluate");
 		final TextBox nameField = new TextBox();
-		nameField.setText("\\box \\forall x \\exists y BETTER^2(y,x)");
+		nameField.setText("\\box \\forall x(HUMAN^1(x) \\rightarrow CANDANCE^1(x))");
 		nameField.setWidth("20em");
 		final Label errorLabel = new Label();
 		

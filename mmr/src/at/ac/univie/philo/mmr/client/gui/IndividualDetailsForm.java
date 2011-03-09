@@ -65,19 +65,19 @@ public class IndividualDetailsForm extends Composite {
 		indiNameContainer.setCellVerticalAlignment(indiNameLabel, HasVerticalAlignment.ALIGN_MIDDLE);
 		indiIconContainer.setCellVerticalAlignment(indiIconHtmlPanel, HasVerticalAlignment.ALIGN_MIDDLE);
 		indiIconContainer.setCellVerticalAlignment(indiIconHolder, HasVerticalAlignment.ALIGN_MIDDLE);
-		indiIconContainer.setCellVerticalAlignment(changeImage, HasVerticalAlignment.ALIGN_MIDDLE);
+//		indiIconContainer.setCellVerticalAlignment(changeImage, HasVerticalAlignment.ALIGN_MIDDLE);
 		indiIconContainer.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		indiNameLabel.setText(i.getName());
 		individualName.setInnerText(i.getName());
-		changeImage.setTitle("Change the current icon by uploading/selecting another one.");
-		changeImage.addClickHandler(changeIconClickHandler);
+//		changeImage.setTitle("Change the current icon by uploading/selecting another one.");
+//		changeImage.addClickHandler(changeIconClickHandler);
 		
 		String imageUrl = i.getImageUrl();
 		if (imageUrl == null) {
 			imageUrl = res.defaultIndividual().getURL();
 		}
 		Image icon = new Image(imageUrl);
-		icon.addClickHandler(changeIconClickHandler);
+//		icon.addClickHandler(changeIconClickHandler);
 		
 		indiIconHolder.add(icon);
 		
@@ -177,8 +177,8 @@ public class IndividualDetailsForm extends Composite {
 	SimplePanel indiIconHolder;
 	@UiField
 	SpanElement individualName;
-	@UiField
-	Button changeImage;
+//	@UiField
+//	Button changeImage;
 	@UiField
 	DetailStyle style;
 

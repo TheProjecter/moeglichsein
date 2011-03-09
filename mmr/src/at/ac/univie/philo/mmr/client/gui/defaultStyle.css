@@ -26,7 +26,7 @@
 		}
 		
 		.mainbox {
-			background-color: #c0c0c0;
+			margin-left:10px;
 		}
 		
 		.addBorder {
@@ -64,7 +64,7 @@
 				margin-bottom: 5px;
 			}
 			
-			h1,h2 {
+			h1,h2,h3 {
 				margin-left:2%;
 			}
 			
@@ -158,6 +158,17 @@
 			.falseness {
 				background: #f00000;
 			}
+			
+			.elegantFraming {
+				margin-top: 10px;
+				margin-left: 10px;
+				margin-right: 10px;
+				margin-bottom: 10px;
+				border: 3px solid skyblue;
+				border-collapse: collapse;
+				vertical-align: middle;	
+			}
+			
 			.grid {
 				margin-top: 10px;
 				margin-left: 10px;
@@ -168,6 +179,7 @@
 				border-collapse: collapse;
 				vertical-align: middle;
 			}
+			
 			
 			.grid td {
 				padding-top: 5px;

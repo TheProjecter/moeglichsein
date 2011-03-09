@@ -21,7 +21,7 @@
 		<g:HorizontalPanel ui:field="indiIconContainer" spacing="10">
 			<g:HTMLPanel ui:field="indiIconHtmlPanel"><div>Icon:</div></g:HTMLPanel>
 			<g:SimplePanel addStyleNames="{style.thickBorder}" ui:field="indiIconHolder"></g:SimplePanel>
-			<g:Button ui:field="changeImage">Change</g:Button>
+			<!-- <g:Button ui:field="changeImage">Change</g:Button> -->
 		</g:HorizontalPanel>
 	</g:VerticalPanel>
 </ui:UiBinder> 
