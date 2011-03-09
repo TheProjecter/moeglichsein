@@ -24,7 +24,7 @@
 		</g:VerticalPanel>
 		</g:HorizontalPanel>
 		
-		<g:HorizontalPanel ui:field='detailsContainer'>
+		<g:HorizontalPanel ui:field='detailsContainer' addStyleNames='{style.elegantFraming}'>
 			<c:CellTree ui:field='parsingTree'>
 			</c:CellTree>
 			<g:VerticalPanel ui:field='detailsInfoContainer'>

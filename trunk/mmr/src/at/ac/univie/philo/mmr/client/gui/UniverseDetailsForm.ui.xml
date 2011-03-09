@@ -18,6 +18,7 @@
 				<span ui:field='universeName' />
 			</h1>
 			<h2>Possible Worlds And Their Relations</h2>
+			<div class='{style.explaination}'>A possible world in Modal Predicate Logic technically enables you to manage the distribution of individuals into predicate extensions. Informally, you can define 'ontologies' which do not only refer to 'the real world' but have contributions from counterfactual reasoning. This is the semantical/ontological level.<br/> On the syntactical level, you take a first order (predicate) logic and add modal operators. The power of this operators is to reason about multiple possible worlds.<br/><br/>Below you can create or delete possible worlds. Moreover you can define which world is 'accessible', i.e. is taken into account when evaluating an expression when starting from one world.</div>
 			<g:HorizontalPanel ui:field="worldToolBox"
 				addStyleNames='{style.toolBox}'>
 				<g:Label ui:field="labelRenameUniverse" addStyleNames='{style.interactiveElement}'>Rename

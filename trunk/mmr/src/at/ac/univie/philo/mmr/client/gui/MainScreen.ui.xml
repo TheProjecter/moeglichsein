@@ -54,11 +54,11 @@
 				</g:ScrollPanel>
 			</g:west>
 			<g:center size="800">
-				<g:ScrollPanel ui:field="mainScrollPanel">
+				<g:ScrollPanel ui:field="mainScrollPanel" styleName="{style.mainbox}">
 				<g:VerticalPanel ui:field="mainPanel">
-					<g:SimplePanel ui:field="simplePanelForParserPanel" styleName="{style.mainbox}" >
+					<g:SimplePanel ui:field="simplePanelForParserPanel" >
 					<g:HTMLPanel ui:field="parserContainer">
-	    					<div>Hier kommt die Hauptseite mit Quick-Functions</div>					
+	    					<div>Loading...</div>					
 					 </g:HTMLPanel>
 					 </g:SimplePanel>
 				</g:VerticalPanel>

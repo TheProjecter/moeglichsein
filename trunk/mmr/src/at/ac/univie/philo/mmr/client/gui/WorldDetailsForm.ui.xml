@@ -12,6 +12,7 @@
 <g:VerticalPanel ui:field="browserVPanel" borderWidth="0">
   <g:HTMLPanel ui:field="headingHtml">
   <h2>Extensions in World: <span ui:field='worldName'/></h2>
+  <div>Below you can find an Extension Editor where you can add, modify or just browse through the extension elements of this World. The first column shows a list of predicates. You can select one to view and edit its extension elements.</div>
     </g:HTMLPanel>
 <g:HorizontalPanel ui:field="extensionToolBox"
 				addStyleNames='{style.toolBox}'>
