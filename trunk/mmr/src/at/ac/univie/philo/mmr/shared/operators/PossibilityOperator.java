@@ -31,9 +31,10 @@ public class PossibilityOperator implements IModalOperator, IsSerializable {
 		boolean hasFreeVars = false;
 		Expression scope = modalExpression.getScope();
 		HashMap<World,HashSet<ArrayList<Individual>>> resultingSequences = new HashMap<World, HashSet<ArrayList<Individual>>>();
-		Comment comment = new Comment("### DIAMOND-Expression: "+modalExpression.toString()+" ### We have to find at least one World which is accessible from World "+ initialWorld.getName()+ " and in this world the Scope holds: "+scope);
+		HashSet<World> accessibleWorlds = universe.getAccessibleWorlds(initialWorld);
+		Comment comment = new Comment("START of Evaluation of DIAMOND-Expression: "+modalExpression.toString()+"\n We have to find at least one World which is accessible from World "+ initialWorld.getName()+ " and such that in this world the Scope holds: "+scope+"\n From "+initialWorld.getName()+" the following "+accessibleWorlds.size()+" worlds are accessible: "+accessibleWorlds.toString());
 		try {	
-			for (World w : universe.getAccessibleWorlds(initialWorld)) {
+			for (World w : accessibleWorlds) {
 				ExpressionEvaluationVisitor visitor = new ExpressionEvaluationVisitor(w, universe);
 				scope.accept(visitor);
 				EvaluationResult scopeResult = visitor.getResultOf(scope);
@@ -41,13 +42,13 @@ public class PossibilityOperator implements IModalOperator, IsSerializable {
 				comment.addLines(summary);
 				if(scopeResult.isSentence()) {
 					if (scopeResult.getValue().getValue().equals(TruthValue.TRUE)) {
-						comment.addLine("### DIAMOND-Expression: "+modalExpression.toString()+" ### In World "+w.getName()+" the Scope "+scope+" does hold. That means we found an example and the Diamond-Expression evaluates to true.");
+						comment.addLine("END of Evaluation of DIAMOND-Expression: "+modalExpression.toString()+"\n In World "+w.getName()+" the Scope "+scope+" does hold. That means we found an example and the Diamond-Expression evaluates to true.");
 						if(hasFreeVars) {
 							return new EvaluationResult(resultingSequences, comment);
 						}
 						return new EvaluationResult(new TruthExpression(true), comment);
 					} else {
-						comment.addLine("### DIAMOND-Expression: "+modalExpression.toString()+" ### In World "+w.getName()+" the Scope "+scope+" does not hold. Lets look in the other worlds.");
+						comment.addLine("CHECKPOINT of Evaluation of DIAMOND-Expression: "+modalExpression.toString()+"\n In World "+w.getName()+" the Scope "+scope+" does not hold. Lets look in the other worlds.");
 					}
 				} else {
 					hasFreeVars = true;
@@ -61,7 +62,7 @@ public class PossibilityOperator implements IModalOperator, IsSerializable {
 		}
 		
 
-		comment.addLine("### DIAMOND-Expression: "+modalExpression.toString()+" ### We checked for all Worlds that the Scope "+scope+" hold and did not find one. The Possibility-Expression therefore evalutes to false.");
+		comment.addLine("END of Evaluation of DIAMOND-Expression: "+modalExpression.toString()+"\n We checked for all Worlds that the Scope "+scope+" hold and did not find one. The Possibility-Expression therefore evalutes to false.");
 		return new EvaluationResult(new TruthExpression(false), comment);
 	}
 
@@ -72,7 +73,7 @@ public class PossibilityOperator implements IModalOperator, IsSerializable {
 
 	@Override
 	public String getName() {
-		return "\\diamond";
+		return "\u25CA";
 	}
 
 }

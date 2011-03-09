@@ -249,7 +249,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		
 //		ArrayList<ArrayList<Individual>> resultextension = new ArrayList<ArrayList<Individual>>();
 		ArrayList<Individual> evaluatedTerms = new ArrayList<Individual>();
-		Comment comment = new Comment("PredicateExpression "+expression+". We need to evaluate the terms first for the World: "+initWorld.getName()+":");
+		Comment comment = new Comment("PredicateExpression "+expression+".\n We need to evaluate all "+terms.length+" terms first for the World: "+initWorld.getName()+":");
 		for(int i=0; i<terms.length; i++) {
 			EvaluationResult res = cache.getResult(terms[i]);
 			if (!res.isSentence()) {
@@ -265,7 +265,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 						return;
 					}
 					Individual indi = extractIndividual(allmatchingindis);
-					comment.addLine("Term #"+i+" "+terms[i] +" evaluates to "+indi);
+					comment.addLine("\tTerm #"+i+" "+terms[i] +" evaluates to "+indi);
 					evaluatedTerms.add(i, indi);
 				} catch (NotAExtensionResultException e) {
 					errorComment.addLine(e.toString());
@@ -290,7 +290,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 			Collection<PredicateExpression> allPossiblePredExpressions = expandAllCombinationsOfIndividualAssignmentsForFreeVariables(input);
 			//evaluate all possible PEs
 			for (PredicateExpression pe : allPossiblePredExpressions) {
-				visit(pe);
+				pe.accept(this);
 				EvaluationResult evalRes = cache.getResult(pe);
 				TermExpression[] terms = pe.getTerms();
 				if (evalRes.isSentence()) {

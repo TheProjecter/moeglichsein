@@ -73,9 +73,9 @@ public class TruthExpression extends Expression implements IsSerializable {
 	@Override
 	public String toString() {
 		if (truthValue.equals(TruthValue.TRUE)) {
-			return "\\top";
+			return "\u22A4";
 		} else if (truthValue.equals(TruthValue.FALSE)) {
-			return "\\bot";
+			return "\u22A5";
 		} else {
 			return truthValue.toString();
 		}

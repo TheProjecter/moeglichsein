@@ -31,10 +31,11 @@ public class NecessityOperator implements IModalOperator, IsSerializable {
 		//when we found one which evaluates to false, we can stop and the modal expression if false
 		boolean hasFreeVars = false;
 		Expression scope = modalExpression.getScope();
+		HashSet<World> accessibleWorlds = universe.getAccessibleWorlds(initialWorld);
 		HashMap<World,HashSet<ArrayList<Individual>>> resultingSequences = new HashMap<World, HashSet<ArrayList<Individual>>>();
-		Comment comment = new Comment("### BOX-Expression: "+modalExpression.toString()+" ### We have to check for all Worlds which are accessible from World "+ initialWorld.getName()+ " that the Expression holds: "+scope);
+		Comment comment = new Comment("START of Evaluation of BOX-Expression: "+modalExpression.toString()+"\n We have to check for all Worlds which are accessible from World "+ initialWorld.getName()+ " that the Expression holds: "+scope+"\n From "+initialWorld.getName()+" the following "+accessibleWorlds.size()+" worlds are accessible: "+accessibleWorlds.toString());
 		try {
-			for (World w : universe.getAccessibleWorlds(initialWorld)) {
+			for (World w : accessibleWorlds) {
 				ExpressionEvaluationVisitor visitor = new ExpressionEvaluationVisitor(w, universe);
 				scope.accept(visitor);
 				EvaluationResult scopeResult = visitor.getResultOf(scope);
@@ -42,10 +43,10 @@ public class NecessityOperator implements IModalOperator, IsSerializable {
 				comment.addLines(summary);
 				if(scopeResult.isSentence()) {
 					if (scopeResult.getValue().getValue().equals(TruthValue.FALSE)) {
-						comment.addLine("### BOX-Expression: "+modalExpression.toString()+" ### In World "+w.getName()+" the Scope "+scope+" does not hold. That means we found a counter-example and the Box-Expression evaluates to false.");
+						comment.addLine("END of Evaluation of BOX-Expression: "+modalExpression.toString()+"\n In World "+w.getName()+" the Scope "+scope+" does not hold. That means we found a counter-example and the Box-Expression evaluates to false.");
 						return new EvaluationResult(new TruthExpression(false), comment);
 					} else {
-						comment.addLine("### BOX-Expression: "+modalExpression.toString()+" ### In World "+w.getName()+" the Scope "+scope+" hold. Lets look in the other worlds.");
+						comment.addLine("CHECKPOINT of Evaluation of BOX-Expression: "+modalExpression.toString()+"\n In World "+w.getName()+" the Scope "+scope+" hold. Lets look in the other worlds.");
 					}
 				} else {
 					hasFreeVars = true;
@@ -66,7 +67,7 @@ public class NecessityOperator implements IModalOperator, IsSerializable {
 		if(hasFreeVars) {
 			return new EvaluationResult(resultingSequences, comment);
 		}
-		comment.addLine("### BOX-Expression: "+modalExpression.toString()+" ### We checked for all Worlds that the Scope "+scope+" hold. The Box-Expression therefore evalutes to true.");
+		comment.addLine("END of Evaluation of BOX-Expression: "+modalExpression.toString()+"\n We checked for all Worlds that the Scope "+scope+" hold. The Box-Expression therefore evalutes to true.");
 		return new EvaluationResult(new TruthExpression(true), comment);
 	}
 
@@ -77,7 +78,7 @@ public class NecessityOperator implements IModalOperator, IsSerializable {
 
 	@Override
 	public String getName() {
-		return "\\box";
+		return "\u2610";
 	}
 
 }

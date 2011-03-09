@@ -21,7 +21,7 @@ public class AndOperator implements IBinaryOperator,IsSerializable {
 
 	@Override
 	public String getName() {
-		return "AND";
+		return "\u2227";
 	}
 
 	@Override

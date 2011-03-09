@@ -21,7 +21,7 @@ public class OrOperator implements IBinaryOperator, IsSerializable{
 
 	@Override
 	public String getName() {
-		return "OR";
+		return "\u2228";
 	}
 
 	@Override

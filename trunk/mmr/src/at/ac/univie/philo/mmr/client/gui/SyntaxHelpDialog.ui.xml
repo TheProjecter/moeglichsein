@@ -76,23 +76,41 @@
 			</thead>
 			<tr>
 				<td>&lt;sentence&gt; \vee &lt;sentence&gt;</td>
-				<td>Disjunction (OR)</td>
+				<td>Disjunction, OR, <b>&#x2228;</b> </td>
 			</tr>
 			<tr>
 				<td>&lt;sentence&gt; \wedge &lt;sentence&gt;</td>
-				<td>Conjunction (AND)</td>
+				<td>Conjunction, AND, <b>&#x2227;</b> </td>
 			</tr>
 			<tr>
 				<td>&lt;sentence&gt; \oplus &lt;sentence&gt;</td>
-				<td>Exclusive-Or (XOR)</td>
+				<td>Exclusive-Or, XOR, &#x2295;</td>
 			</tr>
 			<tr>
 				<td>&lt;sentence&gt; \rightarrow &lt;sentence&gt;</td>
-				<td>Implication / Conditional</td>
+				<td>Implication, Conditional, <b>&#x2192;</b> </td>
 			</tr>
 			<tr>
 				<td>&lt;sentence&gt; \leftrightarrow &lt;sentence&gt;</td>
-				<td>Biconditional</td>
+				<td>Biconditional, <b>&#x2194;</b> </td>
+			</tr>
+			</table>
+			
+						<h1>Truth States</h1>
+			<table id="tableid">
+			<thead>
+			<tr>
+				<td>Syntax</td>
+				<td>Description</td>
+			</tr>
+			</thead>
+			<tr>
+				<td>\top</td>
+				<td>TRUE, VERUM, <b>&#x22A4;</b> </td>
+			</tr>
+			<tr>
+				<td>\bot</td>
+				<td>FALSE, FALSUM, <b>&#x22A5;</b> </td>
 			</tr>
 			</table>
 			
@@ -106,15 +124,15 @@
 			</thead>
 			<tr>
 				<td>\neg &lt;sentence&gt;</td>
-				<td>Negation (NOT)</td>
+				<td>Negation, NOT, <b>&#x00AC;</b> </td>
 			</tr>
 			<tr>
 				<td>\box &lt;sentence&gt;</td>
-				<td>Box-Operator (Necessity-Operator)</td>
+				<td>Box, Necessity-Operator, <b>&#x2610;</b></td>
 			</tr>
 			<tr>
 				<td>\diamond &lt;sentence&gt;</td>
-				<td>Diamond-Operator (Possibility-Operator)</td>
+				<td>Diamond, Possibility-Operator, <b> &#x25CA; </b></td>
 			</tr>
 			</table>
 			
@@ -128,11 +146,11 @@
 			</thead>
 			<tr>
 				<td>\exists &lt;var&gt; &lt;sentence&gt;</td>
-				<td>Existence Quantifier</td>
+				<td>Existence Quantifier, <b>&#x2203;</b></td>
 			</tr>
 			<tr>
 				<td>\forall &lt;var&gt; &lt;sentence&gt;</td>
-				<td>Universal Quantifier</td>
+				<td>Universal Quantifier, <b>&#x2200;</b></td>
 			</tr>
 			</table>
 			

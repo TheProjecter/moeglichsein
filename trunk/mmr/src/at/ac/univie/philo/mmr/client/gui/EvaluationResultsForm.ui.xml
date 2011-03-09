@@ -28,15 +28,19 @@
 			<c:CellTree ui:field='parsingTree'>
 			</c:CellTree>
 			<g:VerticalPanel ui:field='detailsInfoContainer'>
-				<g:SimplePanel ui:field='worldSelectionContainer'>
-				</g:SimplePanel>
+			<g:HorizontalPanel ui:field='worldSelectionMetaContainer' spacing='10'>
+						<g:Label ui:field='worldSelectionLabel' addStyleNames='{style.bold}'>Initial World:</g:Label>
+						<g:SimplePanel ui:field='worldSelectionContainer'>
+						</g:SimplePanel>
+			</g:HorizontalPanel>
+				
 				<g:VerticalPanel ui:field='detailsCommentsContainer'>
 					<g:HorizontalPanel ui:field='inContainer' spacing='10'>
-						<g:Label ui:field='subExpressionLabel'>Expression:</g:Label>
+						<g:Label ui:field='subExpressionLabel' addStyleNames='{style.bold}'>Expression:</g:Label>
 						<g:Label ui:field='subExpressionText'>none</g:Label>
 					</g:HorizontalPanel>
 					<g:HorizontalPanel ui:field='outContainer' spacing='10'>
-						<g:Label ui:field='resultExpressionLabel'>Result:</g:Label>
+						<g:Label ui:field='resultExpressionLabel' addStyleNames='{style.bold}'>Result:</g:Label>
 						<g:Label ui:field='resultExpressionText'>none</g:Label>
 					</g:HorizontalPanel>
 				</g:VerticalPanel>			
