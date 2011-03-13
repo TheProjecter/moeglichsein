@@ -21,6 +21,8 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -37,6 +39,7 @@ import com.google.gwt.user.cellview.client.TreeNode;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -390,6 +393,8 @@ public class MainScreen extends Composite {
 		oracle.add("\\exists x \\exists y (OLDERTHAN^2(x,y) \\rightarrow \\diamond FRIENDOF^2(x,y))");
 		
 		final SuggestBox expressionField = new SuggestBox(oracle);
+		expressionField.setText("\\box STUDIESINMINTIME^1(a_5)");
+		expressionField.setTitle("Type a leading operator like \\forall or \\box to get suggestions");
 		expressionField.setWidth("30em");
 		final Label errorLabel = new Label();
 		
