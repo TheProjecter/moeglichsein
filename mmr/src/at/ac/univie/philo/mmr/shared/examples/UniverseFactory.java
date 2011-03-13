@@ -274,12 +274,93 @@ public class UniverseFactory {
 		extensionsEarth.put(pVegetarian, pExtVegetarian);
 
 		// ###############################
-		//    WORLD ALEA
+		//    WORLD EARTH
 		// ###############################
 		
 		World earth = new World("Earth", extensionsEarth);				
 	
+		// #########################################################
+		// define the extension of each predicate in World WONDERLAND
+		// #########################################################
+
+		pExtHuman = new HashSet<ArrayList<Individual>>(createArity1Extension(a6Alice));
+		pExtEvil = new HashSet<ArrayList<Individual>>(createArity1Extension()); 
+		pExtHasSwissBankAccount = new HashSet<ArrayList<Individual>>(createArity1Extension(a4Sauron));
+		pExtLikesApples = new HashSet<ArrayList<Individual>>(createArity1Extension(a9Eve));
+		pExtVegetarian = new HashSet<ArrayList<Individual>>(createArity1Extension());
+		pExtDog = new HashSet<ArrayList<Individual>>(createArity1Extension(a4Sauron,a2Data));
+		pExtStudiesInMinTime = new HashSet<ArrayList<Individual>>(createArity1Extension(a5ChuckNorris)); //Only Chuck Norris studies in minimal study time
+		pExtCanDance = new HashSet<ArrayList<Individual>>(createArity1Extension(a10GrinCat)); //All Humans can dance
+		pExtConservative = new HashSet<ArrayList<Individual>>(createArity1Extension());
+		pExtHasSmartphone = new HashSet<ArrayList<Individual>>(createArity1Extension(a8Jobs,a2Data));
+		pExtGod = new HashSet<ArrayList<Individual>>(createArity1Extension(a10GrinCat)); //There is no god
+		p2ExtFriends = new HashSet<ArrayList<Individual>>(createArity2Extension(a6Alice,a1Spok,a6Alice,a2Data,a6Alice,a3Sokrates,a6Alice,a4Sauron,a6Alice,a5ChuckNorris,a6Alice,a6Alice,a6Alice,a7Jesus,a6Alice,a8Jobs,a6Alice,a9Eve,a6Alice,a10GrinCat,
+																				a10GrinCat,a1Spok,a10GrinCat,a2Data,a10GrinCat,a3Sokrates,a10GrinCat,a4Sauron,a10GrinCat,a5ChuckNorris,a10GrinCat,a6Alice,a10GrinCat,a7Jesus,a10GrinCat,a8Jobs,a10GrinCat,a9Eve,a10GrinCat,a10GrinCat)); 
+		p2ExtOlderThan = new HashSet<ArrayList<Individual>>(createArity2Extension(a1Spok,a6Alice,a2Data,a6Alice,a3Sokrates,a6Alice,a4Sauron,a6Alice,a5ChuckNorris,a6Alice,a6Alice,a6Alice,a7Jesus,a6Alice,a8Jobs,a6Alice,a9Eve,a6Alice,a10GrinCat,a6Alice));
+		p2ExtSmarterThan = new HashSet<ArrayList<Individual>>(createArity2Extension(a6Alice,a1Spok,a6Alice,a2Data,a6Alice,a3Sokrates,a6Alice,a4Sauron,a6Alice,a5ChuckNorris,a6Alice,a6Alice,a6Alice,a7Jesus,a6Alice,a8Jobs,a6Alice,a9Eve,a10GrinCat,a6Alice));		
 		
+		HashMap<Predicate, HashSet<ArrayList<Individual>>> extensionsWonderland = new HashMap<Predicate, HashSet<ArrayList<Individual>>>();
+		extensionsEarth.put(p2Friends, p2ExtFriends); 
+		extensionsEarth.put(p2OlderThan, p2ExtOlderThan);
+		extensionsEarth.put(p2SmarterThan, p2ExtSmarterThan);
+		extensionsEarth.put(pCanDance, pExtCanDance);
+		extensionsEarth.put(pConservative, pExtConservative);
+		extensionsEarth.put(pDog, pExtDog);
+		extensionsEarth.put(pEvil, pExtEvil);
+		extensionsEarth.put(pGod, pExtGod);
+		extensionsEarth.put(pHasSmartphone, pExtHasSmartphone);
+		extensionsEarth.put(pHasSwissBankAccount, pExtHasSwissBankAccount);
+		extensionsEarth.put(pHuman, pExtHuman);
+		extensionsEarth.put(pLikesApples, pExtLikesApples);
+		extensionsEarth.put(pStudiesInMinTime, pExtStudiesInMinTime);
+		extensionsEarth.put(pVegetarian, pExtVegetarian);
+
+		// ###############################
+		//    WORLD WONDERLAND
+		// ###############################
+		
+		World wonderland = new World("Wonderland", extensionsEarth);					
+		
+		// #########################################################
+		// define the extension of each predicate in World SIRIUS
+		// #########################################################
+
+		pExtHuman = new HashSet<ArrayList<Individual>>(createArity1Extension());
+		pExtEvil = new HashSet<ArrayList<Individual>>(createArity1Extension(a10GrinCat)); 
+		pExtHasSwissBankAccount = new HashSet<ArrayList<Individual>>(createArity1Extension());
+		pExtLikesApples = new HashSet<ArrayList<Individual>>(createArity1Extension(a9Eve));
+		pExtVegetarian = new HashSet<ArrayList<Individual>>(createArity1Extension());
+		pExtDog = new HashSet<ArrayList<Individual>>(createArity1Extension(inventory));
+		pExtStudiesInMinTime = new HashSet<ArrayList<Individual>>(createArity1Extension(a5ChuckNorris)); //Only Chuck Norris studies in minimal study time
+		pExtCanDance = new HashSet<ArrayList<Individual>>(createArity1Extension(a8Jobs)); 
+		pExtConservative = new HashSet<ArrayList<Individual>>(createArity1Extension(a10GrinCat));
+		pExtHasSmartphone = new HashSet<ArrayList<Individual>>(createArity1Extension(a8Jobs));
+		pExtGod = new HashSet<ArrayList<Individual>>(createArity1Extension(a1Spok));
+		p2ExtFriends = new HashSet<ArrayList<Individual>>(createArity2Extension(inventory)); 
+		p2ExtOlderThan = new HashSet<ArrayList<Individual>>(createArity2Extension());
+		p2ExtSmarterThan = new HashSet<ArrayList<Individual>>(createArity2Extension());		
+		
+		HashMap<Predicate, HashSet<ArrayList<Individual>>> extensionsSirius = new HashMap<Predicate, HashSet<ArrayList<Individual>>>();
+		extensionsEarth.put(p2Friends, p2ExtFriends); 
+		extensionsEarth.put(p2OlderThan, p2ExtOlderThan);
+		extensionsEarth.put(p2SmarterThan, p2ExtSmarterThan);
+		extensionsEarth.put(pCanDance, pExtCanDance);
+		extensionsEarth.put(pConservative, pExtConservative);
+		extensionsEarth.put(pDog, pExtDog);
+		extensionsEarth.put(pEvil, pExtEvil);
+		extensionsEarth.put(pGod, pExtGod);
+		extensionsEarth.put(pHasSmartphone, pExtHasSmartphone);
+		extensionsEarth.put(pHasSwissBankAccount, pExtHasSwissBankAccount);
+		extensionsEarth.put(pHuman, pExtHuman);
+		extensionsEarth.put(pLikesApples, pExtLikesApples);
+		extensionsEarth.put(pStudiesInMinTime, pExtStudiesInMinTime);
+		extensionsEarth.put(pVegetarian, pExtVegetarian);
+
+		// ###############################
+		//    WORLD WONDERLAND
+		// ###############################
+		
+		World sirius = new World("Sirius", extensionsEarth);		
 		
 		
 		// #############################################
@@ -287,7 +368,7 @@ public class UniverseFactory {
 		// #############################################
 		Universe skiFi = null;
 		try {
-			skiFi = new Universe("Stargate", AccessabilityConstraint.S5, true, constantMapping, kPax,alea,earth);
+			skiFi = new Universe("Stargate", AccessabilityConstraint.S5, true, constantMapping, kPax,alea,earth, wonderland, sirius);
 		} catch (ConstraintViolationException e) {
 		}
 		return skiFi;

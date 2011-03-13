@@ -82,5 +82,21 @@ public abstract class Expression implements IsSerializable {
 		}
 		return res;
 	}
+
+	public Variable getUnusedVariable() {
+		
+		Collection<VariableExpression> allVars = allVariables();
+		
+		boolean usedVar = true;
+		int index = 0;
+		while(index >= 0 && index < Integer.MAX_VALUE) {
+			Variable var = new Variable("z", index);
+			if (!allVars.contains(new VariableExpression(var))) {
+					return var;
+			}
+			index++;
+		}
+		return null;
+	}
 	
 }
