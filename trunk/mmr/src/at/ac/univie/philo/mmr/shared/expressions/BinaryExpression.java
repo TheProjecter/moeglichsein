@@ -3,6 +3,7 @@ package at.ac.univie.philo.mmr.shared.expressions;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -17,8 +18,8 @@ public class BinaryExpression extends FormulaExpression implements IsSerializabl
 	Expression left;
 	Expression right;
 	IBinaryOperator operator;
-	ArrayList<VariableExpression> freeVars;
-	ArrayList<VariableExpression> vars;
+	Collection<VariableExpression> freeVars;
+	Collection<VariableExpression> vars;
 	
 	/**
 	 * Dummy Constructor for GWT Serialization. Don't use it yourself!
@@ -32,7 +33,7 @@ public class BinaryExpression extends FormulaExpression implements IsSerializabl
 		this.left = left;
 		this.right = right;
 		this.operator = operator;
-		freeVars = new ArrayList<VariableExpression>();
+		freeVars = new HashSet<VariableExpression>();
 		freeVars.addAll(left.freeVariables());
 		freeVars.addAll(right.freeVariables());
 		vars = new ArrayList<VariableExpression>();

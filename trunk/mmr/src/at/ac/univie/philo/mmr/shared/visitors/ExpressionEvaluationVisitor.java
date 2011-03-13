@@ -392,9 +392,13 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		ArrayList<Individual> ai = new ArrayList<Individual>();
 		HashSet<ArrayList<Individual>> hai = new HashSet<ArrayList<Individual>>();
 		Individual i = evaluate(expression);
-		ai.add(i);
-		hai.add(ai);
-		cache.addResult(expression, new EvaluationResult(hai, initWorld, new Comment("Constant directly maps to Individual "+i.getName())));
+		if (i != null) {
+			ai.add(i);
+			hai.add(ai);
+			cache.addResult(expression, new EvaluationResult(hai, initWorld, new Comment("Constant directly maps to Individual "+i.getName())));
+		} else {
+			cache.addResult(expression, new EvaluationResult(hai, initWorld, new Comment("Constant maps to null")));
+		}
 //		CommentPrinter.print("Constant in World "+initWorld.getName()+" maps to Individual "+i.toString());
 	}
 
@@ -441,9 +445,10 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 			Individual i = constantMap.get(((Constant)exp.getSymbol()));
 			return i;
 		} else {
-			if (!initWorld.hasExistingIndividual(hardCodedIndividual)) {
-				throw new RuntimeException("The hardcoded Individual in this expression does not exist in this World.");
-			}
+//			if (!initWorld.hasExistingIndividual(hardCodedIndividual)) {
+//				return null;
+//				throw new RuntimeException("The hardcoded Individual in this expression does not exist in this World.");
+//			}
 			return hardCodedIndividual;
 		}
 	}

@@ -1,19 +1,19 @@
 package at.ac.univie.philo.mmr.shared.expressions;
 
-import java.util.ArrayList;
 import java.util.Collection;
-
-import com.google.gwt.user.client.rpc.IsSerializable;
+import java.util.HashSet;
 
 import at.ac.univie.philo.mmr.shared.operators.IQuantor;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class QuantorExpression extends FormulaExpression implements IsSerializable {
 
 	Expression scope;
 	Variable boundedVar;
 	IQuantor quantor;
-	ArrayList<VariableExpression> vars;
-	ArrayList<VariableExpression> freevars;
+	HashSet<VariableExpression> vars;
+	HashSet<VariableExpression> freevars;
 	
 	/**
 	 * Dummy Constructor for GWT Serialization. Don't use it yourself!
@@ -28,8 +28,8 @@ public class QuantorExpression extends FormulaExpression implements IsSerializab
 		this.scope = scope;
 		this.quantor = quantor;
 		valid();
-		vars = new ArrayList<VariableExpression>();
-		freevars = new ArrayList<VariableExpression>();
+		vars = new HashSet<VariableExpression>();
+		freevars = new HashSet<VariableExpression>();
 		vars.addAll(scope.allVariables());
 		freevars.addAll(scope.freeVariables());
 		freevars.remove(new VariableExpression(boundedVar));
