@@ -28,7 +28,7 @@ public class Comment implements IsSerializable{
 	public void addLines(Comment comment) {
 		if (comment != null) {
 			for (String s : comment.getLines()) {
-					this.addLine(s);
+					this.addLine("\t "+s);
 			}
 		}
 	}

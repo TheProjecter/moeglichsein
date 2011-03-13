@@ -21,4 +21,18 @@ public class Variable extends Symbol implements IsSerializable{
 			throw new IllegalArgumentException("Invalid Variablename.");
 		}
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Variable) {
+			Variable var = (Variable)o;
+			return name.equals(var.getName()) && index == var.index;
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return name.hashCode() + index;
+	}
 }

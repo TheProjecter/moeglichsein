@@ -369,7 +369,7 @@ public class MainScreen extends Composite {
 
 	private void setUpFormular() {
 		final Button sendButton = new Button("Evaluate");
-		MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
+		final MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
 		oracle.add("\\box \\forall x(HUMAN^1(x) \\rightarrow CANDANCE^1(x))");
 		oracle.add("\\neg (\\forall x \\forall y SMARTERTHAN^2(x,y))");
 		oracle.add("\\forall x \\forall y FRIENDOF^2(x,y)");
@@ -382,7 +382,7 @@ public class MainScreen extends Composite {
 		oracle.add("\\exists x \\forall y OLDERTHAN^2(x,y,)");
 		oracle.add("\\box \\forall x \\forall y (GOD^1(x) \\rightarrow FRIENDOF^2(x,y))");
 		oracle.add("\\box STUDIESINMINTIME^1(a_5)");
-		oracle.add("\\forall x SMARTHERTHAN^2(a_3,x)");
+		oracle.add("\\forall x SMARTERTHAN^2(a_3,x)");
 		oracle.add("\\box \\forall x (CONSERVATIVE^1(x) \\rightarrow EVIL^1(x))");
 		oracle.add("\\diamond \\neg \\forall x (EVIL^1(x) \\rightarrow CONSERVATIVE^1(x))");
 		oracle.add("\\forall x (HASSMARTPHONE^1(x) \\leftrightarrow CANDANCE^1(x))");
@@ -480,7 +480,7 @@ public class MainScreen extends Composite {
 					errorLabel.setText("Please select a world to enable Evaluation. Every concrete evaluation needs a reference to the initial world (our real world).");
 				}
 				
-				String textToServer = expressionField.getText();
+				final String textToServer = expressionField.getText();
 //				if (!FieldVerifier.isValidName(textToServer)) {
 //					errorLabel.setText("Please enter at least four characters");
 //					return;
@@ -509,6 +509,7 @@ public class MainScreen extends Composite {
 							@Override
 							public void onSuccess(EvaluationReport result) {
 								hideWaitingDialog();
+								oracle.add(textToServer);
 								showEvaluationResults(result, selectedWorld);
 								sendButton.setEnabled(true);
 							}

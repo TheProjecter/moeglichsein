@@ -2,12 +2,13 @@ package at.ac.univie.philo.mmr.shared.expressions;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class VariableExpression extends TermExpression implements IsSerializable {
 
-	ArrayList<VariableExpression> vars;
+	HashSet<VariableExpression> vars;
 	
 	/**
 	 * Dummy Constructor for GWT Serialization. Don't use it yourself!
@@ -18,7 +19,7 @@ public class VariableExpression extends TermExpression implements IsSerializable
 	
 	public VariableExpression(Variable symbol) {
 		super(symbol);
-		vars = new ArrayList<VariableExpression>();
+		vars = new HashSet<VariableExpression>();
 		vars.add(this);
 	}
 
@@ -43,10 +44,16 @@ public class VariableExpression extends TermExpression implements IsSerializable
 	public boolean equals(Object o) {
 		if (o instanceof VariableExpression) {
 			VariableExpression var = (VariableExpression) o;
-			return this.getSymbol().equals(var.getSymbol());
+			boolean result = ((Variable) this.getSymbol()).equals(((Variable)var.getSymbol()));
+			return result;
 		} else {
 			return false;
 		}
+	}
+	
+	@Override
+	public int hashCode() {
+		return getSymbol().hashCode();
 	}
 
 	@Override

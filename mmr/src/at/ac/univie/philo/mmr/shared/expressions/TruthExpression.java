@@ -1,15 +1,15 @@
 package at.ac.univie.philo.mmr.shared.expressions;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class TruthExpression extends Expression implements IsSerializable {
 
 	private TruthValue truthValue;
-	private static final ArrayList<VariableExpression> vars = new ArrayList<VariableExpression>();
-	private static final ArrayList<VariableExpression> freevars = new ArrayList<VariableExpression>();
+	private static final HashSet<VariableExpression> vars = new HashSet<VariableExpression>();
+	private static final HashSet<VariableExpression> freevars = new HashSet<VariableExpression>();
 	
 	/**
 	 * Dummy Constructor for GWT Serialization. Don't use it yourself!

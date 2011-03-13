@@ -253,7 +253,7 @@ public class UniverseFactory {
 		pExtConservative = new HashSet<ArrayList<Individual>>(createArity1Extension(a8Jobs));
 		pExtHasSmartphone = new HashSet<ArrayList<Individual>>(createArity1Extension(a8Jobs));
 		pExtGod = new HashSet<ArrayList<Individual>>(createArity1Extension(a7Jesus)); //There is no god
-		p2ExtFriends = new HashSet<ArrayList<Individual>>(createArity2Extension(a9Eve,a1Spok,a9Eve,a2Data,a9Eve,a3Sokrates,a9Eve,a4Sauron,a9Eve,a5ChuckNorris,a9Eve,a6Alice,a9Eve,a7Jesus,a9Eve,a8Jobs,a9Eve,a9Eve,a9Eve,a10GrinCat,a1Spok,a10GrinCat,a3Sokrates,a4Sauron,a4Sauron,a3Sokrates,a5ChuckNorris,a6Alice,a6Alice,a5ChuckNorris)); 
+		p2ExtFriends = new HashSet<ArrayList<Individual>>(createArity2Extension(a7Jesus,a1Spok,a7Jesus,a2Data,a7Jesus,a3Sokrates,a7Jesus,a4Sauron,a7Jesus,a5ChuckNorris,a7Jesus,a6Alice,a7Jesus,a7Jesus,a7Jesus,a8Jobs,a7Jesus,a7Jesus,a7Jesus,a10GrinCat,a1Spok,a10GrinCat,a3Sokrates,a4Sauron,a4Sauron,a3Sokrates,a5ChuckNorris,a6Alice,a6Alice,a5ChuckNorris)); 
 		p2ExtOlderThan = new HashSet<ArrayList<Individual>>(createArity2Extension(a3Sokrates,a1Spok,a3Sokrates,a2Data,a3Sokrates,a3Sokrates,a3Sokrates,a4Sauron,a3Sokrates,a5ChuckNorris,a3Sokrates,a6Alice,a3Sokrates,a7Jesus,a3Sokrates,a8Jobs,a3Sokrates,a9Eve,a3Sokrates,a10GrinCat));
 		p2ExtSmarterThan = new HashSet<ArrayList<Individual>>(createArity2Extension(a3Sokrates,a1Spok,a3Sokrates,a2Data,a3Sokrates,a3Sokrates,a3Sokrates,a4Sauron,a3Sokrates,a5ChuckNorris,a3Sokrates,a6Alice,a3Sokrates,a7Jesus,a3Sokrates,a8Jobs,a3Sokrates,a9Eve,a3Sokrates,a10GrinCat));		
 		
@@ -428,6 +428,7 @@ public class UniverseFactory {
 				Individual right = individuals[i+1];
 				extAr2.add(left);
 				extAr2.add(right);
+				extension.add(extAr2);
 			}
 		}
 		return extension;

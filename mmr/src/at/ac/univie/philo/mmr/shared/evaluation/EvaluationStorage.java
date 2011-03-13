@@ -51,9 +51,13 @@ public class EvaluationStorage implements IsSerializable {
 			if (result == null) {
 				summary.addLine("### "+expr.toString()+" == Evaluation failed ###");
 			} else {
-				summary.addLine("### "+expr.toString()+" == "+result.toString()+" due to the following reasoning ###");
-				summary.addLines(result.getComment());
-				summary.addLine("### END OF "+expr.toString() + "###");
+				//skip nonsaying-comments like: Eve == EVE due to the following reasoning: Eve maps to Eve.
+				if (!result.isSentence()) {
+					continue;
+				}
+				summary.addLine("### "+expr.toString()+" == "+result.toString()+" ###");
+//				summary.addLines(result.getComment());
+//				summary.addLine("### END OF "+expr.toString() + "###");
 			}
 		}
 		return summary;

@@ -11,8 +11,8 @@ public class PredicateExpression extends FormulaExpression implements IsSerializ
 	TermExpression[] terms;
 	Predicate symbol;
 
-	ArrayList<VariableExpression> vars;
-	ArrayList<VariableExpression> freevars;
+	Collection<VariableExpression> vars;
+	Collection<VariableExpression> freevars;
 	
 	/**
 	 * Dummy Constructor for GWT Serialization. Don't use it yourself!
@@ -26,8 +26,8 @@ public class PredicateExpression extends FormulaExpression implements IsSerializ
 		this.terms = terms;
 		this.symbol = symbol;
 		valid();
-		vars = new ArrayList<VariableExpression>();
-		freevars = new ArrayList<VariableExpression>();
+		vars = new HashSet<VariableExpression>();
+		freevars = new HashSet<VariableExpression>();
 		for(TermExpression expression : terms) {
 			vars.addAll(expression.allVariables());
 			freevars.addAll(expression.freeVariables());

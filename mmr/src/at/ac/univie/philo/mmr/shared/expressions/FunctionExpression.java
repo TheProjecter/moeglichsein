@@ -2,6 +2,7 @@ package at.ac.univie.philo.mmr.shared.expressions;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -9,8 +10,8 @@ public class FunctionExpression extends TermExpression implements IsSerializable
 
 	TermExpression[] terms;
 	Function symbol;
-	ArrayList<VariableExpression> vars;
-	ArrayList<VariableExpression> freevars;
+	HashSet<VariableExpression> vars;
+	HashSet<VariableExpression> freevars;
 	
 	/**
 	 * Dummy Constructor for GWT Serialization. Don't use it yourself!
@@ -24,8 +25,8 @@ public class FunctionExpression extends TermExpression implements IsSerializable
 		this.symbol = symbol;
 		this.terms = expressions;
 		valid();
-		vars = new ArrayList<VariableExpression>();
-		freevars = new ArrayList<VariableExpression>();
+		vars = new HashSet<VariableExpression>();
+		freevars = new HashSet<VariableExpression>();
 		for(TermExpression expression : expressions) {
 			vars.addAll(expression.allVariables());
 			freevars.addAll(expression.freeVariables());
