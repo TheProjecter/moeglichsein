@@ -46,8 +46,10 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -65,6 +67,7 @@ public class MainScreen extends Composite {
 	private UniverseTreeModel treeModel = null;
 	private TreeNode lastUniverseTreeNode = null;
 	private Widget lastUniverseDetailsWidget = null;
+	private DialogBox waitingBox = null;
 	private static MainScreenUiBinder uiBinder = GWT
 			.create(MainScreenUiBinder.class);
 
@@ -366,9 +369,28 @@ public class MainScreen extends Composite {
 
 	private void setUpFormular() {
 		final Button sendButton = new Button("Evaluate");
-		final TextBox nameField = new TextBox();
-		nameField.setText("\\box \\forall x(HUMAN^1(x) \\rightarrow CANDANCE^1(x))");
-		nameField.setWidth("20em");
+		MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
+		oracle.add("\\box \\forall x(HUMAN^1(x) \\rightarrow CANDANCE^1(x))");
+		oracle.add("\\neg (\\forall x \\forall y SMARTERTHAN^2(x,y))");
+		oracle.add("\\forall x \\forall y FRIENDOF^2(x,y)");
+		oracle.add("\\forall x DOG^1(x)");
+		oracle.add("\\neg \\exists x HUMAN^1(x)");
+		oracle.add("\\box \\exists x LIKESAPPLES^1(x)");
+		oracle.add("\\box \\exists x LIKESAPPLES^1(a_9)");
+		oracle.add("\\box \\forall x FRIENDOF^2(x,a_7)");
+		oracle.add("\\forall x OLDERTHAN^2(a_10,x)");
+		oracle.add("\\exists x \\forall y OLDERTHAN^2(x,y,)");
+		oracle.add("\\box \\forall x \\forall y (GOD^1(x) \\rightarrow FRIENDOF^2(x,y))");
+		oracle.add("\\box STUDIESINMINTIME^1(a_5)");
+		oracle.add("\\forall x SMARTHERTHAN^2(a_3,x)");
+		oracle.add("\\box \\forall x (CONSERVATIVE^1(x) \\rightarrow EVIL^1(x))");
+		oracle.add("\\diamond \\neg \\forall x (EVIL^1(x) \\rightarrow CONSERVATIVE^1(x))");
+		oracle.add("\\forall x (HASSMARTPHONE^1(x) \\leftrightarrow CANDANCE^1(x))");
+		oracle.add("\\forall z SMARTERTHAN^2(a_10,z)");
+		oracle.add("\\exists x \\exists y (OLDERTHAN^2(x,y) \\rightarrow \\diamond FRIENDOF^2(x,y))");
+		
+		final SuggestBox expressionField = new SuggestBox(oracle);
+		expressionField.setWidth("30em");
 		final Label errorLabel = new Label();
 		
 		// We can add style names to widgets
@@ -386,7 +408,7 @@ public class MainScreen extends Composite {
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
 //		HTMLPanel parserPanel = mscreen.getMainScreen();
-		quickEvalContainer.add(nameField, "nameFieldContainer");
+		quickEvalContainer.add(expressionField, "nameFieldContainer");
 		quickEvalContainer.add(sendButton, "sendButtonContainer");
 		quickEvalContainer.add(errorLabel, "errorLabelContainer");
 		quickEvalContainer.add(helpButton, "helpButtonContainer");
@@ -399,8 +421,7 @@ public class MainScreen extends Composite {
 		
 
 		// Focus the cursor on the name field when the app loads
-		nameField.setFocus(true);
-		nameField.selectAll();
+		expressionField.setFocus(true);
 
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
@@ -459,7 +480,7 @@ public class MainScreen extends Composite {
 					errorLabel.setText("Please select a world to enable Evaluation. Every concrete evaluation needs a reference to the initial world (our real world).");
 				}
 				
-				String textToServer = nameField.getText();
+				String textToServer = expressionField.getText();
 //				if (!FieldVerifier.isValidName(textToServer)) {
 //					errorLabel.setText("Please enter at least four characters");
 //					return;
@@ -469,10 +490,12 @@ public class MainScreen extends Composite {
 				sendButton.setEnabled(false);
 				textToServerLabel.setText(textToServer);
 				serverResponseLabel.setText("");
+				showWaitingDialog(textToServer);
 				parsingService.parse(textToServer, referenceUniverse,
 						new AsyncCallback<EvaluationReport>() {
 							public void onFailure(Throwable caught) {
 								// Show the RPC error message to the user
+								hideWaitingDialog();
 								dialogBox
 										.setText("Evaluation (World: "+selectedWorld.getName()+") - Failure");
 								serverResponseLabel
@@ -485,20 +508,38 @@ public class MainScreen extends Composite {
 
 							@Override
 							public void onSuccess(EvaluationReport result) {
+								hideWaitingDialog();
 								showEvaluationResults(result, selectedWorld);
 								sendButton.setEnabled(true);
 							}
 								
 						});
 			}
+
 		}
 
 		// Add a handler to send the name to the server
 		MyHandler handler = new MyHandler();
 		sendButton.addClickHandler(handler);
-		nameField.addKeyUpHandler(handler);
+//		nameField.addKeyUpHandler(handler);
 	}
 
+	private void showWaitingDialog(String expression) {
+		waitingBox = new DialogBox(false, true);
+		waitingBox.setText("Evaluation in Progress...");
+		
+		VerticalPanel vp = new VerticalPanel();
+		vp.setStyleName(style.distance());
+		vp.add(new HTML("<div>Please wait... Waiting time depends on the server load, the warm-up-time of Google App Engine and the Parsing and Evaluation Process itself.</div>"));
+		waitingBox.add(vp);
+		waitingBox.center();
+		waitingBox.show();
+	}
+	
+	private void hideWaitingDialog() {
+		waitingBox.hide();
+	}
+	
 	private void updateWorldDropBox() {
 		// 		UniverseFactory factory = UniverseFactory.get();
 		worldSelector.clear();

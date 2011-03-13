@@ -1,6 +1,7 @@
 package at.ac.univie.philo.mmr.server;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Collection;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -16,6 +17,10 @@ import at.ac.univie.philo.mmr.server.parsetree.ModallogicParser;
 import at.ac.univie.philo.mmr.shared.evaluation.EvaluationReport;
 import at.ac.univie.philo.mmr.shared.exceptions.ExpressionParsingException;
 import at.ac.univie.philo.mmr.shared.expressions.Expression;
+import at.ac.univie.philo.mmr.shared.expressions.QuantorExpression;
+import at.ac.univie.philo.mmr.shared.expressions.Variable;
+import at.ac.univie.philo.mmr.shared.expressions.VariableExpression;
+import at.ac.univie.philo.mmr.shared.operators.Operators;
 import at.ac.univie.philo.mmr.shared.semantic.Universe;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -47,6 +52,13 @@ public class ModalParsingServiceImpl extends RemoteServiceServlet implements
 		EvaluationReport report;
 		try {
 			exp = parser.parse(input);
+
+			Collection<VariableExpression> freeVars = exp.freeVariables();
+			//for each free Variable add a universal quantifier with a prefix
+			for (VariableExpression v :  freeVars) {
+				Variable var = (Variable) v.getSymbol();
+				exp = new QuantorExpression(Operators.getAllQuantorOperator(), var , exp);
+			}
 			report = new EvaluationReport(exp, universe);
 		} catch(Exception e) {
 			throw new ExpressionParsingException(e);
