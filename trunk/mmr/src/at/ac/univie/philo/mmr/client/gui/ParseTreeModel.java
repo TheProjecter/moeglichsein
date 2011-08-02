@@ -34,7 +34,6 @@ public class ParseTreeModel implements TreeViewModel {
 	private void setupSelectionChangeHandler() {
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			
-			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				Expression expr = selectionModel.getSelectedObject(); 
 				if (expr != null) {
@@ -44,7 +43,6 @@ public class ParseTreeModel implements TreeViewModel {
 		});
 	}
 
-	@Override
 	public <T> NodeInfo<?> getNodeInfo(T value) {
 		if (value == null) {
 			ArrayList<Expression> oneExpr = new ArrayList<Expression>();
@@ -63,7 +61,6 @@ public class ParseTreeModel implements TreeViewModel {
 
 	}
 
-	@Override
 	public boolean isLeaf(Object value) {
 		if (value == null) return false;
 		return ((Expression) value).getOperandCount() == 0;

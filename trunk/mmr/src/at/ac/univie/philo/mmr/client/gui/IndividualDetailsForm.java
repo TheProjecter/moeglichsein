@@ -87,7 +87,6 @@ public class IndividualDetailsForm extends Composite {
 	
 	private ClickHandler changeIconClickHandler = new ClickHandler() {
 		
-		@Override
 		public void onClick(ClickEvent event) {
 			showIconSelector(individual);
 		}
@@ -106,7 +105,6 @@ public class IndividualDetailsForm extends Composite {
 		Button abort = new Button("Abort");
 		abort.addClickHandler(new ClickHandler() {
 			
-			@Override
 			public void onClick(ClickEvent event) {
 				db.hide();
 			}
@@ -193,7 +191,6 @@ public class IndividualDetailsForm extends Composite {
 		ok.addStyleName(style.distance());
 		ok.addClickHandler(new ClickHandler() {
 			
-			@Override
 			public void onClick(ClickEvent event) {
 				dialogBox.hide();
 			}

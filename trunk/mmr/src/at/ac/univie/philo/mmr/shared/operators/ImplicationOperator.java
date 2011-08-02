@@ -7,7 +7,6 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class ImplicationOperator implements IBinaryOperator, IsSerializable {
 
-	@Override
 	public TruthExpression evaluate(TruthExpression left, TruthExpression right) {
 		if (left == null || right == null) {
 			throw new IllegalArgumentException();
@@ -20,17 +19,14 @@ public class ImplicationOperator implements IBinaryOperator, IsSerializable {
 		return new TruthExpression(TruthValue.FALSE);
 	}
 
-	@Override
 	public String getName() {
 		return "\u2192";
 	}
 
-	@Override
 	public int getPriority() {
 		return this.IMPLICATION_PRIORITY;
 	}
 
-	@Override
 	public boolean isAssociative() {
 		return false;
 	}

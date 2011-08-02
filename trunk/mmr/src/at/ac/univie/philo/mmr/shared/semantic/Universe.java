@@ -278,7 +278,6 @@ public class Universe implements IsSerializable {
 		ArrayList<Constant> clist = new ArrayList<Constant>(constantMap.keySet());
 		Collections.sort(clist, new Comparator<Constant>() {
 
-			@Override
 			public int compare(Constant o1, Constant o2) {
 				Integer o1index = o1.getIndex();
 				Integer o2index = o2.getIndex();

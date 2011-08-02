@@ -23,12 +23,10 @@ public class AllQuantor implements IQuantor, IsSerializable {
 		
 	}
 	
-	@Override
 	public EnumQuantor getQuantor() {
 		return EnumQuantor.ALL;
 	}
 
-	@Override
 	public String getName() {
 		return "\u2200";
 	}

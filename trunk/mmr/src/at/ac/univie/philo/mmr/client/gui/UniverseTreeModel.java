@@ -145,7 +145,6 @@ public final class UniverseTreeModel implements TreeViewModel {
 		dataProviderWorld.addDataDisplay(hasData);
 	}
 	
-	@Override
 	public <T> NodeInfo<?> getNodeInfo(T value) {
 		
 		if (value == null) {
@@ -305,7 +304,6 @@ public final class UniverseTreeModel implements TreeViewModel {
 	}
 		
 	
-	@Override
 	public boolean isLeaf(Object value) {
 		return (value instanceof Individual);
 	}
