@@ -81,12 +81,10 @@ public class ModalParsingServiceImpl extends RemoteServiceServlet implements
 				.replaceAll(">", "&gt;");
 	}
 
-	@Override
 	public Dummy dummy(Dummy d) {
 		return d;
 	}
 
-	@Override
 	public Void sendReport(String category, String question, String contact) throws RuntimeException {
 		        Properties props = new Properties();
 		        Session session = Session.getDefaultInstance(props, null);

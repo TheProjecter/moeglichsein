@@ -148,7 +148,6 @@ public class EvaluationResultsForm extends Composite {
 			showEvalDetails(rootExpression);
 			worldSelector.addChangeHandler(new ChangeHandler() {
 				
-				@Override
 				public void onChange(ChangeEvent event) {
 					World x = worldSelector.getSelectedObject();
 					if (x != null) {

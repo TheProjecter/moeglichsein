@@ -58,7 +58,6 @@ public class PredicateExtensionsModel implements TreeViewModel {
 		this.worldDetailsPage = worldDetailsPage;
 		selectionModel.addSelectionChangeHandler(new Handler() {
 
-			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				lastIndividual = selectionModel.getSelectedObject();
 				if(lastIndividual != null) {
@@ -68,7 +67,7 @@ public class PredicateExtensionsModel implements TreeViewModel {
 		});
 		selectionModelExtensionElement.addSelectionChangeHandler(new Handler() {
 			
-			@Override
+
 			public void onSelectionChange(SelectionChangeEvent event) {
 				lastExtensionElement = selectionModelExtensionElement.getSelectedObject();
 				if (lastExtensionElement != null) {
@@ -79,7 +78,7 @@ public class PredicateExtensionsModel implements TreeViewModel {
 		});
 		selectionModelPredicateEntry.addSelectionChangeHandler(new Handler() {
 			
-			@Override
+
 			public void onSelectionChange(SelectionChangeEvent event) {
 				lastPredicateEntry = selectionModelPredicateEntry.getSelectedObject();
 				if (lastPredicateEntry != null) {
@@ -182,7 +181,7 @@ public class PredicateExtensionsModel implements TreeViewModel {
  }
 
 
-	@Override
+
 	public <T> NodeInfo<?> getNodeInfo(T value) {
 		
 		if(value == null) {
@@ -230,7 +229,6 @@ public class PredicateExtensionsModel implements TreeViewModel {
 		
 	}
 
-	@Override
 	public boolean isLeaf(Object value) {
 		return value instanceof Individual;
 	}

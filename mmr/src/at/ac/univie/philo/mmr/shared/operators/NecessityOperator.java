@@ -24,7 +24,6 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class NecessityOperator implements IModalOperator, IsSerializable {
 
-	@Override
 	public EvaluationResult evaluate(ModalExpression modalExpression, Universe universe,
 			World initialWorld) {
 		//for all accessible worlds we need to evaluate the expression
@@ -71,12 +70,10 @@ public class NecessityOperator implements IModalOperator, IsSerializable {
 		return new EvaluationResult(new TruthExpression(true), comment);
 	}
 
-	@Override
 	public EnumModality getModality() {
 		return EnumModality.BOX;
 	}
 
-	@Override
 	public String getName() {
 		return "\u2610";
 	}

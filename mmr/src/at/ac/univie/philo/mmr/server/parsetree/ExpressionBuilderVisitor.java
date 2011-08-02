@@ -21,7 +21,6 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return datastructure.get(node);
 	}
 	
-	@Override
 	public Object visit(SimpleNode node, Object data) {
 		if (!datastructure.containsKey(node)) { 
 			node.childrenAccept(this, data);
@@ -30,7 +29,6 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 
-	@Override
 	public Object visit(ASTexpression node, Object data) {
 		if (!datastructure.containsKey(node)) { 
 			node.childrenAccept(this, data);
@@ -39,14 +37,12 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 
-	@Override
 	public Object visit(ASTtruthvalue node, Object data) {
 		boolean truthval = node.getValue();
 		datastructure.put(node, new TruthExpression(truthval));
 		return node.childrenAccept(this, data);
 	}
 
-	@Override
 	public Object visit(ASTbiconditional node, Object data) {
 		if (!datastructure.containsKey(node)) { 
 			node.childrenAccept(this, data);
@@ -57,7 +53,6 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 
-	@Override
 	public Object visit(ASTnegation node, Object data) {
 		if (!datastructure.containsKey(node)) { 
 			node.childrenAccept(this, data);
@@ -67,7 +62,6 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 	return null;
 	}
 
-	@Override
 	public Object visit(ASTconjunction node, Object data) {
 		if (!datastructure.containsKey(node)) { 
 			node.childrenAccept(this, data);
@@ -78,7 +72,6 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 
-	@Override
 	public Object visit(ASTdisjunction node, Object data) {
 		if (!datastructure.containsKey(node)) { 
 			node.childrenAccept(this, data);
@@ -89,7 +82,7 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 
-	@Override
+	
 	public Object visit(ASTimplication node, Object data) {
 		if (!datastructure.containsKey(node)) { 
 			node.childrenAccept(this, data);
@@ -100,7 +93,7 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 
-	@Override
+	
 	public Object visit(ASTxor node, Object data) {
 		if (!datastructure.containsKey(node)) { 
 			node.childrenAccept(this, data);
@@ -111,7 +104,7 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 
-	@Override
+	
 	public Object visit(ASTvariable node, Object data) {
 		if (!datastructure.containsKey(node)) { 
 			String name = node.getName();
@@ -123,7 +116,7 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 
-	@Override
+	
 	public Object visit(ASTpredicate node, Object data) {
 		if (!datastructure.containsKey(node)) {
 			ArrayList<SimpleNode> terms = node.getTerms();
@@ -146,7 +139,7 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 
-	@Override
+	
 	public Object visit(ASTconstant node, Object data) {
 		if (!datastructure.containsKey(node)) {
 			Integer i = node.getIndex();
@@ -158,7 +151,7 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 
-	@Override
+	
 	public Object visit(ASTfunction node, Object data) {
 		if (!datastructure.containsKey(node)) {
 			ArrayList<SimpleNode> terms = node.getTerms();
@@ -181,7 +174,7 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 	}
 
 
-	@Override
+	
 	public Object visit(ASTallquantor node, Object data) {
 		if (!datastructure.containsKey(node)) { 
 			node.childrenAccept(this, data);
@@ -193,7 +186,7 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 
-	@Override
+	
 	public Object visit(ASTexistencequantor node, Object data) {
 		if (!datastructure.containsKey(node)) { 
 			node.childrenAccept(this, data);
@@ -205,7 +198,7 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 	
-	@Override
+	
 	public Object visit(ASTbox node, Object data) {
 		if (!datastructure.containsKey(node)) { 
 			node.childrenAccept(this, data);
@@ -215,7 +208,7 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 
-	@Override
+	
 	public Object visit(ASTdiamond node, Object data) {
 		if (!datastructure.containsKey(node)) { 
 			node.childrenAccept(this, data);
@@ -225,12 +218,12 @@ public class ExpressionBuilderVisitor implements crflangVisitor {
 		return null;
 	}
 
-	@Override
+	
 	public Object visit(ASTfunctionname node, Object data) {
 		return node.childrenAccept(this, data);
 	}
 	
-	@Override
+	
 	public Object visit(ASTpredicatename node, Object data) {
 		return node.childrenAccept(this, data);
 	}

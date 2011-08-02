@@ -22,7 +22,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class PossibilityOperator implements IModalOperator, IsSerializable {
 
-	@Override
+	
 	public EvaluationResult evaluate(ModalExpression modalExpression, Universe universe,
 			World initialWorld) {
 		//for all accessible worlds we need to evaluate the expression
@@ -66,12 +66,12 @@ public class PossibilityOperator implements IModalOperator, IsSerializable {
 		return new EvaluationResult(new TruthExpression(false), comment);
 	}
 
-	@Override
+	
 	public EnumModality getModality() {
 		return EnumModality.DIAMOND;
 	}
 
-	@Override
+	
 	public String getName() {
 		return "\u25CA";
 	}

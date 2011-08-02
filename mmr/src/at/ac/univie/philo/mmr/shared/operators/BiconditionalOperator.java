@@ -7,7 +7,6 @@ import at.ac.univie.philo.mmr.shared.expressions.TruthValue;
 
 public class BiconditionalOperator implements IBinaryOperator, IsSerializable {
 
-	@Override
 	public TruthExpression evaluate(TruthExpression left, TruthExpression right) {
 		if (left == null || right == null) {
 			throw new IllegalArgumentException();
@@ -22,17 +21,17 @@ public class BiconditionalOperator implements IBinaryOperator, IsSerializable {
 		return new TruthExpression(TruthValue.FALSE);
 	}
 
-	@Override
+	
 	public String getName() {
 		return "\u2194";
 	}
 
-	@Override
+	
 	public int getPriority() {
 		return this.BICONDITIONAL_PRIORITY;
 	}
 
-	@Override
+	
 	public boolean isAssociative() {
 		return false;
 	}

@@ -154,7 +154,7 @@ public class WorldDetailsForm extends Composite {
 		//mouse-over-events
 		label.addMouseOverHandler(new MouseOverHandler() {
 
-			@Override
+			
 			public void onMouseOver(MouseOverEvent event) {
 				if(isLabelActive(label)) {
 					label.addStyleName(style.mouseover());
@@ -163,7 +163,7 @@ public class WorldDetailsForm extends Composite {
 		});
 		label.addMouseOutHandler(new MouseOutHandler() {
 
-			@Override
+			
 			public void onMouseOut(MouseOutEvent event) {
 					label.removeStyleName(style.mouseover());					
 			}
@@ -211,7 +211,7 @@ public class WorldDetailsForm extends Composite {
 	
 	private ClickHandler clickHandlerForEmptyExtension = new ClickHandler() {
 		
-		@Override
+		
 		public void onClick(ClickEvent event) {
 			if (isLabelActive(labelEmptyExtension)) {
 				Entry<Predicate, HashSet<ArrayList<Individual>>> selection = model.getSelectedExtension();
@@ -235,7 +235,7 @@ public class WorldDetailsForm extends Composite {
 				Button yes = new Button("yes");
 				yes.addClickHandler(new ClickHandler() {
 					
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						HashSet<ArrayList<Individual>> emptyextension = new HashSet<ArrayList<Individual>>();
 						world.overwriteExtension(selectedPred, emptyextension);
@@ -246,7 +246,7 @@ public class WorldDetailsForm extends Composite {
 				Button no = new Button("no");
 				no.addClickHandler(new ClickHandler() {
 					
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						db.hide();
 					}
@@ -268,7 +268,7 @@ public class WorldDetailsForm extends Composite {
 	
 	private ClickHandler clickHandlerForExportExtension = new ClickHandler() {
 		
-		@Override
+		
 		public void onClick(ClickEvent event) {
 			if (isLabelActive(labelExportExtension)) {
 				Entry<Predicate, HashSet<ArrayList<Individual>>> selection = model.getSelectedExtension();
@@ -310,7 +310,7 @@ public class WorldDetailsForm extends Composite {
 					Button apply = new Button("Apply");
 					apply.addClickHandler(new ClickHandler() {
 						
-						@Override
+						
 						public void onClick(ClickEvent event) {
 							World targetWorld = worldSelector.getSelectedObject();
 							Predicate targetPredicate = predicateSelector.getSelectedObject();
@@ -334,7 +334,7 @@ public class WorldDetailsForm extends Composite {
 					Button abort = new Button("Abort");
 					abort.addClickHandler(new ClickHandler() {
 						
-						@Override
+						
 						public void onClick(ClickEvent event) {
 							db.hide();	
 						}
@@ -364,7 +364,7 @@ public class WorldDetailsForm extends Composite {
 	
 	private ClickHandler clickHandlerForAddExtensionElement = new ClickHandler() {
 		
-		@Override
+		
 		public void onClick(ClickEvent event) {
 			if (isLabelActive(labelAddExtensionElement)) {
 				Entry<Predicate, HashSet<ArrayList<Individual>>> selection = model.getSelectedExtension();
@@ -397,7 +397,7 @@ public class WorldDetailsForm extends Composite {
 					Button create = new Button("Create");
 					create.addClickHandler(new ClickHandler() {
 						
-						@Override
+						
 						public void onClick(ClickEvent event) {
 							//assemble extensionElement
 							ArrayList<Individual> extensionElement= new ArrayList<Individual>();
@@ -417,7 +417,7 @@ public class WorldDetailsForm extends Composite {
 					Button abort = new Button("Abort");
 					abort.addClickHandler(new ClickHandler() {
 						
-						@Override
+						
 						public void onClick(ClickEvent event) {
 							db.hide();
 						}
@@ -441,7 +441,7 @@ public class WorldDetailsForm extends Composite {
 	
 	private ClickHandler clickHandlerForRemoveExtensionElement = new ClickHandler() {
 		
-		@Override
+		
 		public void onClick(ClickEvent event) {
 			if (isLabelActive(labelRemoveExtensionElement)) {
 					Entry<Predicate, HashSet<ArrayList<Individual>>> selection = model.getSelectedExtension();
@@ -467,7 +467,7 @@ public class WorldDetailsForm extends Composite {
 					Button yes = new Button("yes");
 					yes.addClickHandler(new ClickHandler() {
 						
-						@Override
+						
 						public void onClick(ClickEvent event) {
 							extensionElements.remove(selectedExtensionElement);
 							world.overwriteExtension(selectedPred, extensionElements);
@@ -478,7 +478,7 @@ public class WorldDetailsForm extends Composite {
 					Button no = new Button("no");
 					no.addClickHandler(new ClickHandler() {
 						
-						@Override
+						
 						public void onClick(ClickEvent event) {
 							db.hide();
 						}

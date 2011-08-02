@@ -64,7 +64,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		}
 	}
 	
-	@Override
+	
 	public boolean preVisit(Expression expression) {
 		valid(expression);
 		
@@ -74,7 +74,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		return true;
 	}
 
-	@Override
+	
 	public void visit(BinaryExpression expression) {
 		valid(expression);
 		Expression left = expression.getLeft();
@@ -105,7 +105,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		return cache.getResult(e);
 	}
 
-	@Override
+	
 	public void visit(QuantorExpression expression) {
 		valid(expression);
 		IQuantor qu = expression.getQuantor();
@@ -171,7 +171,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		return new EvaluationResult(new TruthExpression(false), comment);
 	}
 
-	@Override
+	
 	public void visit(ModalExpression expression) {
 		valid(expression);
 		
@@ -181,7 +181,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 //		CommentPrinter.print("Evaluation of ModalExpression "+expression.toString() +" evaluates to "+exprRes.toString() + " in World "+initWorld.getName()+".");
 	}
 
-	@Override
+	
 	public void visit(NegationExpression expression) {
 		valid(expression);
 		Expression position = expression.getOperand(0);
@@ -242,7 +242,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		return worldResOut;
 	}
 
-	@Override
+	
 	public void visit(PredicateExpression expression) {
 		valid(expression);
 		TermExpression[] terms = expression.getTerms();
@@ -364,13 +364,13 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		return null;
 	}
 
-	@Override
+	
 	public void visit(TruthExpression expression) {
 		valid(expression);
 		cache.addResult(expression, new EvaluationResult(expression, new Comment("For this expression there is nothing to evaluate.")));
 	}
 
-	@Override
+	
 	public void visit(VariableExpression expression) {
 		valid(expression);
 		Comment comment = new Comment("Free variable detected: "+expression.toString() +"Be aware that free variable handling is highly experimental.");
@@ -386,7 +386,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 		cache.addResult(expression, new EvaluationResult(allIndividuals, initWorld, comment));
 	}
 
-	@Override
+	
 	public void visit(ConstantExpression expression) {
 		valid(expression);
 		ArrayList<Individual> ai = new ArrayList<Individual>();
@@ -402,7 +402,7 @@ public class ExpressionEvaluationVisitor implements IExpressionVisitor {
 //		CommentPrinter.print("Constant in World "+initWorld.getName()+" maps to Individual "+i.toString());
 	}
 
-	@Override
+	
 	public void visit(FunctionExpression expression) {
 		valid(expression);
 		EvaluationResult result = evaluate(expression);

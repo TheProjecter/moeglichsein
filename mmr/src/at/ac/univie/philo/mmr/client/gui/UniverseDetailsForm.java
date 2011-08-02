@@ -248,7 +248,7 @@ public class UniverseDetailsForm extends Composite {
 	private void createAddPredicateInteraction() {
 		labelAddPredicate.addClickHandler(new ClickHandler() {
 			
-			@Override
+			
 			public void onClick(ClickEvent event) {
 				
 				
@@ -286,7 +286,7 @@ public class UniverseDetailsForm extends Composite {
 
 				predicateName.addKeyUpHandler(new KeyUpHandler() {
 					
-					@Override
+					
 					public void onKeyUp(KeyUpEvent event) {
 
 						String currentText = predicateName.getText();
@@ -311,7 +311,7 @@ public class UniverseDetailsForm extends Composite {
 				Button apply = new Button("Create");
 				apply.addClickHandler(new ClickHandler() {
 					
-					@Override
+					
 					public void onClick(ClickEvent event) {
 							String predName = predicateName.getText();
 							Integer arity = aritySelector.getSelectedObject();
@@ -333,7 +333,7 @@ public class UniverseDetailsForm extends Composite {
 				Button abort = new Button("Abort");
 				abort.addClickHandler(new ClickHandler() {
 					
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						dialogBox.hide();
 					}
@@ -360,14 +360,14 @@ public class UniverseDetailsForm extends Composite {
 		//mouse-over-events
 		labelAddPredicate.addMouseOverHandler(new MouseOverHandler() {
 
-			@Override
+			
 			public void onMouseOver(MouseOverEvent event) {
 				labelAddPredicate.addStyleName(style.mouseover());
 			}
 		});
 		labelAddPredicate.addMouseOutHandler(new MouseOutHandler() {
 
-			@Override
+			
 			public void onMouseOut(MouseOutEvent event) {
 				labelAddPredicate.removeStyleName(style.mouseover());
 			}
@@ -377,7 +377,7 @@ public class UniverseDetailsForm extends Composite {
 	private void createAddIndividualInteraction() {
 		labelAddIndividual.addClickHandler(new ClickHandler() {
 			
-			@Override
+			
 			public void onClick(ClickEvent event) {
 
 		final DialogBox dialogBox = new DialogBox();
@@ -396,7 +396,7 @@ public class UniverseDetailsForm extends Composite {
 		indiNameHelpButton.setTitle("What is the ordinary name of an Individual?");
 		indiNameHelpButton.addClickHandler(new ClickHandler() {
 			
-			@Override
+			
 			public void onClick(ClickEvent e) {
 				final DialogBox dialogBox = new DialogBox();
 				dialogBox.setText("What is the ordinary name of an Individual?");
@@ -407,7 +407,7 @@ public class UniverseDetailsForm extends Composite {
 				ok.addStyleName(style.distance());
 				ok.addClickHandler(new ClickHandler() {
 					
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						dialogBox.hide();
 					}
@@ -429,7 +429,7 @@ public class UniverseDetailsForm extends Composite {
 
 		individualName.addKeyUpHandler(new KeyUpHandler() {
 			
-			@Override
+			
 			public void onKeyUp(KeyUpEvent event) {
 
 				String currentText = individualName.getText();
@@ -452,7 +452,7 @@ public class UniverseDetailsForm extends Composite {
 		Button apply = new Button("Create");
 		apply.addClickHandler(new ClickHandler() {
 			
-			@Override
+			
 			public void onClick(ClickEvent event) {
 					String indiName = individualName.getText();
 				if(!universe.isFreeIndividualName(indiName)) {
@@ -471,7 +471,7 @@ public class UniverseDetailsForm extends Composite {
 					Button ok = new Button("OK");
 					ok.addClickHandler(new ClickHandler() {
 						
-						@Override
+						
 						public void onClick(ClickEvent event) {
 							informationBox.hide();
 						}
@@ -492,7 +492,7 @@ public class UniverseDetailsForm extends Composite {
 		Button abort = new Button("Abort");
 		abort.addClickHandler(new ClickHandler() {
 			
-			@Override
+			
 			public void onClick(ClickEvent event) {
 				dialogBox.hide();
 			}
@@ -518,14 +518,14 @@ public class UniverseDetailsForm extends Composite {
 		//mouse-over-events
 		labelAddIndividual.addMouseOverHandler(new MouseOverHandler() {
 
-			@Override
+			
 			public void onMouseOver(MouseOverEvent event) {
 				labelAddIndividual.addStyleName(style.mouseover());
 			}
 		});
 		labelAddIndividual.addMouseOutHandler(new MouseOutHandler() {
 
-			@Override
+			
 			public void onMouseOut(MouseOutEvent event) {
 				labelAddIndividual.removeStyleName(style.mouseover());
 			}
@@ -535,7 +535,7 @@ public class UniverseDetailsForm extends Composite {
 	private void createAddConstantInteraction() {
 		labelAddConstant.addClickHandler(new ClickHandler() {
 			
-			@Override
+			
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				
@@ -559,7 +559,7 @@ public class UniverseDetailsForm extends Composite {
 		newConstantTextBox.setMaxLength(4);
 		newConstantTextBox.addKeyUpHandler(new KeyUpHandler() {
 			
-			@Override
+			
 			public void onKeyUp(KeyUpEvent event) {
 
 				String currentText = newConstantTextBox.getText();
@@ -589,7 +589,7 @@ public class UniverseDetailsForm extends Composite {
 		Button apply = new Button("Create");
 		apply.addClickHandler(new ClickHandler() {
 			
-			@Override
+			
 			public void onClick(ClickEvent event) {
 				int constIndex = 0;
 				try {
@@ -614,7 +614,7 @@ public class UniverseDetailsForm extends Composite {
 		Button abort = new Button("Abort");
 		abort.addClickHandler(new ClickHandler() {
 			
-			@Override
+			
 			public void onClick(ClickEvent event) {
 				dialogBox.hide();
 			}
@@ -641,14 +641,14 @@ public class UniverseDetailsForm extends Composite {
 		//mouse-over-events
 		labelAddConstant.addMouseOverHandler(new MouseOverHandler() {
 
-			@Override
+			
 			public void onMouseOver(MouseOverEvent event) {
 				labelAddConstant.addStyleName(style.mouseover());
 			}
 		});
 		labelAddConstant.addMouseOutHandler(new MouseOutHandler() {
 
-			@Override
+			
 			public void onMouseOut(MouseOutEvent event) {
 				labelAddConstant.removeStyleName(style.mouseover());
 			}
@@ -659,7 +659,7 @@ public class UniverseDetailsForm extends Composite {
 	private void createAddWorldInteraction() {
 		labelAddWorld.addClickHandler(new ClickHandler() {
 			
-			@Override
+			
 			public void onClick(ClickEvent event) {
 				final DialogBox dialogBox = new DialogBox();
 				dialogBox.setText("Create World");
@@ -675,7 +675,7 @@ public class UniverseDetailsForm extends Composite {
 
 				createButton.addClickHandler(new ClickHandler() {
 
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						String worldName = newName.getText();
 						if (UniverseFactory.validWorldName(worldName)) {
@@ -695,7 +695,7 @@ public class UniverseDetailsForm extends Composite {
 				
 				abortButton.addClickHandler(new ClickHandler() {
 
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						dialogBox.hide();
 					}
@@ -722,14 +722,14 @@ public class UniverseDetailsForm extends Composite {
 		//mouse-over-events
 		labelAddWorld.addMouseOverHandler(new MouseOverHandler() {
 
-			@Override
+			
 			public void onMouseOver(MouseOverEvent event) {
 				labelAddWorld.addStyleName(style.mouseover());
 			}
 		});
 		labelAddWorld.addMouseOutHandler(new MouseOutHandler() {
 
-			@Override
+			
 			public void onMouseOut(MouseOutEvent event) {
 				labelAddWorld.removeStyleName(style.mouseover());
 			}
@@ -758,7 +758,7 @@ public class UniverseDetailsForm extends Composite {
 	private void createRenameUniverseInteraction() {
 		labelRenameUniverse.addClickHandler(new ClickHandler() {
 
-			@Override
+			
 			public void onClick(ClickEvent event) {
 				// create Popup
 				final DialogBox dialogBox = new DialogBox();
@@ -774,7 +774,7 @@ public class UniverseDetailsForm extends Composite {
 
 				renameButton.addClickHandler(new ClickHandler() {
 
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						String universeName = newName.getText();
 						if (UniverseFactory.validUniverseName(universeName)) {
@@ -791,7 +791,7 @@ public class UniverseDetailsForm extends Composite {
 
 				abortButton.addClickHandler(new ClickHandler() {
 
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						dialogBox.hide();
 					}
@@ -799,7 +799,7 @@ public class UniverseDetailsForm extends Composite {
 
 				newName.addKeyPressHandler(new KeyPressHandler() {
 
-					@Override
+					
 					public void onKeyPress(KeyPressEvent event) {
 						if (event.getUnicodeCharCode() == KeyCodes.KEY_ENTER) {
 							renameButton.click();
@@ -827,14 +827,14 @@ public class UniverseDetailsForm extends Composite {
 
 		labelRenameUniverse.addMouseOverHandler(new MouseOverHandler() {
 
-			@Override
+			
 			public void onMouseOver(MouseOverEvent event) {
 				labelRenameUniverse.addStyleName(style.mouseover());
 			}
 		});
 		labelRenameUniverse.addMouseOutHandler(new MouseOutHandler() {
 
-			@Override
+			
 			public void onMouseOut(MouseOutEvent event) {
 				labelRenameUniverse.removeStyleName(style.mouseover());
 			}
@@ -844,7 +844,7 @@ public class UniverseDetailsForm extends Composite {
 	private void createChangeAccessabilityInteraction() {
 		labelChangeAccessabilityConstraint.addClickHandler(new ClickHandler() {
 
-			@Override
+			
 			public void onClick(ClickEvent event) {
 				// Create the popup dialog box
 				final DialogBox dialogBox = new DialogBox();
@@ -902,7 +902,7 @@ public class UniverseDetailsForm extends Composite {
 
 				abortButton.addClickHandler(new ClickHandler() {
 
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						dialogBox.hide();
 
@@ -911,7 +911,7 @@ public class UniverseDetailsForm extends Composite {
 
 				changeButton.addClickHandler(new ClickHandler() {
 
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						String newAccessabilityConstraintText = constraintListBox
 								.getItemText(constraintListBox
@@ -940,7 +940,7 @@ public class UniverseDetailsForm extends Composite {
 								Button yes = new Button("Yes");
 								yes.addClickHandler(new ClickHandler() {
 
-									@Override
+									
 									public void onClick(ClickEvent event) {
 										updateAccessabilityConstraint(
 												newAccessabilityConstraint,
@@ -959,7 +959,7 @@ public class UniverseDetailsForm extends Composite {
 								Button no = new Button("No");
 								no.addClickHandler(new ClickHandler() {
 
-									@Override
+									
 									public void onClick(ClickEvent event) {
 										dialogBoxConfirmation.hide();
 									}
@@ -986,7 +986,7 @@ public class UniverseDetailsForm extends Composite {
 
 				constraintListBox.addChangeHandler(new ChangeHandler() {
 
-					@Override
+					
 					public void onChange(ChangeEvent event) {
 						changeButton.setText("Change");
 					}
@@ -1000,7 +1000,7 @@ public class UniverseDetailsForm extends Composite {
 		labelChangeAccessabilityConstraint
 				.addMouseOverHandler(new MouseOverHandler() {
 
-					@Override
+					
 					public void onMouseOver(MouseOverEvent event) {
 						labelChangeAccessabilityConstraint.addStyleName(style
 								.mouseover());
@@ -1009,7 +1009,7 @@ public class UniverseDetailsForm extends Composite {
 		labelChangeAccessabilityConstraint
 				.addMouseOutHandler(new MouseOutHandler() {
 
-					@Override
+					
 					public void onMouseOut(MouseOutEvent event) {
 						labelChangeAccessabilityConstraint
 								.removeStyleName(style.mouseover());
@@ -1040,7 +1040,7 @@ public class UniverseDetailsForm extends Composite {
 		predicatesCellTable.addColumn(predColumn, "Predicate Name");
 		predColumn.setFieldUpdater(new FieldUpdater<Predicate, String>() {
 
-			@Override
+			
 			public void update(int index, final Predicate p, String value) {
 				//that's not an update
 				if (p.getName().equals(value)) {
@@ -1061,7 +1061,7 @@ public class UniverseDetailsForm extends Composite {
 					Button ok = new Button("OK");
 					ok.addClickHandler(new ClickHandler() {
 						
-						@Override
+						
 						public void onClick(ClickEvent event) {
 							db.hide();
 							editCell.clearViewData(p);
@@ -1104,7 +1104,7 @@ public class UniverseDetailsForm extends Composite {
 
 		delColumn.setFieldUpdater(new FieldUpdater<Predicate, String>() {
 
-			@Override
+			
 			public void update(int index, final Predicate object, String value) {
 				//remove World from Universe
 				final DialogBox db = new DialogBox();
@@ -1121,7 +1121,7 @@ public class UniverseDetailsForm extends Composite {
 				Button yes = new Button("yes");
 				yes.addClickHandler(new ClickHandler() {
 					
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						universe.removePredicate(object);
 						//update the model of whole application
@@ -1132,7 +1132,7 @@ public class UniverseDetailsForm extends Composite {
 				Button no = new Button("no");
 				no.addClickHandler(new ClickHandler() {
 					
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						db.hide();
 					}
@@ -1188,7 +1188,7 @@ public class UniverseDetailsForm extends Composite {
 		accessCellTable.addColumn(worldColumn, "World");
 		worldColumn.setFieldUpdater(new FieldUpdater<World, String>() {
 
-			@Override
+			
 			public void update(int index, final World w, String value) {
 				//that's not an update
 				if (w.getName().equals(value)) {
@@ -1209,7 +1209,7 @@ public class UniverseDetailsForm extends Composite {
 					Button ok = new Button("OK");
 					ok.addClickHandler(new ClickHandler() {
 						
-						@Override
+						
 						public void onClick(ClickEvent event) {
 							db.hide();
 							editCell.clearViewData(w);
@@ -1242,7 +1242,7 @@ public class UniverseDetailsForm extends Composite {
 
 		accessColumn.setFieldUpdater(new FieldUpdater<World, HashSet<World>>() {
 
-			@Override
+			
 			public void update(int index, final World object,
 					final HashSet<World> value) {
 				if (value == null)
@@ -1269,7 +1269,7 @@ public class UniverseDetailsForm extends Composite {
 					Button yes = new Button("Yes");
 					yes.addClickHandler(new ClickHandler() {
 
-						@Override
+						
 						public void onClick(ClickEvent event) {
 							accessabilityConstraint = axxRel.overrideAccess(
 									object, value, true);
@@ -1280,7 +1280,7 @@ public class UniverseDetailsForm extends Composite {
 					Button no = new Button("No");
 					no.addClickHandler(new ClickHandler() {
 
-						@Override
+						
 						public void onClick(ClickEvent event) {
 							updateModel();
 							askConfirmationDialog.hide();
@@ -1316,7 +1316,7 @@ public class UniverseDetailsForm extends Composite {
 
 		delColumn.setFieldUpdater(new FieldUpdater<World, String>() {
 
-			@Override
+			
 			public void update(int index, final World object, String value) {
 				//remove World from Universe
 				final DialogBox db = new DialogBox();
@@ -1333,7 +1333,7 @@ public class UniverseDetailsForm extends Composite {
 				Button yes = new Button("yes");
 				yes.addClickHandler(new ClickHandler() {
 					
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						try {
 							universe.getRelations().removeWorld(object);
@@ -1348,7 +1348,7 @@ public class UniverseDetailsForm extends Composite {
 				Button no = new Button("no");
 				no.addClickHandler(new ClickHandler() {
 					
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						db.hide();
 					}
@@ -1438,6 +1438,34 @@ public class UniverseDetailsForm extends Composite {
 		globalIndividualsPager.setWidth("100%");
 		globalIndividualsPager.setPageSize(5);
 
+		// Add a text column to show the address.
+		Column<Entry<Constant, Individual>, Constant> constantColumn = new Column<Entry<Constant, Individual>, Constant>(new ConstantCell()) {
+			@Override
+			public Constant getValue(Entry<Constant, Individual> entry) {
+				return entry.getKey();
+			}
+		};
+		globalIndividualsCellTable.addColumn(constantColumn, "constant name");
+
+		constantColumn.setFieldUpdater(new FieldUpdater<Map.Entry<Constant,Individual>, Constant>() {
+
+			
+			public void update(int index, Entry<Constant, Individual> entry,
+					Constant newConst) {
+				if(entry.getKey().equals(newConst)) {
+					//no changes
+					return;
+				}
+				if (constants.containsKey(newConst)) {
+					Window.alert("Error: Constant already taken to identify another Individual.");
+					return;
+				}
+				Individual i = constants.remove(entry.getKey());
+				constants.put(newConst, i);
+				updateModel();
+			}
+		});
+		
 		final EditTextCell editCell = new EditTextCell();
 		Column<Entry<Constant, Individual>, String> indiColumn = new Column<Entry<Constant, Individual>, String>(
 				editCell) {
@@ -1452,7 +1480,7 @@ public class UniverseDetailsForm extends Composite {
 		indiColumn
 				.setFieldUpdater(new FieldUpdater<Entry<Constant, Individual>, String>() {
 
-					@Override
+					
 					public void update(int index,
 							final Entry<Constant, Individual> i, String value) {
 						//that's not an update
@@ -1474,7 +1502,7 @@ public class UniverseDetailsForm extends Composite {
 							Button ok = new Button("OK");
 							ok.addClickHandler(new ClickHandler() {
 								
-								@Override
+								
 								public void onClick(ClickEvent event) {
 									db.hide();
 									editCell.clearViewData(i);
@@ -1494,34 +1522,6 @@ public class UniverseDetailsForm extends Composite {
 					}
 
 				});
-
-		// Add a text column to show the address.
-		Column<Entry<Constant, Individual>, Constant> constantColumn = new Column<Entry<Constant, Individual>, Constant>(new ConstantCell()) {
-			@Override
-			public Constant getValue(Entry<Constant, Individual> entry) {
-				return entry.getKey();
-			}
-		};
-		globalIndividualsCellTable.addColumn(constantColumn, "constant name");
-
-		constantColumn.setFieldUpdater(new FieldUpdater<Map.Entry<Constant,Individual>, Constant>() {
-
-			@Override
-			public void update(int index, Entry<Constant, Individual> entry,
-					Constant newConst) {
-				if(entry.getKey().equals(newConst)) {
-					//no changes
-					return;
-				}
-				if (constants.containsKey(newConst)) {
-					Window.alert("Error: Constant already taken to identify another Individual.");
-					return;
-				}
-				Individual i = constants.remove(entry.getKey());
-				constants.put(newConst, i);
-				updateModel();
-			}
-		});
 		
 		// // Add a selection model to handle user selection.
 		// final SingleSelectionModel<Entry<Constant,Individual>>
@@ -1561,7 +1561,7 @@ public class UniverseDetailsForm extends Composite {
 
 		delColumn.setFieldUpdater(new FieldUpdater<Entry<Constant, Individual>, String>() {
 
-			@Override
+			
 			public void update(int index,final Entry<Constant, Individual> object, String value) {
 				//remove Individual from Universe
 				final DialogBox db = new DialogBox();
@@ -1578,7 +1578,7 @@ public class UniverseDetailsForm extends Composite {
 				Button yes = new Button("yes");
 				yes.addClickHandler(new ClickHandler() {
 					
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						universe.removeIndividual(object.getValue());
 						//update the model of whole application
@@ -1589,7 +1589,7 @@ public class UniverseDetailsForm extends Composite {
 				Button no = new Button("no");
 				no.addClickHandler(new ClickHandler() {
 					
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						db.hide();
 					}
@@ -1652,7 +1652,7 @@ public class UniverseDetailsForm extends Composite {
 			newConstantTextBox.setMaxLength(4);
 			newConstantTextBox.addKeyUpHandler(new KeyUpHandler() {
 				
-				@Override
+				
 				public void onKeyUp(KeyUpEvent event) {
 
 					String currentText = newConstantTextBox.getText();
@@ -1687,7 +1687,7 @@ public class UniverseDetailsForm extends Composite {
 			apply = new Button("Apply");
 			apply.addClickHandler(new ClickHandler() {
 				
-				@Override
+				
 				public void onClick(ClickEvent event) {
 					editMode = false;
 					int constIndex = 0;
@@ -1710,7 +1710,7 @@ public class UniverseDetailsForm extends Composite {
 			abort = new Button("Abort");
 			abort.addClickHandler(new ClickHandler() {
 				
-				@Override
+				
 				public void onClick(ClickEvent event) {
 					editMode = false;
 					dialogBox.hide();
@@ -1721,7 +1721,7 @@ public class UniverseDetailsForm extends Composite {
 			del.setTitle("Delete this Constant "+c.toString()+" for Individual "+refIndi);
 			del.addClickHandler(new ClickHandler() {
 				
-				@Override
+				
 				public void onClick(ClickEvent event) {
 					final DialogBox db = new DialogBox();
 					db.setText("Confirm the removal of Constant "+c.toString());
@@ -1737,7 +1737,7 @@ public class UniverseDetailsForm extends Composite {
 					Button yes = new Button("yes");
 					yes.addClickHandler(new ClickHandler() {
 						
-						@Override
+						
 						public void onClick(ClickEvent event) {
 							universe.getConstantMap().remove(c);
 							//update the model at whole application
@@ -1749,7 +1749,7 @@ public class UniverseDetailsForm extends Composite {
 					Button no = new Button("no");
 					no.addClickHandler(new ClickHandler() {
 						
-						@Override
+						
 						public void onClick(ClickEvent event) {
 							globalIndividualsCellTable.redraw();
 							db.hide();
@@ -1996,7 +1996,7 @@ public class UniverseDetailsForm extends Composite {
 				close.addStyleName(style.bigger());
 				close.addClickHandler(new ClickHandler() {
 					
-					@Override
+					
 					public void onClick(ClickEvent event) {
 						value.remove(w);
 						drawDialogBox(value);
@@ -2004,14 +2004,14 @@ public class UniverseDetailsForm extends Composite {
 				});
 				close.addMouseOverHandler(new MouseOverHandler() {
 					
-					@Override
+					
 					public void onMouseOver(MouseOverEvent event) {
 						close.addStyleName(style.mouseover());
 					}
 				});
 				close.addMouseOutHandler(new MouseOutHandler() {
 					
-					@Override
+					
 					public void onMouseOut(MouseOutEvent event) {
 						close.removeStyleName(style.mouseover());
 					}
@@ -2026,7 +2026,7 @@ public class UniverseDetailsForm extends Composite {
 			Button addButton = new Button("+");
 			addButton.addClickHandler(new ClickHandler() {
 				
-				@Override
+				
 				public void onClick(ClickEvent event) {
 					World w = addNewWorldDrop.getSelectedObject();
 					value.add(w);
@@ -2082,7 +2082,7 @@ public class UniverseDetailsForm extends Composite {
 
 			addAllHandReg = addAllButton.addClickHandler(new ClickHandler() {
 
-				@Override
+				
 				public void onClick(ClickEvent event) {
 					drawDialogBox(new HashSet<World>(universe.getWorlds()));
 					// valueUpdater.update(value);
@@ -2094,7 +2094,7 @@ public class UniverseDetailsForm extends Composite {
 
 			remAllHandReg = remAllButton.addClickHandler(new ClickHandler() {
 
-				@Override
+				
 				public void onClick(ClickEvent event) {
 					drawDialogBox(new HashSet<World>());
 				}
@@ -2102,7 +2102,7 @@ public class UniverseDetailsForm extends Composite {
 
 			updateHandReg = updateButton.addClickHandler(new ClickHandler() {
 
-				@Override
+				
 				public void onClick(ClickEvent event) {
 
 					editMode = false;
@@ -2115,7 +2115,7 @@ public class UniverseDetailsForm extends Composite {
 
 			abortHandReg = abortButton.addClickHandler(new ClickHandler() {
 
-				@Override
+				
 				public void onClick(ClickEvent event) {
 					editMode = false;
 					// HashSet<World> hw = new HashSet<World>(formerAxxTable);

@@ -226,7 +226,6 @@ public class MainScreen extends Composite {
 	private void setupFeedbackInteraction() {
 		sendFeedbackLabel.addClickHandler(new ClickHandler() {
 			
-			@Override
 			public void onClick(ClickEvent event) {
 				final DialogBox db = new DialogBox(true);
 				db.setStyleName(style.grid());
@@ -268,7 +267,6 @@ public class MainScreen extends Composite {
 				Button send = new Button("Send Report");
 				send.addClickHandler(new ClickHandler() {
 					
-					@Override
 					public void onClick(ClickEvent event) {
 						//get input
 						String type = purposeListBox.getItemText(purposeListBox.getSelectedIndex());
@@ -281,7 +279,6 @@ public class MainScreen extends Composite {
 				Button abort = new Button("Abort");
 				abort.addClickHandler(new ClickHandler() {
 					
-					@Override
 					public void onClick(ClickEvent event) {
 						db.hide();
 					}
@@ -303,14 +300,12 @@ public class MainScreen extends Composite {
 		//mouse-over-events
 		sendFeedbackLabel.addMouseOverHandler(new MouseOverHandler() {
 
-			@Override
 			public void onMouseOver(MouseOverEvent event) {
 				sendFeedbackLabel.addStyleName(style.mouseover());
 			}
 		});
 		sendFeedbackLabel.addMouseOutHandler(new MouseOutHandler() {
 
-			@Override
 			public void onMouseOut(MouseOutEvent event) {
 				sendFeedbackLabel.removeStyleName(style.mouseover());
 			}
@@ -321,7 +316,6 @@ public class MainScreen extends Composite {
 			String message, String contact) {
 		parsingService.sendReport(type, message, contact, new AsyncCallback<Void> () {
 			
-			@Override
 			public void onSuccess(Void result) {
 					final DialogBox db = new DialogBox();
 					VerticalPanel vp = new VerticalPanel();
@@ -331,7 +325,6 @@ public class MainScreen extends Composite {
 					Button ok = new Button("OK");
 					ok.addClickHandler(new ClickHandler() {
 						
-						@Override
 						public void onClick(ClickEvent event) {
 							db.hide();
 						}
@@ -344,7 +337,6 @@ public class MainScreen extends Composite {
 					db.show();
 			}
 			
-			@Override
 			public void onFailure(Throwable caught) {
 				final DialogBox db = new DialogBox();
 				VerticalPanel vp = new VerticalPanel();
@@ -354,7 +346,6 @@ public class MainScreen extends Composite {
 				Button ok = new Button("OK");
 				ok.addClickHandler(new ClickHandler() {
 					
-					@Override
 					public void onClick(ClickEvent event) {
 						db.hide();
 					}
@@ -404,7 +395,6 @@ public class MainScreen extends Composite {
 		final Button helpButton = new Button("?");
 		helpButton.addClickHandler(new ClickHandler() {
 			
-			@Override
 			public void onClick(ClickEvent event) {
 				showSyntaxHelp();
 			}
@@ -511,7 +501,6 @@ public class MainScreen extends Composite {
 								sendButton.setEnabled(true);
 							}
 
-							@Override
 							public void onSuccess(EvaluationReport result) {
 								hideWaitingDialog();
 								oracle.add(textToServer);

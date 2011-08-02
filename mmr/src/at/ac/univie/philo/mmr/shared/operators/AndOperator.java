@@ -7,7 +7,6 @@ import at.ac.univie.philo.mmr.shared.expressions.TruthValue;
 
 public class AndOperator implements IBinaryOperator,IsSerializable {
 
-	@Override
 	public TruthExpression evaluate(TruthExpression left, TruthExpression right) {
 		if (left == null || right == null) {
 			throw new IllegalArgumentException();
@@ -19,17 +18,14 @@ public class AndOperator implements IBinaryOperator,IsSerializable {
 		return new TruthExpression(TruthValue.FALSE);
 	}
 
-	@Override
 	public String getName() {
 		return "\u2227";
 	}
 
-	@Override
 	public int getPriority() {
 		return this.CONJUNCTION_PRIORITY;
 	}
 
-	@Override
 	public boolean isAssociative() {
 		return true;
 	}

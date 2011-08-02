@@ -20,12 +20,12 @@ import at.ac.univie.philo.mmr.shared.visitors.IExpressionVisitor;
 
 public class ExistenceQuantor implements IQuantor,IsSerializable {
 
-	@Override
+
 	public EnumQuantor getQuantor() {
 		return EnumQuantor.EXISTS;
 	}
 
-	@Override
+
 	public String getName() {
 		return "\u2203";
 	}

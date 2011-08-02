@@ -1,0 +1,2 @@
+serviceClass: at.ac.univie.philo.mmr.client.ModalParsingService
+path: 74437DAE0166134C43E483BA06899B60.gwt.rpc
